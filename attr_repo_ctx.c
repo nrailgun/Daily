@@ -12,14 +12,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) Junyu wu, shibuyanorailgun@foxmail, 2014.
+ * Copyright (C) Junyu wu, shibuyanorailgun@foxmail, 2015.
  */
 
-#ifndef __LINUX_ACT_ACTFS_H
-#define __LINUX_ACT_ACTFS_H
-
-#ifdef MODULE
-int init_act_fs(void);
-#endif
-
-#endif /* end of include guard: __LINUX_ACT_ACTFS_H */
+#include "attr_repo_ctx.h"

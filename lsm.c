@@ -28,9 +28,8 @@
 #include <linux/xattr.h>
 
 #include "act.h"
-#include "parse.h"
-#include "policy.h"
 
+#if 0
 static
 int act_bprm_set_creds(struct linux_binprm *bprm)
 {
@@ -332,3 +331,5 @@ __init int act_module_init(void)
 security_initcall(act_module_init);
 
 #endif /* ifdef MODULE */
+
+#endif /* if 0 */

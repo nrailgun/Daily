@@ -18,6 +18,8 @@
 #ifndef __LINUX_ACT_ATTR_REPO_CTX_H
 #define __LINUX_ACT_ATTR_REPO_CTX_H
 
+#include "act.h"
+
 struct act_attr_ctx {
 };
 

@@ -18,10 +18,6 @@
 #ifndef __LINUX_ACT_ATTR_REPO_H
 #define __LINUX_ACT_ATTR_REPO_H
 
-#include <linux/binfmts.h>
-#include <linux/dcache.h>
-#include <linux/fs.h>
-#include <linux/kernel.h>
 #include <linux/list.h>
 
 #include "attr_repo_ctx.h"

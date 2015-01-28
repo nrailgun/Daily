@@ -18,6 +18,8 @@
 #ifndef __LINUX_SECURITY_ACT_H
 #define __LINUX_SECURITY_ACT_H
 
+#include <linux/printk.h>
+
 #define ACT_INFO(fmt, args...)						\
 	do {								\
 		printk(KERN_INFO "Act: " fmt "\n", ##args);		\
@@ -34,7 +36,5 @@
 		if (printk_ratelimit())					\
 			printk(KERN_ERR "Act: " fmt "\n", ##args);	\
 	} while (0)
-
-#define ACT_XATTR_LEN 64
 
 #endif /* end of include guard: __LINUX_SECURITY_ACT_H */
