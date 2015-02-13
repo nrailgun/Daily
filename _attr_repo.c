@@ -15,12 +15,12 @@
  * Copyright (C) Junyu wu, shibuyanorailgun@foxmail, 2015.
  */
 
-#include "attr_repo.h"
-
 #include <linux/kernel.h>
 #include <linux/list.h>
 #include <linux/slab.h>
 #include <linux/string.h>
+
+#include "attr_repo.h"
 
 static
 struct act_cert *act_cert_alloc(void)

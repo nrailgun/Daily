@@ -18,25 +18,32 @@
 #ifndef __LINUX_ACT_ATTR_REPO_H
 #define __LINUX_ACT_ATTR_REPO_H
 
+#include <linux/binfmts.h>
+#include <linux/fs.h>
 #include <linux/list.h>
 
+#include "act.h"
 #include "attr_repo_ctx.h"
 
-enum act_attr_type {
+typedef enum act_attr_type {
 	ACT_ATTR_TYPE_INT, ACT_ATTR_TYPE_INTS,
 	ACT_ATTR_TYPE_STR, ACT_ATTR_TYPE_STRS
-};
+} act_attr_type_t;
 
 struct act_attr {
 	char *key;
-	enum act_attr_type type;
+	act_attr_type_t type;
 	union {
 		int intval;
-		int *intvals;
 		char *strval;
-		char **strvals;
+		struct {
+			union {
+				int *intvals;
+				char **strvals;
+			};
+			int nvals;
+		};
 	};
-	int nvals;
 	struct list_head list;
 	struct act_attr_ctx *ctx;
 };
