@@ -30,7 +30,11 @@ typedef enum act_attr_type {
 	ACT_ATTR_TYPE_STR, ACT_ATTR_TYPE_STRS
 } act_attr_type_t;
 
-struct act_attr {
+typedef enum act_owner {
+	ACT_OWNER_UNDEF, ACT_OWNER_SUBJ, ACT_OWNER_OBJ, ACT_OWNER_ENV
+} act_owner_t;
+
+typedef struct act_attr {
 	char *key;
 	act_attr_type_t type;
 	union {
@@ -46,16 +50,17 @@ struct act_attr {
 	};
 	struct list_head list;
 	struct act_attr_ctx *ctx;
-};
+} act_attr_t;
 
 /*
  * Attributes certificate.
  */
-struct act_cert {
+typedef struct act_cert {
+	act_owner_t owner;
 	struct list_head attrs;
-	u_char signature[256];
 	struct act_cert_ctx *ctx;
-};
+	u_char signature[256];
+} act_cert_t;
 
 /*
  * Get subject (process) attributes certificate.

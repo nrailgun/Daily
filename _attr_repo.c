@@ -29,6 +29,7 @@ struct act_cert *act_cert_alloc(void)
 
 	cert = kmalloc(sizeof(*cert), GFP_KERNEL);
 	if (cert) {
+		cert->owner = ACT_OWNER_UNDEF;
 		INIT_LIST_HEAD(&cert->attrs);
 		cert->ctx = NULL;
 	}
@@ -40,6 +41,7 @@ act_subj_attrs(const struct linux_binprm *bprm)
 {
 	struct act_cert *cert;
 	cert = act_cert_alloc();
+	cert->owner = ACT_OWNER_SUBJ;
 
 	return cert;
 }
@@ -55,6 +57,7 @@ act_obj_file_attrs(const struct file *filp)
 {
 	struct act_cert *cert;
 	cert = act_cert_alloc();
+	cert->owner = ACT_OWNER_OBJ;
 
 	return cert;
 }
@@ -68,5 +71,5 @@ act_obj_file_attrs_destroy(struct act_cert *cert)
 int
 act_cert_verify(const struct act_cert *cert)
 {
-	return (int) cert;
+	return !0;
 }

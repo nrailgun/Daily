@@ -21,7 +21,11 @@
 struct act_attr_ctx {
 };
 
+typedef struct act_attr_ctx act_attr_ctx_t;
+
 struct act_cert_ctx {
 };
+
+typedef struct act_cert_ctx act_cert_ctx_t;
 
 #endif /* end of include guard: __LINUX_ACT_ATTR_REPO_CTX_H */

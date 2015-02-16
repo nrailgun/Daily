@@ -26,32 +26,6 @@
 #include "act.h"
 #include "parse.h"
 
-int act_parse_int(const char s[], const size_t sz, int *pt)
-{
-	int i = 0, sg = 1, rv = 0;
-
-	switch (*s)
-	{
-	case '-':
-		sg = -1;
-
-	case '+':
-		i++;
-		break;
-	}
-
-	while (i < sz && isdigit(s[i])) {
-		rv = rv * 10 + s[i] - '0';
-		i++;
-	}
-	*pt = rv * sg;
-
-	if (i == 0)
-		return -EINVAL;
-
-	return i;
-}
-
 /*
  * Remove duplicated spaces from rule buffer.
  *
@@ -60,12 +34,13 @@ int act_parse_int(const char s[], const size_t sz, int *pt)
  *
  * @return: 0 on success.
  */
-int act_remove_spaces(const char rule[], const size_t sz, char **pbuf)
+int act_tokenize(
+		const char rule[], const size_t sz, char **pbuf)
 {
 	char *buf;
 	size_t i, j;
 
-	buf = kmalloc(sz + 1, GFP_KERNEL);
+	buf = kmalloc(sz * 2 + 1, GFP_KERNEL);
 	if (!buf)
 		return -ENOMEM;
 	*pbuf = buf;
@@ -76,60 +51,94 @@ int act_remove_spaces(const char rule[], const size_t sz, char **pbuf)
 
 	for (j = 0; i < sz; )
 	{
-		if (!isspace(rule[i])) {
-			buf[j++] = rule[i++];
+		if (isspace(rule[i])) {
+			i++;
 			continue;
 		}
 
-		buf[j++] = ' ';
-		while (i < sz && isspace(rule[i]))
+		/* Keyword & variable */
+		if (isalpha(rule[i]) || rule[i] == '_')
+		{
+			while (i < sz &&
+					(isalpha(rule[i]) || rule[i] == '_'))
+			{
+				buf[j++] = rule[i++];
+			}
+			buf[j++] = ' ';
+			continue;
+		}
+
+		/* Number */
+		if (isdigit(rule[i]))
+		{
+			while (i < sz && isdigit(rule[i])) {
+				buf[j++] = rule[i++];
+			}
+			buf[j++] = ' ';
+			continue;
+		}
+
+		/* String */
+		if (rule[i] == '\'') {
+			buf[j++] = '\'';
 			i++;
+			while (i < sz && rule[i] != '\'') {
+				buf[j++] = rule[i++];
+			}
+			if (i == sz)
+				return -EINVAL;
+			buf[j++] = '\'';
+			buf[j++] = ' ';
+			i++;
+			continue;
+		}
+
+		/* Operators: . { } [ ] ( ) = < > ~ */
+		if (ispunct(rule[i])) {
+			buf[j++] = rule[i++];
+			buf[j++] = ' ';
+			continue;
+		}
 	}
 	buf[j] = 0;
 	
 	return j;
 }
 
-int act_parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
+/*
+ * Parse integer in rule.
+ *
+ * @s: Rule string to parse.
+ * @sz: Size of buffer.
+ * @pt: Stores integer.
+ *
+ * @return: Length of chars read, -EINVAL on invalid case.
+ */
+int act_parse_int(
+		const char s[], const size_t sz, int *pt)
 {
-	static const act_sign_t signs[] = {
-		ACT_ALLOW, ACT_DENY
-	};
+	int i = 0, sg = 0, rv = 0;
 
-	int rv;
-	
-	if (!strncmp(rule, "ALLOW ", 6)) {
-		pl->sign = ACT_ALLOW;
-		rv = 6;
+	switch (*s)
+	{
+	case '-':
+		sg = 0x80000000;
+
+	case '+':
+		i++;
+		break;
 	}
 
-	else if (!strncmp(rule, "DENY ", 5)) {
-		pl->sign = ACT_DENY;
-		rv = 5;
+	while (i < sz && isdigit(s[i])) {
+		rv *= 10;
+		rv += s[i++] - '0';
 	}
+	*pt = rv | sg;
 
-	else
-		rv = -EINVAL;
-
-	return rv;
-}
-
-int act_parse_policy_action(
-		act_policy_t *pl, const char rule[], const size_t sz)
-{
-	int i;
-
-	pl->action = ACT_ACTION_FILE_OPEN;
-
-	for (i = 0; i < sz; i++) {
-		if (isspace(rule[i]))
-			break;
-	}
-
-	if (strncmp(&rule[i], " IF ", 4))
+	if (i == 0)
 		return -EINVAL;
 
-	return i + 4;
+	return i;
 }
 
 int act_parse_separator(const char rule[], const size_t sz)
@@ -140,9 +149,7 @@ int act_parse_separator(const char rule[], const size_t sz)
 		break;
 
 	case 1:
-		if (*rule == ';')
-			return 1;
-		break;
+		ACT_Assert(0);
 
 	default:
 		if (!strncmp("; ", rule, 2))
@@ -156,7 +163,7 @@ int act_parse_single_cond(
 		act_cond_t *cond, const char rule[], const size_t sz)
 {
 	static const char *patterns[] = {
-		"= ", "< ", "> ", "IN "
+		"= ", "< ", "> ", "~ "
 	};
 
 	static const size_t patlens[] = {
@@ -169,33 +176,47 @@ int act_parse_single_cond(
 
 	act_single_cond_t *single;
 	size_t i, j;
+	int rv;
 
 	single = &cond->single_cond;
 
+	/* Parses owner */
+
+	if (!strncmp(rule, "SUBJECT . ", 10)) {
+		single->owner = ACT_OWNER_SUBJ;
+		i = 10;
+	}
+	else if (!strncmp(rule, "OBJECT . ", 9)) {
+		single->owner = ACT_OWNER_OBJ;
+		i = 9;
+	}
+	else
+		return -EINVAL;
+
 	/* Parses attribute name */
 
-	for (i = 0; i < sz; i++)
+	for (j = i; j < sz; j++)
 	{
-		if (rule[i] == ' ')
+		if (rule[j] == ' ')
 			break;
 
-		if (!isalpha(rule[i]) && rule[i] != '_')
+		if (!isalpha(rule[j]) && rule[j] != '_')
 			return -EINVAL;
 	}
 
-	if (!i)
-		return -EINVAL;
-
-	single->key = kmalloc(i + 1, GFP_KERNEL);
+	single->key = kmalloc(j - i + 1, GFP_KERNEL);
 	if (!single->key)
 		return -ENOMEM;
-	strncpy(single->key, rule, i);
-	single->key[i] = 0;
+	strncpy(single->key, rule + i, j - i);
+	single->key[j - i] = 0;
 
 	/* Parses comparator */
 
-	if (++i >= sz)
-		return -EINVAL;
+	i = j;
+	if (++i >= sz) {
+		rv = -EINVAL;
+		goto out_free_key;
+	}
 
 	for (j = 0; j < ARRAY_SIZE(cmps); j++)
 	{
@@ -207,8 +228,10 @@ int act_parse_single_cond(
 		}
 	}
 
-	if (j == ARRAY_SIZE(cmps))
-		return -EINVAL;
+	if (j == ARRAY_SIZE(cmps)) {
+		rv = -EINVAL;
+		goto out_free_key;
+	}
 
 	/* Parses attribute value */
 
@@ -217,18 +240,40 @@ int act_parse_single_cond(
 		j = act_parse_int(&rule[i], sz - i, &single->intval);
 		if (j < 0)
 			return j;
-		i += j + 1; /* Skip ' ' */
+		i += j + 1;
 	}
 
 	else if (rule[i] == '\'') {
+		single->type = ACT_ATTR_TYPE_STR;
 
+		j = i + 1;
+		while (j < sz && rule[j] != '\'')
+			j++;
+		single->strval = kmalloc(j - i, GFP_KERNEL);
+		if (!single->strval)
+			return -ENOMEM;
+		strncpy(single->strval, rule + i + 1, j - i - 1);
+		single->strval[j - i - 1] = 0;
+
+		i = j + 2;
 	}
 
 	j = act_parse_separator(&rule[i], sz - i);
-	if (j < 0)
-		return -EINVAL;
+	if (j < 0) {
+		rv = -EINVAL;
+		goto out_free_vals;
+	}
 
 	return i + j;
+
+out_free_vals:
+
+out_free_key:
+	if (single->key) {
+		kfree(single->key);
+	}
+
+	return rv;
 }
 
 /*
@@ -246,7 +291,7 @@ int act_parse_multi_conds(
 		act_cond_t *cond, const char rule[], const size_t sz)
 {
 	act_cond_type_t type;
-	int i, nchild = 0, rv;
+	int i, rv;
 	char lb, rb;
 
 	switch (lb = *rule)
@@ -266,6 +311,7 @@ int act_parse_multi_conds(
 	}
 
 	cond->cond_type = type;
+	cond->nconds = 0;
 
 	for (i = 2; i < sz; )
 	{
@@ -274,67 +320,130 @@ int act_parse_multi_conds(
 		case '}':
 		case ']':
 			ACT_Assert(rule[i] == rb);
-			if (i + 2 >= sz)
-				return -EINVAL;
+			if (i + 2 >= sz) {
+				rv = -EINVAL;
+				goto out_free_cond;
+			}
 
 			rv = act_parse_separator(&rule[i + 2], sz - i - 2);
 			if (rv < 0)
 				return rv;
 
-			cond->nconds = nchild;
-
 			return i + 2 + rv; /* { ... } ; */
 
 		case '{':
 		case '[':
-			if (nchild == ACT_COND_MAX_CHILDREN)
-				return -E2BIG;
+			if (cond->nconds == ACT_COND_MAX_CHILDREN) {
+				rv = -E2BIG;
+				goto out_free_cond;
+			}
 
-			cond->conds[nchild] = act_new_cond();
-			rv = act_parse_multi_conds(cond->conds[nchild++],
+			cond->conds[cond->nconds] = act_new_cond(
+					rule[i] == '{' ?
+					ACT_COND_TYPE_AND : ACT_COND_TYPE_OR);
+			rv = act_parse_multi_conds(cond->conds[cond->nconds++],
 					&rule[i], sz - i);
-			if (rv < 0)
-				return rv;
+			if (rv < 0) {
+				goto out_free_cond;
+			}
 			i += rv;
 
 			break;
 
 		default:
-			if (nchild == ACT_COND_MAX_CHILDREN)
+			if (cond->nconds == ACT_COND_MAX_CHILDREN)
 				return -E2BIG;
 
-			cond->conds[nchild] = act_new_cond();
-			rv = act_parse_single_cond(cond->conds[nchild++],
+			cond->conds[cond->nconds] = act_new_cond(
+					ACT_COND_TYPE_SINGLE);
+			rv = act_parse_single_cond(cond->conds[cond->nconds++],
 					&rule[i], sz - i);
-			if (rv < 0)
-				return rv;
+			if (rv < 0) {
+				goto out_free_cond;
+			}
 			i += rv;
 
 			break;
 		}
 	}
 
-	return -EINVAL;
+out_free_cond:
+	act_destroy_cond(cond);
+
+	return rv;
 }
 
-int act_parse_policy(act_policy_t *pl, const char rawr[], const size_t rsz)
+int act_parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
+{
+	int rv;
+	
+	if (!strncmp(rule, "ALLOW ", 6)) {
+		pl->sign = ACT_SIGN_ALLOW;
+		rv = 6;
+	}
+
+	else if (!strncmp(rule, "DENY ", 5)) {
+		pl->sign = ACT_SIGN_DENY;
+		rv = 5;
+	}
+
+	else
+		rv = -EINVAL;
+
+	return rv;
+}
+
+int act_parse_policy_action(
+		act_policy_t *pl, const char rule[], const size_t sz)
+{
+	size_t i;
+
+	pl->action = ACT_ACTION_FILE_OPEN;
+
+	for (i = 0; i < sz; i++) {
+		if (isspace(rule[i]))
+			break;
+	}
+
+	pl->action = act_str_action(rule, i);
+	if (pl->action == ACT_ACTION_UNKNOWN)
+		return -EINVAL;
+
+	if (strncmp(&rule[i], " IF ", 4))
+		return -EINVAL;
+
+	return i + 4;
+}
+
+int act_parse_policy(act_policy_t *pl, const char rr[], const size_t rsz)
 {
 	char *r;
-	int rv;
+	int rv, i;
 	size_t sz;
 
-	rv = act_remove_spaces(rawr, rsz, &r);
-	if (rv)
-		return rv;
+	rv = act_tokenize(rr, rsz, &r);
+	if (rv < 0)
+		goto out;
 	sz = rv;
 
 	rv = act_parse_policy_sign(pl, r, sz);
-	if (rv)
-		return rv;
+	if (rv < 0)
+		goto out;
+	i = rv;
 
-	rv = act_parse_policy_action(pl, r, sz);
-	if (rv)
-		return rv;
+	rv = act_parse_policy_action(pl, r + i, sz - i);
+	if (rv < 0)
+		goto out;
+	i += rv;
 
-	return 0;
+	rv = act_parse_multi_conds(&pl->cond, r + i, sz - i);
+	if (rv < 0)
+		goto out;
+	i += rv;
+
+out:
+	if (r)
+		kfree(r);
+
+	return rv;
 }

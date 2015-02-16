@@ -25,9 +25,9 @@
 
 typedef enum act_sign
 { 
-	ACT_NOT_APPLICABLE	= 0,
-	ACT_DENY		= 1,
-	ACT_ALLOW		= 2
+	ACT_SIGN_NOT_APPLICABLE	= 0,
+	ACT_SIGN_DENY		= 1,
+	ACT_SIGN_ALLOW		= 2
 } act_sign_t;
 
 const char *
@@ -35,7 +35,7 @@ act_sign_str(const act_sign_t sign);
 
 typedef enum act_action
 {
-	ACT_ACTION_BPRM_SET_CREDS,
+	ACT_ACTION_BPRM_SET_CREDS = 0,
 	ACT_ACTION_BPRM_CHECK_SECURITY,
 	ACT_ACTION_BPRM_SECUREEXEC,
 
@@ -99,10 +99,14 @@ typedef enum act_action
 	ACT_ACTION_FILE_SEND_SIGIOTASK,
 	ACT_ACTION_FILE_RECEIVE,
 	ACT_ACTION_FILE_OPEN,
+
+	ACT_ACTION_UNKNOWN,
 } act_action_t;
 
 const char *
 act_action_str(const act_action_t act);
+
+act_action_t act_str_action(const char s[], const size_t sz);
 
 typedef enum
 { 
@@ -117,17 +121,33 @@ act_cmp_str(const act_cmp_t cmp);
 
 typedef struct act_single_cond
 {
+	act_owner_t owner;
+	act_attr_type_t type;
 	char *key;
 	act_cmp_t cmp;
-	int nvals;
-	act_attr_type_t type;
 	union {
 		int intval;
-		int *intvals;
 		char *strval;
-		char **strvals;
+		struct {
+			union {
+				int *intvals;
+				char **strvals;
+			};
+			int nvals;
+		};
 	};
 } act_single_cond_t;
+
+int act_empty_single_cond(act_single_cond_t *pt);
+
+int act_init_single_cond(
+		act_single_cond_t *, const act_attr_type_t,
+		const char *, const act_cmp_t, const void *, const int);
+
+void act_destroy_single_cond(act_single_cond_t *cond);
+
+int act_single_cond_str(
+		const act_single_cond_t *cond, char *buf, const size_t sz);
 
 typedef enum act_cond_type
 {
@@ -136,7 +156,10 @@ typedef enum act_cond_type
 	ACT_COND_TYPE_AND,
 } act_cond_type_t;
 
-#define ACT_COND_MAX_CHILDREN 0x4
+const
+char *act_cond_type_str(const act_cond_type_t tp);
+
+#define ACT_COND_MAX_CHILDREN 4
 
 typedef struct act_cond
 {
@@ -150,7 +173,11 @@ typedef struct act_cond
 	};
 } act_cond_t;
 
-act_cond_t *act_new_cond(void);
+act_cond_t *act_new_cond(const act_cond_type_t tp);
+
+int act_init_cond_empty(act_cond_t *pt);
+
+void act_destroy_cond(act_cond_t *pt);
 
 typedef struct act_policy
 {
@@ -159,5 +186,13 @@ typedef struct act_policy
 	act_cond_t		cond;
 	struct list_head	list;
 } act_policy_t;
+
+int act_init_policy_empty(act_policy_t *l);
+
+void act_destroy_policy(act_policy_t *pl);
+
+void act_add_policy(act_policy_t *pl);
+
+act_sign_t act_policy_check(act_policy_t *pl, const act_cert_t *cert);
 
 #endif /* end of include guard: __LINUX_ACT_POLICY_H */
