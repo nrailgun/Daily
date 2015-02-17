@@ -494,7 +494,9 @@ void act_add_policy(act_policy_t *pl)
 	list_add_tail(&pl->list, &act_policies);
 }
 
+#ifndef CONFIG_ACT_TEST
 static
+#endif
 int _policy_check_single_int(
 		const act_single_cond_t *sg, const act_attr_t *at)
 {
@@ -518,7 +520,9 @@ int _policy_check_single_int(
 	}
 }
 
+#ifndef CONFIG_ACT_TEST
 static
+#endif
 int _policy_check_single_str(
 		const act_single_cond_t *sg, const act_attr_t *at)
 {
@@ -542,14 +546,17 @@ int _policy_check_single_str(
 	}
 }
 
+#ifndef CONFIG_ACT_TEST
 static
+#endif
 int _policy_check_single(
 		const act_single_cond_t *sg, const struct list_head *ats)
 {
 	act_attr_t *at;
 	struct list_head *la;
 
-	list_for_each(la, ats) {
+	list_for_each(la, ats)
+	{
 		at = list_entry(la, act_attr_t, list);
 
 		if (strcmp(sg->key, at->key))
@@ -572,21 +579,23 @@ int _policy_check_single(
 			ACT_Assert(0);
 		}
 	}
-
 	return 0;
 }
 
+#ifndef CONFIG_ACT_TEST
 static
-int _policy_check(act_cond_t *cond, const struct list_head *ats)
+#endif
+int _policy_check(const act_cond_t *cond,
+		const struct list_head *sats, const struct list_head *oats)
 {
 	int i, rv;
-	act_single_cond_t *sg;
+	const act_single_cond_t *sg;
 
 	switch (cond->cond_type)
 	{
 	case ACT_COND_TYPE_OR:
 		for (i = 0; i < cond->nconds; i++) {
-			rv = _policy_check(cond->conds[i], ats);
+			rv = _policy_check(cond->conds[i], sats, oats);
 			if (rv)
 				return 1;
 		}
@@ -594,7 +603,7 @@ int _policy_check(act_cond_t *cond, const struct list_head *ats)
 
 	case ACT_COND_TYPE_AND:
 		for (i = 0; i < cond->nconds; i++) {
-			rv = _policy_check(cond->conds[i], ats);
+			rv = _policy_check(cond->conds[i], sats, oats);
 			if (!rv)
 				return 0;
 		}
@@ -602,27 +611,47 @@ int _policy_check(act_cond_t *cond, const struct list_head *ats)
 
 	case ACT_COND_TYPE_SINGLE:
 		sg = &cond->single_cond;
-		return _policy_check_single(sg, ats);
+
+		switch (sg->owner)
+		{
+		case ACT_OWNER_SUBJ:
+			rv = _policy_check_single(sg, sats);
+			break;
+		
+		case ACT_OWNER_OBJ:
+			rv = _policy_check_single(sg, oats);
+			break;
+
+		default:
+			ACT_Assert(0);
+		}
+		return rv ? 1 : 0;
 
 	default:
 		ACT_Assert(0);
 	}
 }
 
-act_sign_t act_policy_check(act_policy_t *pl, const act_cert_t *cert)
+act_sign_t act_policy_check(const act_policy_t *pl,
+		const act_cert_t *subj, const act_cert_t *obj)
 {
 	int rv;
-	act_cond_t *cond;
-	const struct list_head *la;
+	const act_cond_t *cond;
+	const struct list_head *sa, *oa;
 
-	rv = act_cert_verify(cert);
+	rv = act_cert_verify(subj);
+	if (!rv)
+		return ACT_SIGN_DENY;
+
+	rv = act_cert_verify(obj);
 	if (!rv)
 		return ACT_SIGN_DENY;
 
 	cond = &pl->cond;
-	la = &cert->attrs;
+	sa = &subj->attrs;
+	oa = &obj->attrs;
 
-	if (_policy_check(cond, la))
+	if (_policy_check(cond, sa, oa))
 		return pl->sign;
 
 	return ACT_SIGN_NOT_APPLICABLE;

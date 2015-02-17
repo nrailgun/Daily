@@ -34,7 +34,10 @@
  *
  * @return: 0 on success.
  */
-int act_tokenize(
+#ifndef CONFIG_ACT_TEST
+static
+#endif
+int _tokenize(
 		const char rule[], const size_t sz, char **pbuf)
 {
 	char *buf;
@@ -114,7 +117,10 @@ int act_tokenize(
  *
  * @return: Length of chars read, -EINVAL on invalid case.
  */
-int act_parse_int(
+#ifndef CONFIG_ACT_TEST
+static
+#endif
+int _parse_int(
 		const char s[], const size_t sz, int *pt)
 {
 	int i = 0, sg = 0, rv = 0;
@@ -141,7 +147,10 @@ int act_parse_int(
 	return i;
 }
 
-int act_parse_separator(const char rule[], const size_t sz)
+#ifndef CONFIG_ACT_TEST
+static
+#endif
+int _parse_separator(const char rule[], const size_t sz)
 {
 	switch (sz)
 	{
@@ -159,7 +168,10 @@ int act_parse_separator(const char rule[], const size_t sz)
 	return -EINVAL;
 }
 
-int act_parse_single_cond(
+#ifndef CONFIG_ACT_TEST
+static
+#endif
+int _parse_single_cond(
 		act_cond_t *cond, const char rule[], const size_t sz)
 {
 	static const char *patterns[] = {
@@ -237,7 +249,7 @@ int act_parse_single_cond(
 
 	if (isdigit(rule[i])) {
 		single->type = ACT_ATTR_TYPE_INT;
-		j = act_parse_int(&rule[i], sz - i, &single->intval);
+		j = _parse_int(&rule[i], sz - i, &single->intval);
 		if (j < 0)
 			return j;
 		i += j + 1;
@@ -258,7 +270,7 @@ int act_parse_single_cond(
 		i = j + 2;
 	}
 
-	j = act_parse_separator(&rule[i], sz - i);
+	j = _parse_separator(&rule[i], sz - i);
 	if (j < 0) {
 		rv = -EINVAL;
 		goto out_free_vals;
@@ -287,7 +299,10 @@ out_free_key:
  * 
  * FIXME: Memory leaks on fail parsing.
  */
-int act_parse_multi_conds(
+#ifndef CONFIG_ACT_TEST
+static
+#endif
+int _parse_multi_conds(
 		act_cond_t *cond, const char rule[], const size_t sz)
 {
 	act_cond_type_t type;
@@ -302,7 +317,7 @@ int act_parse_multi_conds(
 		break;
 	
 	case '[':
-		type = ACT_COND_TYPE_AND;
+		type = ACT_COND_TYPE_OR;
 		rb = ']';
 		break;
 
@@ -325,7 +340,7 @@ int act_parse_multi_conds(
 				goto out_free_cond;
 			}
 
-			rv = act_parse_separator(&rule[i + 2], sz - i - 2);
+			rv = _parse_separator(&rule[i + 2], sz - i - 2);
 			if (rv < 0)
 				return rv;
 
@@ -341,7 +356,7 @@ int act_parse_multi_conds(
 			cond->conds[cond->nconds] = act_new_cond(
 					rule[i] == '{' ?
 					ACT_COND_TYPE_AND : ACT_COND_TYPE_OR);
-			rv = act_parse_multi_conds(cond->conds[cond->nconds++],
+			rv = _parse_multi_conds(cond->conds[cond->nconds++],
 					&rule[i], sz - i);
 			if (rv < 0) {
 				goto out_free_cond;
@@ -356,7 +371,7 @@ int act_parse_multi_conds(
 
 			cond->conds[cond->nconds] = act_new_cond(
 					ACT_COND_TYPE_SINGLE);
-			rv = act_parse_single_cond(cond->conds[cond->nconds++],
+			rv = _parse_single_cond(cond->conds[cond->nconds++],
 					&rule[i], sz - i);
 			if (rv < 0) {
 				goto out_free_cond;
@@ -373,7 +388,10 @@ out_free_cond:
 	return rv;
 }
 
-int act_parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
+#ifndef CONFIG_ACT_TEST
+static
+#endif
+int _parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
 {
 	int rv;
 	
@@ -393,7 +411,10 @@ int act_parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
 	return rv;
 }
 
-int act_parse_policy_action(
+#ifndef CONFIG_ACT_TEST
+static
+#endif
+int _parse_policy_action(
 		act_policy_t *pl, const char rule[], const size_t sz)
 {
 	size_t i;
@@ -415,31 +436,35 @@ int act_parse_policy_action(
 	return i + 4;
 }
 
+#ifndef CONFIG_ACT_TEST
+static
+#endif
 int act_parse_policy(act_policy_t *pl, const char rr[], const size_t rsz)
 {
 	char *r;
 	int rv, i;
 	size_t sz;
 
-	rv = act_tokenize(rr, rsz, &r);
+	rv = _tokenize(rr, rsz, &r);
 	if (rv < 0)
 		goto out;
 	sz = rv;
 
-	rv = act_parse_policy_sign(pl, r, sz);
+	rv = _parse_policy_sign(pl, r, sz);
 	if (rv < 0)
 		goto out;
 	i = rv;
 
-	rv = act_parse_policy_action(pl, r + i, sz - i);
+	rv = _parse_policy_action(pl, r + i, sz - i);
 	if (rv < 0)
 		goto out;
 	i += rv;
 
-	rv = act_parse_multi_conds(&pl->cond, r + i, sz - i);
+	rv = _parse_multi_conds(&pl->cond, r + i, sz - i);
 	if (rv < 0)
 		goto out;
-	i += rv;
+
+	return i + rv;
 
 out:
 	if (r)

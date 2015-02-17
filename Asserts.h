@@ -18,6 +18,51 @@
 #ifndef ACT_ASSERTS_H
 #define ACT_ASSERTS_H 
 
-#define ACT_Assert
+#include "act.h"
+
+#ifdef __KERNEL__
+
+#ifdef CONFIG_ACT_TEST
+
+#define ACT_Assert(stat) 						\
+	do {								\
+		if (!(stat)) {						\
+			printk(KERN_ERR "%s:%d: Assertion `" #stat	\
+					"' failed.\n",			\
+					__FILE__, __LINE__);		\
+		}							\
+	} while (0)
+
+#else
+
+#define ACT_Assert(stat)
+
+#endif
+
+#else /* __KERNEL__ */
+
+#include <assert.h>
+
+#define ACT_Assert(stat) assert(stat)
+
+#endif /* __KERNEL__ */
+
+#define ACT_Assert_exec(s)			\
+	do {					\
+		printk(KERN_ERR "%s\n", s);	\
+		ACT_Assert(0);			\
+	} while (0)
+
+#define ACT_Test(stat)						\
+	do {							\
+		if (stat) {					\
+			printk(KERN_INFO "Test success.\n");	\
+		}						\
+		else {						\
+			printk(KERN_ERR "%s:%d: Test `" #stat	\
+					"' failed.\n",		\
+					__FILE__, __LINE__);	\
+		}						\
+	} while (0)
 
 #endif /* end of include guard: ACT_ASSERTS_H */

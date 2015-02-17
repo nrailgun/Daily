@@ -193,6 +193,23 @@ void act_destroy_policy(act_policy_t *pl);
 
 void act_add_policy(act_policy_t *pl);
 
-act_sign_t act_policy_check(act_policy_t *pl, const act_cert_t *cert);
+#ifdef CONFIG_ACT_TEST
+
+int _policy_check_single_int(
+		const act_single_cond_t *sg, const act_attr_t *at);
+
+int _policy_check_single_str(
+		const act_single_cond_t *sg, const act_attr_t *at);
+
+int _policy_check_single(
+		const act_single_cond_t *sg, const struct list_head *ats);
+
+int _policy_check(const act_cond_t *cond,
+		const struct list_head *sats, const struct list_head *oats);
+
+#endif
+
+act_sign_t act_policy_check(const act_policy_t *pl,
+		const act_cert_t *subj, const act_cert_t *obj);
 
 #endif /* end of include guard: __LINUX_ACT_POLICY_H */

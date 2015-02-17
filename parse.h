@@ -21,26 +21,30 @@
 #include "act.h"
 #include "policy.h"
 
-int act_tokenize(
+#ifdef CONFIG_ACT_TEST
+
+int _tokenize(
 		const char rule[], const size_t sz, char **pbuf);
 
-int act_parse_int(
+int _parse_int(
 		const char s[], const size_t sz, int *pt);
 
-int act_parse_separator(
+int _parse_separator(
 		const char rule[], const size_t sz);
 
-int act_parse_single_cond(
+int _parse_single_cond(
 		act_cond_t *cond, const char rule[], const size_t sz);
 
-int act_parse_multi_conds(
+int _parse_multi_conds(
 		act_cond_t *cond, const char rule[], const size_t sz);
 
-int act_parse_policy_action(
+int _parse_policy_action(
 		act_policy_t *pl, const char rule[], const size_t sz);
 
-int act_parse_policy_sign(
+int _parse_policy_sign(
 		act_policy_t *pl, const char rule[], const size_t sz);
+
+#endif
 
 int act_parse_policy(
 		act_policy_t *pl, const char rule[], const size_t sz);
