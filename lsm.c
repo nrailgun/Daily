@@ -23,6 +23,7 @@
 #include "act.h"
 #include "attr_repo.h"
 #include "lsm_file.h"
+#include "policy.h"
 
 static
 int act_bprm_set_creds(struct linux_binprm *bprm)
@@ -33,11 +34,6 @@ int act_bprm_set_creds(struct linux_binprm *bprm)
 		return 0;
 
 	ctx = bprm->cred->security;
-#ifdef CONFIG_ACT_DEBUG_INFO
-	ACT_Info("set_creds %s", bprm->filename);
-	ACT_Info("set_creds bprm->cred->security %p", ctx);
-#endif
-
 	if (ctx) {
 		act_subj_attrs_destroy(ctx);
 	}
@@ -49,10 +45,10 @@ int act_bprm_set_creds(struct linux_binprm *bprm)
 	ctx = act_subj_attrs(bprm);
 	bprm->cred->security = ctx;
 
-#ifdef CONFIG_ACT_DEBUG_INFO
-	ACT_Info("set_creds realloc bprm->cred->security %p", ctx);
+#if 1 // def CONFIG_ACT_DEBUG_INFO
+	ACT_Info("set_creds %s", bprm->filename);
+	ACT_Info("set_creds bprm->cred->security %p", ctx);
 #endif
-
 	return 0;
 }
 

@@ -31,17 +31,20 @@ int act_file_permission(struct file *filp, int mask)
 	struct list_head *pls, *l;
 	act_policy_t *p;
 	act_sign_t sign;
+#if 1
+	int rv;
+
+	rv = strcmp("testf", filp->f_dentry->d_iname);
+	rv = rv && strcmp("testf-2", filp->f_dentry->d_iname);
+	if (rv)
+		return 0;
+#endif
 
 	subj = current->cred->security;
 	obj = filp->f_security;
-
 #if 1
-	if (strcmp("testf", filp->f_dentry->d_iname)) {
-		return 0;	
-	}
-#endif
 	ACT_Info("file_permission %p %p", subj, obj);
-
+#endif
 	if (!subj && !obj)
 		return 0;
 
@@ -63,7 +66,6 @@ int act_file_permission(struct file *filp, int mask)
 			continue;
 		}
 	}
-	ACT_Info("file_permission return 0", subj, obj);
 	return 0;
 }
 

@@ -15,7 +15,12 @@
  * Copyright (C) Junyu Wu, shibuyanorailgun@foxmail, 2015.
  */
 
-#ifndef __LINUX__ATTR_REPO_H
-#define __LINUX__ATTR_REPO_H
+#ifndef __LINUX_ATTR_REPO_HELP_H
+#define __LINUX_ATTR_REPO_HELP_H
 
-#endif /* end of include guard: __LINUX__ATTR_REPO_H */
+struct act_cert *act_cert_alloc(const act_owner_t owner);
+
+void act_cert_add_attr(act_cert_t *cert,
+		const act_attr_type_t tp, char *key, void *v);
+
+#endif /* end of include guard: __LINUX_ATTR_REPO_HELP_H */

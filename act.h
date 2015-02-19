@@ -22,13 +22,11 @@
 
 #define CONFIG_ACT_TEST
 
+#define CONFIG_ACT_TEST_LSM
+
 // #define CONFIG_ACT_DEBUG_INFO
  
 // #define CONFIG_ACT_VERB_INFO
-
-#define CONFIG_ACT_TEST_ATTR_REPO_EMPTY
-
-// #define CONFIG_ACT_TEST_ATTR_REPO_NULL
 
 #define ACT_Info(fmt, args...)						\
 	do {								\

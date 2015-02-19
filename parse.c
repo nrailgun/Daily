@@ -62,7 +62,7 @@ int tokenize(const char rule[], const size_t sz, char **pbuf)
 		if (isalpha(rule[i]) || rule[i] == '_')
 		{
 			while (i < sz &&
-					(isalpha(rule[i]) || rule[i] == '_'))
+			       (isalpha(rule[i]) || rule[i] == '_'))
 			{
 				buf[j++] = rule[i++];
 			}
@@ -119,8 +119,7 @@ int tokenize(const char rule[], const size_t sz, char **pbuf)
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int parse_int(
-		const char s[], const size_t sz, int *pt)
+int parse_int(const char s[], const size_t sz, int *pt)
 {
 	int i = 0, sg = 0, rv = 0;
 

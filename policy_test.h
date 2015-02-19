@@ -23,6 +23,7 @@
 #include "Asserts.h"
 #include "act.h"
 #include "attr_repo.h"
+#include "attr_repo_help.h"
 #include "parse.h"
 #include "policy.h"
 
@@ -78,49 +79,6 @@ void policy_test_parse(void)
 	ACT_Test(!strcmp(sg->strval, "John"));
 }
 
-static
-act_cert_t *act_alloc_cert(const act_owner_t owner)
-{
-	struct act_cert *cert;
-
-	cert = kmalloc(sizeof(*cert), GFP_KERNEL);
-	if (cert) {
-		cert->owner = owner;
-		INIT_LIST_HEAD(&cert->attrs);
-		cert->ctx = NULL;
-	}
-	return cert;
-}
-
-static inline
-void act_add_attr(act_cert_t *cert,
-		const act_attr_type_t tp, char *key, void *v)
-{
-	act_attr_t *at;
-
-	at = kmalloc(sizeof(*at), GFP_KERNEL);
-
-	at->key = key;
-	at->type = tp;
-
-	switch (tp)
-	{
-	case ACT_ATTR_TYPE_INT:
-		at->intval = (int) v;
-		break;
-
-	case ACT_ATTR_TYPE_STR:
-		at->strval = v;
-		break;
-
-	default:
-		ACT_Assert(0);
-	}
-
-	INIT_LIST_HEAD(&at->list);
-	list_add_tail(&at->list, &cert->attrs);
-}
-
 static inline
 void policy_test_check(void)
 {
@@ -142,30 +100,30 @@ void policy_test_check(void)
 	sz = rv;
 	act_parse_policy(&pl, r, sz);
 
-	subj = act_alloc_cert(ACT_OWNER_SUBJ);
-	act_add_attr(subj, ACT_ATTR_TYPE_INT, "security", (void *) 4);
+	subj = act_cert_alloc(ACT_OWNER_SUBJ);
+	act_cert_add_attr(subj, ACT_ATTR_TYPE_INT, "security", (void *) 4);
 
 	at = list_entry(subj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_INT);
 	ACT_Test(!strcmp(at->key, "security"));
 	ACT_Test(at->intval == 4);
 
-	act_add_attr(subj, ACT_ATTR_TYPE_STR, "role", "teacher");
+	act_cert_add_attr(subj, ACT_ATTR_TYPE_STR, "role", "teacher");
 
 	at = list_entry(subj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_STR);
 	ACT_Test(!strcmp(at->key, "role"));
 	ACT_Test(!strcmp(at->strval, "teacher"));
 
-	obj = act_alloc_cert(ACT_OWNER_OBJ);
-	act_add_attr(obj, ACT_ATTR_TYPE_STR, "role", "object_ta");
+	obj = act_cert_alloc(ACT_OWNER_OBJ);
+	act_cert_add_attr(obj, ACT_ATTR_TYPE_STR, "role", "object_ta");
 
 	at = list_entry(obj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_STR);
 	ACT_Test(!strcmp(at->key, "role"));
 	ACT_Test(!strcmp(at->strval, "object_ta"));
 
-	act_add_attr(obj, ACT_ATTR_TYPE_STR, "name", "John");
+	act_cert_add_attr(obj, ACT_ATTR_TYPE_STR, "name", "John");
 
 	at = list_entry(obj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_STR);
@@ -200,8 +158,8 @@ void policy_test_check2(void)
 	sz = rv;
 	act_parse_policy(&pl, r, sz);
 
-	subj = act_alloc_cert(ACT_OWNER_SUBJ);
-	obj = act_alloc_cert(ACT_OWNER_OBJ);
+	subj = act_cert_alloc(ACT_OWNER_SUBJ);
+	obj = act_cert_alloc(ACT_OWNER_OBJ);
 
 	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 0);
@@ -210,7 +168,7 @@ void policy_test_check2(void)
 	ACT_Test(rv == ACT_SIGN_NOT_APPLICABLE);
 
 	/* add attr role */
-	act_add_attr(subj, ACT_ATTR_TYPE_STR, "role", "teacher");
+	act_cert_add_attr(subj, ACT_ATTR_TYPE_STR, "role", "teacher");
 
 	at = list_entry(subj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_STR);
@@ -224,7 +182,7 @@ void policy_test_check2(void)
 	ACT_Test(rv == ACT_SIGN_NOT_APPLICABLE);
 
 	/* obj attr role */
-	act_add_attr(obj, ACT_ATTR_TYPE_STR, "role", "object_ta");
+	act_cert_add_attr(obj, ACT_ATTR_TYPE_STR, "role", "object_ta");
 
 	at = list_entry(obj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_STR);
@@ -238,7 +196,7 @@ void policy_test_check2(void)
 	ACT_Test(rv == ACT_SIGN_NOT_APPLICABLE);
 
 	/* add attr security */
-	act_add_attr(subj, ACT_ATTR_TYPE_INT, "security", (void *) 4);
+	act_cert_add_attr(subj, ACT_ATTR_TYPE_INT, "security", (void *) 4);
 
 	at = list_entry(subj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_INT);
@@ -252,7 +210,7 @@ void policy_test_check2(void)
 	ACT_Test(rv == ACT_SIGN_NOT_APPLICABLE);
 
 	/* obj attr name */
-	act_add_attr(obj, ACT_ATTR_TYPE_STR, "name", "Jerk");
+	act_cert_add_attr(obj, ACT_ATTR_TYPE_STR, "name", "Jerk");
 
 	at = list_entry(obj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_STR);
@@ -287,8 +245,8 @@ void policy_test_check3(void)
 	sz = rv;
 	act_parse_policy(&pl, r, sz);
 
-	subj = act_alloc_cert(ACT_OWNER_SUBJ);
-	obj = act_alloc_cert(ACT_OWNER_OBJ);
+	subj = act_cert_alloc(ACT_OWNER_SUBJ);
+	obj = act_cert_alloc(ACT_OWNER_OBJ);
 
 #if 1
 	/* Check empty */
@@ -300,7 +258,7 @@ void policy_test_check3(void)
 #endif
 
 	/* Check subj role */
-	act_add_attr(subj, ACT_ATTR_TYPE_STR, "role", "teacher");
+	act_cert_add_attr(subj, ACT_ATTR_TYPE_STR, "role", "teacher");
 
 #if 1
 	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
@@ -311,7 +269,7 @@ void policy_test_check3(void)
 #endif
 
 	/* Check subj security */
-	act_add_attr(subj, ACT_ATTR_TYPE_INT, "security", (void *) 0);
+	act_cert_add_attr(subj, ACT_ATTR_TYPE_INT, "security", (void *) 0);
 	at = list_entry(subj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_INT);
 	ACT_Test(!strcmp(at->key, "security"));
@@ -326,7 +284,7 @@ void policy_test_check3(void)
 #endif
 
 	/* Check obj security */
-	act_add_attr(obj, ACT_ATTR_TYPE_INT, "security", (void *) 1);
+	act_cert_add_attr(obj, ACT_ATTR_TYPE_INT, "security", (void *) 1);
 
 	at = list_entry(subj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_INT);
@@ -346,7 +304,7 @@ void policy_test_check3(void)
 #endif
 
 	/* Check obj role */
-	act_add_attr(obj, ACT_ATTR_TYPE_STR, "role", "student");
+	act_cert_add_attr(obj, ACT_ATTR_TYPE_STR, "role", "student");
 
 	at = list_entry(obj->attrs.prev, act_attr_t, list);
 	ACT_Test(at->type == ACT_ATTR_TYPE_STR);
