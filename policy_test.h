@@ -45,7 +45,7 @@ void policy_test_parse(void)
 	act_cond_t *cond;
 	act_single_cond_t *sg;
 
-	rv = _tokenize(pl_rules[0], strlen(pl_rules[0]), &r);
+	rv = tokenize(pl_rules[0], strlen(pl_rules[0]), &r);
 	ACT_Test(rv > 0);
 	ACT_Test(!strcmp(r, exp_r));
 
@@ -137,7 +137,7 @@ void policy_test_check(void)
 	 * 	OBJECT.name = 'John';
 	 * };"
 	 */
-	rv = _tokenize(pl_rules[0], strlen(pl_rules[0]), &r);
+	rv = tokenize(pl_rules[0], strlen(pl_rules[0]), &r);
 
 	sz = rv;
 	act_parse_policy(&pl, r, sz);
@@ -172,7 +172,7 @@ void policy_test_check(void)
 	ACT_Test(!strcmp(at->key, "name"));
 	ACT_Test(!strcmp(at->strval, "John"));
 
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 1);
 
 	rv = act_policy_check(&pl, subj, obj);
@@ -195,7 +195,7 @@ void policy_test_check2(void)
 	 * 	OBJECT.name = 'John';
 	 * };"
 	 */
-	rv = _tokenize(pl_rules[0], strlen(pl_rules[0]), &r);
+	rv = tokenize(pl_rules[0], strlen(pl_rules[0]), &r);
 
 	sz = rv;
 	act_parse_policy(&pl, r, sz);
@@ -203,7 +203,7 @@ void policy_test_check2(void)
 	subj = act_alloc_cert(ACT_OWNER_SUBJ);
 	obj = act_alloc_cert(ACT_OWNER_OBJ);
 
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 0);
 
 	rv = act_policy_check(&pl, subj, obj);
@@ -217,7 +217,7 @@ void policy_test_check2(void)
 	ACT_Test(!strcmp(at->key, "role"));
 	ACT_Test(!strcmp(at->strval, "teacher"));
 
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 0);
 
 	rv = act_policy_check(&pl, subj, obj);
@@ -231,7 +231,7 @@ void policy_test_check2(void)
 	ACT_Test(!strcmp(at->key, "role"));
 	ACT_Test(!strcmp(at->strval, "object_ta"));
 
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 0);
 
 	rv = act_policy_check(&pl, subj, obj);
@@ -245,7 +245,7 @@ void policy_test_check2(void)
 	ACT_Test(!strcmp(at->key, "security"));
 	ACT_Test(at->intval == 4);
 
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 0);
 
 	rv = act_policy_check(&pl, subj, obj);
@@ -259,7 +259,7 @@ void policy_test_check2(void)
 	ACT_Test(!strcmp(at->key, "name"));
 	ACT_Test(!strcmp(at->strval, "Jerk"));
 
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 0);
 
 	rv = act_policy_check(&pl, subj, obj);
@@ -282,7 +282,7 @@ void policy_test_check3(void)
 	 * 	[ OBJECT.security = 0; OBJECT.role = 'student'; ];
 	 * };
 	 */
-	rv = _tokenize(pl_rules[1], strlen(pl_rules[1]), &r);
+	rv = tokenize(pl_rules[1], strlen(pl_rules[1]), &r);
 
 	sz = rv;
 	act_parse_policy(&pl, r, sz);
@@ -292,7 +292,7 @@ void policy_test_check3(void)
 
 #if 1
 	/* Check empty */
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 0);
 
 	rv = act_policy_check(&pl, subj, obj);
@@ -303,7 +303,7 @@ void policy_test_check3(void)
 	act_add_attr(subj, ACT_ATTR_TYPE_STR, "role", "teacher");
 
 #if 1
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 0);
 
 	rv = act_policy_check(&pl, subj, obj);
@@ -318,7 +318,7 @@ void policy_test_check3(void)
 	ACT_Test(at->intval == 0);
 
 #if 1
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 0);
 
 	rv = act_policy_check(&pl, subj, obj);
@@ -338,7 +338,7 @@ void policy_test_check3(void)
 	ACT_Test(!strcmp(at->key, "security"));
 	ACT_Test(at->intval == 1);
 #if 1
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 0);
 
 	rv = act_policy_check(&pl, subj, obj);
@@ -353,7 +353,7 @@ void policy_test_check3(void)
 	ACT_Test(!strcmp(at->key, "role"));
 	ACT_Test(!strcmp(at->strval, "student"));
 
-	rv = _policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
 	ACT_Test(rv == 1);
 
 	rv = act_policy_check(&pl, subj, obj);

@@ -20,7 +20,10 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 
+#include "act.h"
 #include "attr_repo.h"
+
+#ifdef CONFIG_ACT_TEST_ATTR_REPO_EMPTY
 
 static
 struct act_cert *act_cert_alloc(void)
@@ -49,7 +52,9 @@ act_subj_attrs(const struct linux_binprm *bprm)
 void
 act_subj_attrs_destroy(struct act_cert *cert)
 {
-	kfree(cert);
+	if (cert) {
+		kfree(cert);
+	}
 }
 
 struct act_cert *
@@ -65,8 +70,42 @@ act_obj_file_attrs(const struct file *filp)
 void
 act_obj_file_attrs_destroy(struct act_cert *cert)
 {
-	kfree(cert);
+	if (cert) {
+		kfree(cert);
+	}
 }
+
+#elif defined CONFIG_ACT_TEST_ATTR_REPO_NULL
+
+struct act_cert *
+act_subj_attrs(const struct linux_binprm *bprm)
+{
+	return NULL;
+}
+
+void
+act_subj_attrs_destroy(struct act_cert *cert)
+{
+	if (cert) {
+		kfree(cert);
+	}
+}
+
+struct act_cert *
+act_obj_file_attrs(const struct file *filp)
+{
+	return NULL;
+}
+
+void
+act_obj_file_attrs_destroy(struct act_cert *cert)
+{
+	if (cert) {
+		kfree(cert);
+	}
+}
+
+#endif
 
 int
 act_cert_verify(const struct act_cert *cert)

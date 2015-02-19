@@ -492,7 +492,7 @@ void act_destroy_policy(act_policy_t *pl)
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _policy_check_single_int(
+int policy_check_single_int(
 		const act_single_cond_t *sg, const act_attr_t *at)
 {
 	ACT_Assert(sg->type == ACT_ATTR_TYPE_INT);
@@ -519,7 +519,7 @@ int _policy_check_single_int(
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _policy_check_single_str(
+int policy_check_single_str(
 		const act_single_cond_t *sg, const act_attr_t *at)
 {
 	ACT_Assert(sg->type == ACT_ATTR_TYPE_STR);
@@ -546,7 +546,7 @@ int _policy_check_single_str(
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _policy_check_single(
+int policy_check_single(
 		const act_single_cond_t *sg, const struct list_head *ats)
 {
 	act_attr_t *at;
@@ -565,10 +565,10 @@ int _policy_check_single(
 		switch (sg->type)
 		{
 		case ACT_ATTR_TYPE_INT:
-			return _policy_check_single_int(sg, at);
+			return policy_check_single_int(sg, at);
 
 		case ACT_ATTR_TYPE_STR:
-			return _policy_check_single_str(sg, at);
+			return policy_check_single_str(sg, at);
 
 		case ACT_ATTR_TYPE_INTS:
 		case ACT_ATTR_TYPE_STRS:
@@ -582,7 +582,7 @@ int _policy_check_single(
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _policy_check(const act_cond_t *cond,
+int policy_check(const act_cond_t *cond,
 		const struct list_head *sats, const struct list_head *oats)
 {
 	int i, rv = -EINVAL;
@@ -592,7 +592,7 @@ int _policy_check(const act_cond_t *cond,
 	{
 	case ACT_COND_TYPE_OR:
 		for (i = 0; i < cond->nconds; i++) {
-			rv = _policy_check(cond->conds[i], sats, oats);
+			rv = policy_check(cond->conds[i], sats, oats);
 			if (rv)
 				return 1;
 		}
@@ -600,7 +600,7 @@ int _policy_check(const act_cond_t *cond,
 
 	case ACT_COND_TYPE_AND:
 		for (i = 0; i < cond->nconds; i++) {
-			rv = _policy_check(cond->conds[i], sats, oats);
+			rv = policy_check(cond->conds[i], sats, oats);
 			if (!rv)
 				return 0;
 		}
@@ -612,11 +612,11 @@ int _policy_check(const act_cond_t *cond,
 		switch (sg->owner)
 		{
 		case ACT_OWNER_SUBJ:
-			rv = _policy_check_single(sg, sats);
+			rv = policy_check_single(sg, sats);
 			break;
 		
 		case ACT_OWNER_OBJ:
-			rv = _policy_check_single(sg, oats);
+			rv = policy_check_single(sg, oats);
 			break;
 
 		default:
@@ -649,7 +649,7 @@ act_sign_t act_policy_check(const act_policy_t *pl,
 	sa = &subj->attrs;
 	oa = &obj->attrs;
 
-	if (_policy_check(cond, sa, oa))
+	if (policy_check(cond, sa, oa))
 		return pl->sign;
 
 	return ACT_SIGN_NOT_APPLICABLE;
@@ -680,5 +680,5 @@ struct list_head *act_policy_list(const act_action_t act)
        
 	i = (size_t) act;
 
-	return policy_ls[i];
+	return &policy_ls[i];
 }

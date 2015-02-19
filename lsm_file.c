@@ -17,6 +17,7 @@
 
 #include <linux/fs.h>
 #include <linux/list.h>
+#include <linux/string.h>
 
 #include "act.h"
 #include "attr_repo.h"
@@ -30,13 +31,16 @@ int act_file_permission(struct file *filp, int mask)
 	struct list_head *pls, *l;
 	act_policy_t *p;
 	act_sign_t sign;
-#if 1
-	if (strcmp(filp->f_dentry->d_iname, "testf")) {
-		return 0;
-	}
-#endif
+
 	subj = current->cred->security;
 	obj = filp->f_security;
+
+#if 1
+	if (strcmp("testf", filp->f_dentry->d_iname)) {
+		return 0;	
+	}
+#endif
+	ACT_Info("file_permission %p %p", subj, obj);
 
 	if (!subj && !obj)
 		return 0;
@@ -59,6 +63,7 @@ int act_file_permission(struct file *filp, int mask)
 			continue;
 		}
 	}
+	ACT_Info("file_permission return 0", subj, obj);
 	return 0;
 }
 
@@ -69,18 +74,21 @@ int act_file_alloc_security(struct file *filp)
 	ctx = act_obj_file_attrs(filp);
 	filp->f_security = (void *) ctx;
 
+#ifdef CONFIG_ACT_VERB_INFO
+	ACT_Info("file_alloc_security %p", ctx);
+#endif
 	return 0;
 }
 
 void act_file_free_security(struct file *filp)
 {
-	act_cert_t *pt = (act_cert_t *) filp->f_security;
+	act_cert_t *ctx = (act_cert_t *) filp->f_security;
 
 #ifdef CONFIG_ACT_VERB_INFO
-	ACT_INFO("file_free_security %p", pt);
+	ACT_Info("file_free_security %p", ctx);
 #endif
-	if (pt) {
-		act_obj_file_attrs_destroy(pt);
+	if (ctx) {
+		act_obj_file_attrs_destroy(ctx);
 		filp->f_security = NULL;
 	}
 }

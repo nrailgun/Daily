@@ -28,7 +28,7 @@
 	do {								\
 		if (!(stat)) {						\
 			ACT_Info("%s:%d: Assertion `" #stat		\
-				"' failed.\n", __FILE__, __LINE__);	\
+				"' failed.", __FILE__, __LINE__);	\
 		}							\
 	} while (0)
 
@@ -55,12 +55,12 @@
 #define ACT_Test(stat)						\
 	do {							\
 		if (stat) {					\
-			ACT_Info("Test success.\n");		\
+			ACT_Info("Test success.");		\
 		}						\
 		else {						\
 			ACT_Info("%s:%d: Test `" #stat		\
-					"' failed.\n",		\
-					__FILE__, __LINE__);	\
+				"' failed.",			\
+				__FILE__, __LINE__);		\
 		}						\
 	} while (0)
 

@@ -107,20 +107,6 @@ init_act_fs(void)
 {
 	proc_create("actpl", 0, NULL, &act_policy_fops);
 
-	policy_test_check3();
-
-	policy_test_check2();
-
-	policy_test_check();
-
-	policy_test_parse();
-
-	parse_test_parse_conds();
-
-	parse_test_remove_spaces();
-
-	parse_test_parse_action_sign();
-
 	return 0;
 }
 

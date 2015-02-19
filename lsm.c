@@ -33,16 +33,25 @@ int act_bprm_set_creds(struct linux_binprm *bprm)
 		return 0;
 
 	ctx = bprm->cred->security;
+#ifdef CONFIG_ACT_DEBUG_INFO
+	ACT_Info("set_creds %s", bprm->filename);
+	ACT_Info("set_creds bprm->cred->security %p", ctx);
+#endif
+
 	if (ctx) {
 		act_subj_attrs_destroy(ctx);
 	}
-#ifdef CONFIG_ACT_DEBUG_INFO
+#ifdef CONFIG_ACT_VERB_INFO
 	else {
 		ACT_Info("Proc has no attrs");
 	}
 #endif
 	ctx = act_subj_attrs(bprm);
 	bprm->cred->security = ctx;
+
+#ifdef CONFIG_ACT_DEBUG_INFO
+	ACT_Info("set_creds realloc bprm->cred->security %p", ctx);
+#endif
 
 	return 0;
 }
@@ -52,12 +61,12 @@ int act_cred_prepare(struct cred *new, const struct cred *old, gfp_t gfp)
 {
 	act_cert_t *ctx;
 
-#ifdef CONFIG_ACT_VERB_INFO
-	ACT_Info("cred_prepare");
-#endif
 	ctx = act_subj_attrs(NULL);
 	new->security = ctx;
 
+#ifdef CONFIG_ACT_VERB_INFO
+	ACT_Info("cred_prepare %p", ctx);
+#endif
 	return 0;
 }
 
@@ -65,7 +74,7 @@ static
 void act_cred_free(struct cred *cr)
 {
 #ifdef CONFIG_ACT_VERB_INFO
-	ACT_Info("cred_free");
+	ACT_Info("cred_free %p", cr->security);
 #endif
 	act_subj_attrs_destroy(cr->security);
 
@@ -104,7 +113,7 @@ __init int act_module_init(void)
 	cr->security = NULL;
 
 #ifdef CONFIG_ACT_VERB_INFO
-	ACT_Info("init task security %p", ctx);
+	ACT_Info("init task security %p", cr->security);
 #endif
 
 	rv = register_security(&ops);
@@ -113,6 +122,8 @@ __init int act_module_init(void)
 		return rv;
 	}
 	ACT_Info("register_security success.");
+
+	act_policy_list_init();
 
 	return 0;
 }

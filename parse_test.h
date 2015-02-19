@@ -27,15 +27,15 @@ int parse_test_remove_spaces(void)
 	char *r, *p;
        
 	r = "{Go='String'}";
-	_tokenize(r, strlen(r), &p);
+	tokenize(r, strlen(r), &p);
 	ACT_Test(!strcmp(p, "{ Go = 'String' } "));
 
 	r = "  {  Go=   123}";
-	_tokenize(r, strlen(r), &p);
+	tokenize(r, strlen(r), &p);
 	ACT_Test(!strcmp(p, "{ Go = 123 } "));
 
 	r = "DENY FILE_OPEN IF {lv>3;role~ta};";
-	_tokenize(r, strlen(r), &p);
+	tokenize(r, strlen(r), &p);
 	ACT_Test(!strcmp(p, "DENY FILE_OPEN IF { lv > 3 ; role ~ ta } ; "));
 
 	return 0;
@@ -57,11 +57,11 @@ int parse_test_parse_action_sign(void)
 
 	sz = strlen(rules[0]);
 
-	i = _parse_policy_sign(&pl, rule, sz);
+	i = parse_policy_sign(&pl, rule, sz);
 	ACT_Test(i == 6);
 	ACT_Test(pl.sign == ACT_SIGN_ALLOW);
 
-	i += _parse_policy_action(&pl, &rule[i], sz - i);
+	i += parse_policy_action(&pl, &rule[i], sz - i);
 	ACT_Test(i == 25);
 	ACT_Test(pl.action == ACT_ACTION_FILE_PERMISSION);
 
@@ -82,7 +82,7 @@ int parse_test_parse_conds(void)
 	sz = strlen(r);
 
 	cond = act_new_cond();
-	i = _parse_multi_conds(cond, r, sz);
+	i = parse_multi_conds(cond, r, sz);
 	ACT_Test(i == strlen(r));
 
 	ACT_Test(cond->cond_type == ACT_COND_TYPE_AND);

@@ -37,7 +37,7 @@
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _tokenize(const char rule[], const size_t sz, char **pbuf)
+int tokenize(const char rule[], const size_t sz, char **pbuf)
 {
 	char *buf;
 	size_t i, j;
@@ -119,7 +119,7 @@ int _tokenize(const char rule[], const size_t sz, char **pbuf)
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _parse_int(
+int parse_int(
 		const char s[], const size_t sz, int *pt)
 {
 	int i = 0, sg = 0, rv = 0;
@@ -149,7 +149,7 @@ int _parse_int(
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _parse_separator(const char rule[], const size_t sz)
+int parse_separator(const char rule[], const size_t sz)
 {
 	switch (sz)
 	{
@@ -170,7 +170,7 @@ int _parse_separator(const char rule[], const size_t sz)
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _parse_single_cond(
+int parse_single_cond(
 		act_cond_t *cond, const char rule[], const size_t sz)
 {
 	static const char *patterns[] = {
@@ -248,7 +248,7 @@ int _parse_single_cond(
 
 	if (isdigit(rule[i])) {
 		single->type = ACT_ATTR_TYPE_INT;
-		j = _parse_int(&rule[i], sz - i, &single->intval);
+		j = parse_int(&rule[i], sz - i, &single->intval);
 		if (j < 0)
 			return j;
 		i += j + 1;
@@ -269,7 +269,7 @@ int _parse_single_cond(
 		i = j + 2;
 	}
 
-	j = _parse_separator(&rule[i], sz - i);
+	j = parse_separator(&rule[i], sz - i);
 	if (j < 0) {
 		rv = -EINVAL;
 		goto out_free_vals;
@@ -301,7 +301,7 @@ out_free_key:
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _parse_multi_conds(
+int parse_multi_conds(
 		act_cond_t *cond, const char rule[], const size_t sz)
 {
 	act_cond_type_t type;
@@ -339,7 +339,7 @@ int _parse_multi_conds(
 				goto out_free_cond;
 			}
 
-			rv = _parse_separator(&rule[i + 2], sz - i - 2);
+			rv = parse_separator(&rule[i + 2], sz - i - 2);
 			if (rv < 0)
 				return rv;
 
@@ -353,7 +353,7 @@ int _parse_multi_conds(
 			}
 
 			cond->conds[cond->nconds] = act_new_cond();
-			rv = _parse_multi_conds(cond->conds[cond->nconds++],
+			rv = parse_multi_conds(cond->conds[cond->nconds++],
 					&rule[i], sz - i);
 			if (rv < 0) {
 				goto out_free_cond;
@@ -367,7 +367,7 @@ int _parse_multi_conds(
 				return -E2BIG;
 
 			cond->conds[cond->nconds] = act_new_cond();
-			rv = _parse_single_cond(cond->conds[cond->nconds++],
+			rv = parse_single_cond(cond->conds[cond->nconds++],
 					&rule[i], sz - i);
 			if (rv < 0) {
 				goto out_free_cond;
@@ -387,7 +387,7 @@ out_free_cond:
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
+int parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
 {
 	int rv;
 	
@@ -410,7 +410,7 @@ int _parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _parse_policy_action(
+int parse_policy_action(
 		act_policy_t *pl, const char rule[], const size_t sz)
 {
 	size_t i;
@@ -441,22 +441,22 @@ int act_parse_policy(act_policy_t *pl, const char rr[], const size_t rsz)
 	int rv, i;
 	size_t sz;
 
-	rv = _tokenize(rr, rsz, &r);
+	rv = tokenize(rr, rsz, &r);
 	if (rv < 0)
 		goto out;
 	sz = rv;
 
-	rv = _parse_policy_sign(pl, r, sz);
+	rv = parse_policy_sign(pl, r, sz);
 	if (rv < 0)
 		goto out;
 	i = rv;
 
-	rv = _parse_policy_action(pl, r + i, sz - i);
+	rv = parse_policy_action(pl, r + i, sz - i);
 	if (rv < 0)
 		goto out;
 	i += rv;
 
-	rv = _parse_multi_conds(&pl->cond, r + i, sz - i);
+	rv = parse_multi_conds(&pl->cond, r + i, sz - i);
 	if (rv < 0)
 		goto out;
 

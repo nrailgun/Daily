@@ -193,16 +193,16 @@ void act_destroy_policy(act_policy_t *pl);
 
 #ifdef CONFIG_ACT_TEST
 
-int _policy_check_single_int(
+int policy_check_single_int(
 		const act_single_cond_t *sg, const act_attr_t *at);
 
-int _policy_check_single_str(
+int policy_check_single_str(
 		const act_single_cond_t *sg, const act_attr_t *at);
 
-int _policy_check_single(
+int policy_check_single(
 		const act_single_cond_t *sg, const struct list_head *ats);
 
-int _policy_check(const act_cond_t *cond,
+int policy_check(const act_cond_t *cond,
 		const struct list_head *sats, const struct list_head *oats);
 
 #endif
