@@ -15,6 +15,7 @@
  * Copyright (C) Junyu wu, shibuyanorailgun@foxmail, 2015.
  */
 
+#include <linux/kernel.h>
 #include <linux/errno.h>
 #include <linux/list.h>
 #include <linux/slab.h>
@@ -25,7 +26,8 @@
 #include "attr_repo.h"
 #include "policy.h"
 
-LIST_HEAD(act_policies);
+static
+struct list_head policy_ls[ACT_ACTION_UNKNOWN];
 
 const char *
 act_sign_str(const act_sign_t sign)
@@ -432,7 +434,7 @@ char *act_cond_type_str(const act_cond_type_t tp)
 	}
 }
 
-act_cond_t *act_new_cond(const act_cond_type_t tp)
+act_cond_t *act_new_cond(void)
 {
 	act_cond_t *pt;
 	
@@ -440,8 +442,6 @@ act_cond_t *act_new_cond(const act_cond_type_t tp)
 	if (!pt)
 		return NULL;
 	memset(pt, 0, sizeof(*pt));
-
-	pt->cond_type = tp;
 
 	return pt;
 }
@@ -489,11 +489,6 @@ void act_destroy_policy(act_policy_t *pl)
 	act_destroy_cond(&pl->cond);
 }
 
-void act_add_policy(act_policy_t *pl)
-{
-	list_add_tail(&pl->list, &act_policies);
-}
-
 #ifndef CONFIG_ACT_TEST
 static
 #endif
@@ -518,6 +513,7 @@ int _policy_check_single_int(
 	default:
 		ACT_Assert(0);
 	}
+	return -EINVAL;
 }
 
 #ifndef CONFIG_ACT_TEST
@@ -544,6 +540,7 @@ int _policy_check_single_str(
 	default:
 		ACT_Assert(0);
 	}
+	return -EINVAL;
 }
 
 #ifndef CONFIG_ACT_TEST
@@ -588,7 +585,7 @@ static
 int _policy_check(const act_cond_t *cond,
 		const struct list_head *sats, const struct list_head *oats)
 {
-	int i, rv;
+	int i, rv = -EINVAL;
 	const act_single_cond_t *sg;
 
 	switch (cond->cond_type)
@@ -630,6 +627,7 @@ int _policy_check(const act_cond_t *cond,
 	default:
 		ACT_Assert(0);
 	}
+	return -EINVAL;
 }
 
 act_sign_t act_policy_check(const act_policy_t *pl,
@@ -655,4 +653,32 @@ act_sign_t act_policy_check(const act_policy_t *pl,
 		return pl->sign;
 
 	return ACT_SIGN_NOT_APPLICABLE;
+}
+
+void act_policy_list_init(void)
+{
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(policy_ls); ++i) {
+		INIT_LIST_HEAD(&policy_ls[i]);
+	}
+}
+
+int act_policy_list_add(act_policy_t *pl)
+{
+	int i;
+
+	i = (int) pl->action;
+	list_add(&pl->list, &policy_ls[i]);
+
+	return 0;
+}
+
+struct list_head *act_policy_list(const act_action_t act)
+{
+	size_t i;
+       
+	i = (size_t) act;
+
+	return policy_ls[i];
 }

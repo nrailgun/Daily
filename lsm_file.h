@@ -12,31 +12,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) Junyu wu, shibuyanorailgun@gmail.com, 2014.
+ * Copyright (C) Junyu Wu, shibuyanorailgun@foxmail, 2015.
  */
 
-#ifndef __LINUX_SECURITY_ACT_H
-#define __LINUX_SECURITY_ACT_H
+#ifndef __LINUX_ACT_LSM_FILE_H
+#define __LINUX_ACT_LSM_FILE_H
 
-#include <linux/printk.h>
+#include <linux/fs.h>
 
-#define CONFIG_ACT_TEST
+#include "act.h"
 
-#define ACT_Info(fmt, args...)						\
-	do {								\
-		printk(KERN_INFO "Act: " fmt "\n", ##args);		\
-	} while (0)
+int act_file_permission(struct file *filp, int mask);
 
-#define ACT_Warn(fmt, args...)						\
-	do {								\
-		if (printk_ratelimit())					\
-			printk(KERN_WARNING "Act: " fmt "\n", ##args);	\
-	} while (0)
+int act_file_alloc_security(struct file *filp);
 
-#define ACT_Error(fmt, args...)						\
-	do {								\
-		if (printk_ratelimit())					\
-			printk(KERN_ERR "Act: " fmt "\n", ##args);	\
-	} while (0)
+void act_file_free_security(struct file *filp);
 
-#endif /* end of include guard: __LINUX_SECURITY_ACT_H */
+#endif /* end of include guard: __LINUX_ACT_LSM_FILE_H */

@@ -25,7 +25,9 @@
 
 #include "act.h"
 #include "parse.h"
+#include "parse_test.h"
 #include "policy.h"
+#include "policy_test.h"
 
 static
 void *act_seq_start(struct seq_file *sf, loff_t *off)
@@ -68,27 +70,19 @@ static
 ssize_t act_policy_write(struct file *filp, const char __user *buf,
 		size_t sz, loff_t *off)
 {
-	struct act_policy *pl;
+	act_policy_t *pl;
 	int rv;
 
-	pl = kmalloc(sizeof(struct act_policy), GFP_KERNEL);
+	pl = kmalloc(sizeof(*pl), GFP_KERNEL);
 	if (!pl)
 		return -ENOMEM;
 
-	rv = act_policy_parse(pl, buf, sz);
-	if (rv)
-		ACT_ERROR("policy parse failed!");
-	else
-		ACT_INFO("policy parse successed.");
+	rv = act_parse_policy(pl, buf, sz);
+	if (rv < 0)
+		return rv;
 
-	act_add_policy(pl);
+	act_policy_list_add(pl);
 
-#ifdef CONFIG_ACT_DEBUG_INFO
-	ACT_INFO("listing policies:");
-	list_for_each_entry(pl, &act_policies, list) {
-		ACT_INFO("%s", act_policy_str(pl));
-	}
-#endif
 	return (ssize_t) sz;
 }
 
@@ -102,37 +96,6 @@ struct file_operations act_policy_fops = {
 	.write   = act_policy_write,
 };
 
-static const
-struct seq_operations act_role_seq_ops = {
-	.start	= act_seq_start,
-	.stop	= act_seq_stop,
-	.next	= act_seq_next,
-	.show	= act_seq_show,
-};
-
-static
-int act_role_open(struct inode *in, struct file *filp)
-{
-	return seq_open(filp, &act_role_seq_ops);
-}
-
-static
-ssize_t act_role_write(struct file *filp,
-		const char __user *buf, size_t sz, loff_t *off)
-{
-	return 0;
-}
-
-static const
-struct file_operations act_role_fops = {
-	.owner   = THIS_MODULE,
-	.open    = act_role_open,
-	.release = seq_release,
-	.llseek  = seq_lseek,
-	.read    = seq_read,
-	.write   = act_role_write,
-};
-
 #ifndef MODULE
 static
 int __init
@@ -142,8 +105,21 @@ int
 
 init_act_fs(void)
 {
-	proc_create("act-policy", 0, NULL, &act_policy_fops);
-	proc_create("act-role", 0, NULL, &act_role_fops);
+	proc_create("actpl", 0, NULL, &act_policy_fops);
+
+	policy_test_check3();
+
+	policy_test_check2();
+
+	policy_test_check();
+
+	policy_test_parse();
+
+	parse_test_parse_conds();
+
+	parse_test_remove_spaces();
+
+	parse_test_parse_action_sign();
 
 	return 0;
 }

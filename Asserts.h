@@ -27,9 +27,8 @@
 #define ACT_Assert(stat) 						\
 	do {								\
 		if (!(stat)) {						\
-			printk(KERN_ERR "%s:%d: Assertion `" #stat	\
-					"' failed.\n",			\
-					__FILE__, __LINE__);		\
+			ACT_Info("%s:%d: Assertion `" #stat		\
+				"' failed.\n", __FILE__, __LINE__);	\
 		}							\
 	} while (0)
 
@@ -49,17 +48,17 @@
 
 #define ACT_Assert_exec(s)			\
 	do {					\
-		printk(KERN_ERR "%s\n", s);	\
+		ACT_Info("%s\n", s);		\
 		ACT_Assert(0);			\
 	} while (0)
 
 #define ACT_Test(stat)						\
 	do {							\
 		if (stat) {					\
-			printk(KERN_INFO "Test success.\n");	\
+			ACT_Info("Test success.\n");		\
 		}						\
 		else {						\
-			printk(KERN_ERR "%s:%d: Test `" #stat	\
+			ACT_Info("%s:%d: Test `" #stat		\
 					"' failed.\n",		\
 					__FILE__, __LINE__);	\
 		}						\

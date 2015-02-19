@@ -37,8 +37,7 @@
 #ifndef CONFIG_ACT_TEST
 static
 #endif
-int _tokenize(
-		const char rule[], const size_t sz, char **pbuf)
+int _tokenize(const char rule[], const size_t sz, char **pbuf)
 {
 	char *buf;
 	size_t i, j;
@@ -306,7 +305,7 @@ int _parse_multi_conds(
 		act_cond_t *cond, const char rule[], const size_t sz)
 {
 	act_cond_type_t type;
-	int i, rv;
+	int i, rv = -EINVAL;
 	char lb, rb;
 
 	switch (lb = *rule)
@@ -353,9 +352,7 @@ int _parse_multi_conds(
 				goto out_free_cond;
 			}
 
-			cond->conds[cond->nconds] = act_new_cond(
-					rule[i] == '{' ?
-					ACT_COND_TYPE_AND : ACT_COND_TYPE_OR);
+			cond->conds[cond->nconds] = act_new_cond();
 			rv = _parse_multi_conds(cond->conds[cond->nconds++],
 					&rule[i], sz - i);
 			if (rv < 0) {
@@ -369,8 +366,7 @@ int _parse_multi_conds(
 			if (cond->nconds == ACT_COND_MAX_CHILDREN)
 				return -E2BIG;
 
-			cond->conds[cond->nconds] = act_new_cond(
-					ACT_COND_TYPE_SINGLE);
+			cond->conds[cond->nconds] = act_new_cond();
 			rv = _parse_single_cond(cond->conds[cond->nconds++],
 					&rule[i], sz - i);
 			if (rv < 0) {

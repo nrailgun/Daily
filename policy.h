@@ -173,7 +173,7 @@ typedef struct act_cond
 	};
 } act_cond_t;
 
-act_cond_t *act_new_cond(const act_cond_type_t tp);
+act_cond_t *act_new_cond(void);
 
 int act_init_cond_empty(act_cond_t *pt);
 
@@ -190,8 +190,6 @@ typedef struct act_policy
 int act_init_policy_empty(act_policy_t *l);
 
 void act_destroy_policy(act_policy_t *pl);
-
-void act_add_policy(act_policy_t *pl);
 
 #ifdef CONFIG_ACT_TEST
 
@@ -211,5 +209,11 @@ int _policy_check(const act_cond_t *cond,
 
 act_sign_t act_policy_check(const act_policy_t *pl,
 		const act_cert_t *subj, const act_cert_t *obj);
+
+void act_policy_list_init(void);
+
+int act_policy_list_add(act_policy_t *pl);
+
+struct list_head *act_policy_list(const act_action_t act);
 
 #endif /* end of include guard: __LINUX_ACT_POLICY_H */

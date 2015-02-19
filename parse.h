@@ -23,8 +23,7 @@
 
 #ifdef CONFIG_ACT_TEST
 
-int _tokenize(
-		const char rule[], const size_t sz, char **pbuf);
+int _tokenize(const char rule[], const size_t sz, char **pbuf);
 
 int _parse_int(
 		const char s[], const size_t sz, int *pt);

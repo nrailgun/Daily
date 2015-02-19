@@ -12,31 +12,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) Junyu wu, shibuyanorailgun@gmail.com, 2014.
+ * Copyright (C) Junyu Wu, shibuyanorailgun@foxmail, 2015.
  */
 
-#ifndef __LINUX_SECURITY_ACT_H
-#define __LINUX_SECURITY_ACT_H
+#ifndef __LINUX__ATTR_REPO_H
+#define __LINUX__ATTR_REPO_H
 
-#include <linux/printk.h>
-
-#define CONFIG_ACT_TEST
-
-#define ACT_Info(fmt, args...)						\
-	do {								\
-		printk(KERN_INFO "Act: " fmt "\n", ##args);		\
-	} while (0)
-
-#define ACT_Warn(fmt, args...)						\
-	do {								\
-		if (printk_ratelimit())					\
-			printk(KERN_WARNING "Act: " fmt "\n", ##args);	\
-	} while (0)
-
-#define ACT_Error(fmt, args...)						\
-	do {								\
-		if (printk_ratelimit())					\
-			printk(KERN_ERR "Act: " fmt "\n", ##args);	\
-	} while (0)
-
-#endif /* end of include guard: __LINUX_SECURITY_ACT_H */
+#endif /* end of include guard: __LINUX__ATTR_REPO_H */
