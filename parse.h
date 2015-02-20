@@ -25,8 +25,7 @@
 
 int tokenize(const char rule[], const size_t sz, char **pbuf);
 
-int parse_int(
-		const char s[], const size_t sz, int *pt);
+int parse_int(const char s[], const size_t sz, int *pt);
 
 int parse_separator(
 		const char rule[], const size_t sz);

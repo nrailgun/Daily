@@ -179,6 +179,8 @@ int act_init_cond_empty(act_cond_t *pt);
 
 void act_destroy_cond(act_cond_t *pt);
 
+int act_cond_str(const act_cond_t *cond, char buf[], const size_t sz);
+
 typedef struct act_policy
 {
 	act_action_t		action;
@@ -190,6 +192,8 @@ typedef struct act_policy
 int act_init_policy_empty(act_policy_t *l);
 
 void act_destroy_policy(act_policy_t *pl);
+
+int act_policy_str(const act_policy_t *pl, char *buf, const size_t sz);
 
 #ifdef CONFIG_ACT_TEST
 

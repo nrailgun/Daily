@@ -318,4 +318,45 @@ void policy_test_check3(void)
 	ACT_Test(rv == ACT_SIGN_DENY);
 }
 
+static inline
+void policy_test_check4(void)
+{
+	const char *rs[] = {
+		"DENY FILE_PERMISSION IF { SUBJECT.security < 2; "
+			"OBJECT.name = 'Admin'; };",
+		"DENY FILE_PERMISSION IF { SUBJECT.security = 0;"
+			"[ OBJECT.security > 0; OBJECT.role = 'Teacher'; ]; };",
+	};
+
+	int rv;
+	act_policy_t pl;
+	act_cert_t *subj, *obj;
+	char buf[500];
+
+	rv = act_parse_policy(&pl, rs[0], strlen(rs[0]));
+	ACT_Assert(rv > 0);
+
+	subj = act_cert_alloc(ACT_OWNER_SUBJ);
+	act_cert_add_attr(subj, ACT_ATTR_TYPE_STR, "name", "John");
+	act_cert_add_attr(subj, ACT_ATTR_TYPE_STR, "role", "Student");
+	act_cert_add_attr(subj, ACT_ATTR_TYPE_INT, "security", 0);
+	act_cert_str(subj, buf, 500);
+	ACT_Info("%s", buf);
+
+	obj = act_cert_alloc(ACT_OWNER_OBJ);
+	act_cert_add_attr(obj, ACT_ATTR_TYPE_STR, "name", "Admin");
+	act_cert_add_attr(obj, ACT_ATTR_TYPE_INT, "security", 0);
+	act_cert_str(obj, buf, 500);
+	ACT_Info("%s", buf);
+
+	rv = policy_check(&pl.cond, &subj->attrs, &obj->attrs);
+	ACT_Test(rv == 1);
+
+	rv = act_policy_check(&pl, subj, obj);
+	ACT_Test(rv == ACT_SIGN_DENY);
+
+	act_policy_str(&pl, buf, 500);
+	ACT_Info("%s", buf);
+}
+
 #endif /* end of include guard: __LINUX_POLICY_TEST_H */

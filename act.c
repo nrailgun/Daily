@@ -15,23 +15,22 @@
  * Copyright (C) Junyu Wu, shibuyanorailgun@foxmail, 2015.
  */
 
-#ifndef __LINUX_ATTR_REPO_HELP_H
-#define __LINUX_ATTR_REPO_HELP_H
+#include "act.h"
 
-struct act_cert *act_cert_alloc(const act_owner_t owner);
+static
+int flag = 0;
 
-void act_cert_add_attr(act_cert_t *cert,
-		const act_attr_type_t tp, char *key, void *v);
+int act_debug_flag(void)
+{
+	return flag;
+}
 
-int act_cert_str(const act_cert_t *cert, char buf[], const size_t sz);
+void act_set_debug_flag(void)
+{
+	flag = 1;
+}
 
-#ifdef CONFIG_ACT_TEST
-
-act_attr_type_t act_xattr_parse_val(const char xattr[], void **vp);
-
-act_cert_t *act_xattr_parse(const act_owner_t owner,
-			    const char xattr[], const size_t sz);
-
-#endif
-
-#endif /* end of include guard: __LINUX_ATTR_REPO_HELP_H */
+void act_reset_debug_flag(void)
+{
+	flag = 0;
+}

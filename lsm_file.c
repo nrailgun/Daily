@@ -21,6 +21,7 @@
 
 #include "act.h"
 #include "attr_repo.h"
+#include "attr_repo_help.h"
 #include "lsm.h"
 #include "lsm_file.h"
 #include "policy.h"
@@ -31,6 +32,7 @@ int act_file_permission(struct file *filp, int mask)
 	struct list_head *pls, *l;
 	act_policy_t *p;
 	act_sign_t sign;
+	char buf[100];
 #if 1
 	int rv;
 
@@ -39,11 +41,14 @@ int act_file_permission(struct file *filp, int mask)
 	if (rv)
 		return 0;
 #endif
-
 	subj = current->cred->security;
 	obj = filp->f_security;
 #if 1
-	ACT_Info("file_permission %p %p", subj, obj);
+	act_cert_str(subj, buf, 500);
+	ACT_Info("fp Subject: %s", buf);
+
+	act_cert_str(obj, buf, 500);
+	ACT_Info("fp Object: %s", buf);
 #endif
 	if (!subj && !obj)
 		return 0;
@@ -52,7 +57,11 @@ int act_file_permission(struct file *filp, int mask)
 	list_for_each(l, pls)
 	{
 		p = list_entry(l, act_policy_t, list);
+		act_policy_str(p, buf, 100);
+		ACT_Info("%s", buf);
+
 		sign = act_policy_check(p, subj, obj);
+		ACT_Info("%s", act_sign_str(sign));
 
 		switch (sign)
 		{

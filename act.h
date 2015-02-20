@@ -45,4 +45,10 @@
 			printk(KERN_ERR "Act: " fmt "\n", ##args);	\
 	} while (0)
 
+int act_debug_flag(void);
+
+void act_set_debug_flag(void);
+
+void act_reset_debug_flag(void);
+
 #endif /* end of include guard: __LINUX_SECURITY_ACT_H */

@@ -45,8 +45,10 @@ int act_bprm_set_creds(struct linux_binprm *bprm)
 	ctx = act_subj_attrs(bprm);
 	bprm->cred->security = ctx;
 
-#if 1 // def CONFIG_ACT_DEBUG_INFO
+#ifdef CONFIG_ACT_DEBUG_INFO
 	ACT_Info("set_creds %s", bprm->filename);
+#endif
+#ifdef CONFIG_ACT_VERB_INFO
 	ACT_Info("set_creds bprm->cred->security %p", ctx);
 #endif
 	return 0;

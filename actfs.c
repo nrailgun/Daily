@@ -73,14 +73,18 @@ ssize_t act_policy_write(struct file *filp, const char __user *buf,
 	act_policy_t *pl;
 	int rv;
 
+#ifdef CONFIG_ACT_DEBUG_INFO
+	ACT_Info("policy_write %s", buf);
+#endif
 	pl = kmalloc(sizeof(*pl), GFP_KERNEL);
 	if (!pl)
 		return -ENOMEM;
 
 	rv = act_parse_policy(pl, buf, sz);
-	if (rv < 0)
+	if (rv < 0) {
+		ACT_Warn("parsing failed...");
 		return rv;
-
+	}
 	act_policy_list_add(pl);
 
 	return (ssize_t) sz;

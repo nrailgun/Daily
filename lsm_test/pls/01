@@ -1,0 +1,4 @@
+DENY FILE_PERMISSION IF {
+	SUBJECT.security = 0;
+	[ OBJECT.security > 0; OBJECT.role = 'Teacher'; ];
+};

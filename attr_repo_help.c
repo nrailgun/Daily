@@ -16,11 +16,14 @@
  */
 
 #include <linux/binfmts.h>
+#include <linux/ctype.h>
+#include <linux/errno.h>
 #include <linux/fs.h>
 #include <linux/kernel.h>
 #include <linux/list.h>
 #include <linux/slab.h>
 #include <linux/string.h>
+#include <linux/xattr.h>
 
 #include "Asserts.h"
 #include "act.h"
@@ -68,25 +71,146 @@ void act_cert_add_attr(act_cert_t *cert,
 	list_add_tail(&at->list, &cert->attrs);
 }
 
+int act_cert_str(const act_cert_t *cert, char buf[], const size_t sz)
+{
+	int i;
+	struct list_head *l;
+	act_attr_t *a;
+
+	strncpy(buf, "Certificate: { ", sz);
+	i = strlen(buf);
+
+	list_for_each(l, &cert->attrs)
+	{
+		a = list_entry(l, act_attr_t, list);
+		switch (a->type)
+		{
+		case ACT_ATTR_TYPE_INT:
+			if (i >= sz)
+				return -E2BIG;
+			snprintf(buf + i, sz - i, "%s = %d; ", a->key, a->intval);
+			i = strlen(buf);
+			break;
+
+		case ACT_ATTR_TYPE_STR:
+			if (i >= sz)
+				return -E2BIG;
+			snprintf(buf + i, sz - i, "%s = '%s'; ", a->key, a->strval);
+			i = strlen(buf);
+			break;
+
+		default:
+			return -EPERM;
+		}
+	}
+	snprintf(buf + i, sz - i, "}");
+
+	return ++i;
+}
+
+#ifdef CONFIG_ACT_TEST
+
+act_attr_type_t act_xattr_parse_val(const char xattr[], void **vp)
+{
+	act_attr_type_t tp;
+	int i, j, iv;
+	char *s;
+
+	if (xattr[0] == '\'')
+		tp = ACT_ATTR_TYPE_STR;
+	else {
+		tp = ACT_ATTR_TYPE_INT;
+		ACT_Assert(isdigit(*xattr));
+	}
+
+	switch (tp)
+	{
+	case ACT_ATTR_TYPE_STR:
+		s = kmalloc(100, GFP_KERNEL);
+		i = 1, j = 0;
+		while (xattr[i] != '\'') {
+			s[j++] = xattr[i++];
+		}
+		s[j] = 0;
+		*vp = s;
+		break;
+
+	case ACT_ATTR_TYPE_INT:
+		i = 0, iv = 0;
+		while (xattr[i] != ';') {
+			iv *= 10;
+			iv += xattr[i++] - '0';
+		}
+		*vp = (void *) iv;
+		break;
+
+	default:
+		ACT_Assert(0);
+	}
+	return tp;
+}
+
+act_cert_t *act_xattr_parse(const act_owner_t owner,
+			    const char xattr[], const size_t sz)
+{
+	act_cert_t *cert;
+	int i, j;
+	char *nbuf;
+	act_attr_type_t tp;
+	void *v;
+
+	cert = act_cert_alloc(owner);
+	if (!cert)
+		return NULL;
+
+	for (i = 0; i  < sz; ) {
+		nbuf = kmalloc(50, GFP_KERNEL);
+		for (j = 0; xattr[i + j] != '='; j++)
+			nbuf[j] = xattr[i + j];
+		nbuf[j] = 0;
+
+		i += ++j;
+		tp = act_xattr_parse_val(xattr + i, &v);
+		act_cert_add_attr(cert, tp, nbuf, v);
+
+		for ( ; xattr[i++] != ';'; ) ;
+	}
+	return cert;
+}
+
+#endif /* CONFIG_ACT_TEST */
+
 #ifdef CONFIG_ACT_TEST_LSM
 
 struct act_cert *
 act_subj_attrs(const struct linux_binprm *bprm)
 {
 	struct act_cert *cert = NULL;
+
 #ifdef __KERNEL__
-	const char *fname;
+	struct file *filp;
+	struct dentry *dent;
+	const struct inode_operations *iop;
+	int rv;
+	char buf[500];
 
 	if (!bprm)
 		return NULL;
-	fname = bprm->filename;
 
-	if (!strcmp(fname, "/bin/cat")) {
-		cert = act_cert_alloc(ACT_OWNER_SUBJ);
-		act_cert_add_attr(cert, ACT_ATTR_TYPE_INT, "security", (void *) 2);
-	}
-	else if (!strcmp(fname, "/usr/bin/wc")) {
-		cert = act_cert_alloc(ACT_OWNER_SUBJ);
+	filp = bprm->file;
+	dent = filp->f_dentry;
+	iop = filp->f_inode->i_op;
+
+	if (iop->getxattr) {
+		rv = iop->getxattr(dent, XATTR_SECURITY_PREFIX "attrs", buf, 500);
+		if (rv < 0) {
+			return NULL;
+		}
+		buf[rv] = 0;
+#if 1 //def CONFIG_ACT_DEBUG_INFO
+		ACT_Info("%s getxattr xattr %s", bprm->filename, buf);
+#endif
+		cert = act_xattr_parse(ACT_OWNER_SUBJ, buf, rv);
 	}
 #endif
 	return cert;
@@ -124,4 +248,4 @@ act_cert_verify(const struct act_cert *cert)
 	return !0;
 }
 
-#endif
+#endif /* ifdef CONFIG_ACT_TEST_LSM */

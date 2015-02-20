@@ -24,6 +24,7 @@
 #include "Asserts.h"
 #include "act.h"
 #include "attr_repo.h"
+#include "attr_repo_help.h"
 #include "policy.h"
 
 static
@@ -393,14 +394,16 @@ int act_single_cond_str(
 	switch (cond->type)
 	{
 	case ACT_ATTR_TYPE_INT:
-		rv = snprintf(buf + i, sz - i, "%d;", cond->intval);
+		rv = snprintf(buf + i, sz - i, "%d; ", cond->intval);
 		if (rv < 0)
 			return rv;
 		return strlen(buf);
 
 	case ACT_ATTR_TYPE_STR:
-		ACT_Assert_exec("Not implemented yet");
-		return -EINVAL;
+		rv = snprintf(buf + i, sz - i, "'%s'; ", cond->strval);
+		if (rv < 0)
+			return rv;
+		return strlen(buf);
 
 	case ACT_ATTR_TYPE_INTS:
 		ACT_Assert_exec("Not implemented yet");
@@ -475,6 +478,44 @@ void act_destroy_cond(act_cond_t *pt)
 	}
 }
 
+int act_cond_str(const act_cond_t *cond, char buf[], const size_t sz)
+{
+	int i, j, rv;
+	const char *lb = "{ ", *rb = "}; ";
+
+	switch (cond->cond_type)
+	{
+	case ACT_COND_TYPE_SINGLE:
+		rv = act_single_cond_str(&cond->single_cond, buf, sz);
+		return rv;
+
+	case ACT_COND_TYPE_OR:
+		lb = "[ ";
+		rb = "]; ";
+
+	case ACT_COND_TYPE_AND:
+		if (sz < 3)
+			return -E2BIG;
+		strcpy(buf, lb);
+
+		for (i = 0, j = 2; i < cond->nconds; ++i) {
+			rv = act_cond_str(cond->conds[i], buf + j, sz - j);
+			if (rv < 0)
+				return rv;
+			j += rv;
+		}
+		
+		if (sz - j < 4)
+			return -E2BIG;
+		strcpy(buf + j, rb);
+
+		return j + 4;
+
+	default:
+		return -EINVAL;
+	}
+}
+
 int act_init_policy_empty(act_policy_t *pl)
 {
 	memset(pl, 0, sizeof(*pl));
@@ -487,6 +528,21 @@ int act_init_policy_empty(act_policy_t *pl)
 void act_destroy_policy(act_policy_t *pl)
 {
 	act_destroy_cond(&pl->cond);
+}
+
+int act_policy_str(const act_policy_t *pl, char *buf, const size_t sz)
+{
+	size_t i, j;
+
+	snprintf(buf, sz, "%s %s IF ",
+		 act_sign_str(pl->sign), act_action_str(pl->action));
+	i = strlen(buf);
+
+	j = act_cond_str(&pl->cond, buf + i, sz - i);
+	if (j < 0)
+		return j;
+
+	return i + j;
 }
 
 #ifndef CONFIG_ACT_TEST
