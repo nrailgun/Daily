@@ -32,7 +32,7 @@ int act_file_permission(struct file *filp, int mask)
 	struct list_head *pls, *l;
 	act_policy_t *p;
 	act_sign_t sign;
-	char buf[100];
+	char buf[500];
 #if 1
 	int rv;
 
@@ -42,22 +42,34 @@ int act_file_permission(struct file *filp, int mask)
 		return 0;
 #endif
 	subj = current->cred->security;
-	obj = filp->f_security;
-#if 1
-	act_cert_str(subj, buf, 500);
-	ACT_Info("fp Subject: %s", buf);
+	if (!subj) {
+		ACT_Warn("file_permisson subj cert null");
+		return -EACCES;
+	}
 
-	act_cert_str(obj, buf, 500);
-	ACT_Info("fp Object: %s", buf);
-#endif
-	if (!subj && !obj)
-		return 0;
+	rv = act_cert_str(subj, buf, 500);
+	if (0 < rv)
+		ACT_Info("file_permisson subject: %s", buf);
+	else
+		ACT_Info("file_permisson cert_str failed %d", rv);
+
+	obj = filp->f_security;
+	if (!obj) {
+		ACT_Warn("file_permisson obj cert null");
+		return -EACCES;
+	}
+
+	rv = act_cert_str(obj, buf, 500);
+	if (0 < rv)
+		ACT_Info("file_permisson object: %s", buf);
+	else
+		ACT_Info("file_permisson cert_str failed %d", rv);
 
 	pls = act_policy_list(ACT_ACTION_FILE_PERMISSION);
 	list_for_each(l, pls)
 	{
 		p = list_entry(l, act_policy_t, list);
-		act_policy_str(p, buf, 100);
+		act_policy_str(p, buf, 500);
 		ACT_Info("%s", buf);
 
 		sign = act_policy_check(p, subj, obj);

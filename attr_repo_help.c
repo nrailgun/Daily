@@ -30,6 +30,28 @@
 #include "attr_repo.h"
 #include "attr_repo_help.h"
 
+const
+char *act_owner_str(const act_owner_t owner)
+{
+	switch (owner)
+	{
+	case ACT_OWNER_UNDEF:
+		return "Undefined";
+
+	case ACT_OWNER_SUBJ:
+		return "SUBJECT";
+
+	case ACT_OWNER_OBJ:
+		return "OBJECT";
+
+	case ACT_OWNER_ENV:
+		return "ENVIRONMENT";
+
+	default:
+		return NULL;
+	}
+}
+
 struct act_cert *act_cert_alloc(const act_owner_t owner)
 {
 	struct act_cert *cert;
@@ -41,6 +63,46 @@ struct act_cert *act_cert_alloc(const act_owner_t owner)
 		cert->ctx = NULL;
 	}
 	return cert;
+}
+
+int act_cert_str(const act_cert_t *cert, char buf[], const size_t sz)
+{
+	int i;
+	struct list_head *l;
+	act_attr_t *a;
+
+	strncpy(buf, "{ ", sz);
+	i = strlen(buf);
+
+	list_for_each(l, &cert->attrs)
+	{
+		a = list_entry(l, act_attr_t, list);
+		switch (a->type)
+		{
+		case ACT_ATTR_TYPE_INT:
+			if (i >= sz)
+				return -E2BIG;
+			snprintf(buf + i, sz - i, "%s = %d; ", a->key, a->intval);
+			i = strlen(buf);
+			break;
+
+		case ACT_ATTR_TYPE_STR:
+			if (i >= sz)
+				return -E2BIG;
+			snprintf(buf + i, sz - i, "%s = '%s'; ", a->key, a->strval);
+			i = strlen(buf);
+			break;
+
+		default:
+			return -EPERM;
+		}
+	}
+
+	if (i >= sz)
+		return -E2BIG;
+	snprintf(buf + i, sz - i, "}");
+
+	return ++i;
 }
 
 void act_cert_add_attr(act_cert_t *cert,
@@ -69,43 +131,6 @@ void act_cert_add_attr(act_cert_t *cert,
 
 	INIT_LIST_HEAD(&at->list);
 	list_add_tail(&at->list, &cert->attrs);
-}
-
-int act_cert_str(const act_cert_t *cert, char buf[], const size_t sz)
-{
-	int i;
-	struct list_head *l;
-	act_attr_t *a;
-
-	strncpy(buf, "Certificate: { ", sz);
-	i = strlen(buf);
-
-	list_for_each(l, &cert->attrs)
-	{
-		a = list_entry(l, act_attr_t, list);
-		switch (a->type)
-		{
-		case ACT_ATTR_TYPE_INT:
-			if (i >= sz)
-				return -E2BIG;
-			snprintf(buf + i, sz - i, "%s = %d; ", a->key, a->intval);
-			i = strlen(buf);
-			break;
-
-		case ACT_ATTR_TYPE_STR:
-			if (i >= sz)
-				return -E2BIG;
-			snprintf(buf + i, sz - i, "%s = '%s'; ", a->key, a->strval);
-			i = strlen(buf);
-			break;
-
-		default:
-			return -EPERM;
-		}
-	}
-	snprintf(buf + i, sz - i, "}");
-
-	return ++i;
 }
 
 #ifdef CONFIG_ACT_TEST
@@ -163,7 +188,7 @@ act_cert_t *act_xattr_parse(const act_owner_t owner,
 	if (!cert)
 		return NULL;
 
-	for (i = 0; i  < sz; ) {
+	for (i = 0; i < sz; ) {
 		nbuf = kmalloc(50, GFP_KERNEL);
 		for (j = 0; xattr[i + j] != '='; j++)
 			nbuf[j] = xattr[i + j];
@@ -204,14 +229,17 @@ act_subj_attrs(const struct linux_binprm *bprm)
 	if (iop->getxattr) {
 		rv = iop->getxattr(dent, XATTR_SECURITY_PREFIX "attrs", buf, 500);
 		if (rv < 0) {
-			return NULL;
+			return act_cert_alloc(ACT_OWNER_SUBJ);
 		}
 		buf[rv] = 0;
-#if 1 //def CONFIG_ACT_DEBUG_INFO
+#ifdef CONFIG_ACT_DEBUG_INFO
 		ACT_Info("%s getxattr xattr %s", bprm->filename, buf);
 #endif
 		cert = act_xattr_parse(ACT_OWNER_SUBJ, buf, rv);
 	}
+#else /* __KERNEL__ */
+
+	cert = act_cert_alloc(ACT_OWNER_SUBJ);
 #endif
 	return cert;
 }
@@ -227,10 +255,43 @@ act_subj_attrs_destroy(struct act_cert *cert)
 struct act_cert *
 act_obj_file_attrs(const struct file *filp)
 {
-	struct act_cert *cert;
+	struct act_cert *cert = NULL;
 
-	cert = act_cert_alloc(ACT_OWNER_OBJ);
+#ifdef __KERNEL__
+	struct dentry *dent;
+	struct inode *ino;
+	const struct inode_operations *iop;
+	int rv;
+	char buf[500];
 
+	if (!filp) {
+		ACT_Warn("no file");
+		return act_cert_alloc(ACT_OWNER_OBJ);
+	}
+
+	dent = filp->f_dentry;
+	if (!dent) {
+		ACT_Warn("no dentry");
+		return act_cert_alloc(ACT_OWNER_OBJ);
+	}
+
+	ino = filp->f_inode;
+	if (!ino) {
+		ACT_Warn("no inode");
+		return act_cert_alloc(ACT_OWNER_OBJ);
+	}
+
+	iop = ino->i_op;
+	if (iop && iop->getxattr) {
+		rv = iop->getxattr(dent, XATTR_SECURITY_PREFIX "attrs", buf, 500);
+		if (rv < 0) {
+			ACT_Warn("no xattr");
+			return act_cert_alloc(ACT_OWNER_OBJ);
+		}
+		buf[rv] = 0;
+		cert = act_xattr_parse(ACT_OWNER_OBJ, buf, rv);
+	}
+#endif
 	return cert;
 }
 

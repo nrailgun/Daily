@@ -380,10 +380,11 @@ int act_single_cond_str(
 	int rv;
 	const char *s;
 
-	i = strlen(cond->key);
-	if (i >= sz - 1)
-		return -E2BIG;
-	strcpy(buf, cond->key);
+	s = act_owner_str(cond->owner);
+	if (!s)
+		return -EINVAL;
+	snprintf(buf, sz, "%s.%s", s, cond->key);
+	i = strlen(buf);
 	
 	s = act_cmp_str(cond->cmp);
 	if (!s)
