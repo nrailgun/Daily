@@ -22,6 +22,7 @@
 
 #include "act.h"
 #include "attr_repo.h"
+#include "attr_repo_help.h"
 #include "lsm_file.h"
 #include "policy.h"
 
@@ -104,7 +105,7 @@ __init int act_module_init(void)
 		return 0;
 
 	cr = (struct cred *) current->cred;
-	cr->security = NULL;
+	cr->security = act_cert_alloc(ACT_OWNER_SUBJ);
 
 #ifdef CONFIG_ACT_VERB_INFO
 	ACT_Info("init task security %p", cr->security);

@@ -30,7 +30,7 @@ int act_file_alloc_security(struct file *filp)
 {
 	act_cert_t *ctx;
 
-	ctx = NULL;
+	ctx = act_obj_file_attrs(filp);
 	filp->f_security = (void *) ctx;
 
 #ifdef CONFIG_ACT_VERB_INFO
@@ -56,6 +56,10 @@ int act_file_open(struct file *filp, const struct cred *cred)
 {
 	act_cert_t *ctx;
 
+	ctx = filp->f_security;
+	if (ctx) {
+		act_obj_file_attrs_destroy(ctx);
+	}
 	ctx = act_obj_file_attrs(filp);
 	filp->f_security = ctx;
 
@@ -71,14 +75,7 @@ int act_file_permission(struct file *filp, int mask)
 	struct list_head *pls, *l;
 	act_policy_t *p;
 	act_sign_t sign;
-#if 1
-	int rv;
 
-	rv = strcmp("testf", filp->f_dentry->d_iname);
-	rv = rv && strcmp("testf-2", filp->f_dentry->d_iname);
-	if (rv)
-		return 0;
-#endif
 	subj = current->cred->security;
 	if (!subj) {
 		return -EACCES;

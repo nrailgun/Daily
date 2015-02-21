@@ -220,7 +220,7 @@ act_subj_attrs(const struct linux_binprm *bprm)
 	char buf[500];
 
 	if (!bprm)
-		return NULL;
+		return act_cert_alloc(ACT_OWNER_SUBJ);
 
 	filp = bprm->file;
 	dent = filp->f_dentry;
@@ -236,9 +236,10 @@ act_subj_attrs(const struct linux_binprm *bprm)
 		ACT_Info("%s getxattr xattr %s", bprm->filename, buf);
 #endif
 		cert = act_xattr_parse(ACT_OWNER_SUBJ, buf, rv);
+	} else {
+		cert = act_cert_alloc(ACT_OWNER_SUBJ);
 	}
 #else /* __KERNEL__ */
-
 	cert = act_cert_alloc(ACT_OWNER_SUBJ);
 #endif
 	return cert;
@@ -265,19 +266,16 @@ act_obj_file_attrs(const struct file *filp)
 	const struct inode_operations *iop;
 
 	if (!filp) {
-		ACT_Warn("no file");
 		goto out_empty;
 	}
 
 	dent = filp->f_dentry;
 	if (!dent) {
-		ACT_Warn("no dentry");
 		goto out_empty;
 	}
 
 	ino = filp->f_inode;
 	if (!ino) {
-		ACT_Warn("no inode");
 		goto out_empty;
 	}
 
