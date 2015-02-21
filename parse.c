@@ -62,7 +62,7 @@ int tokenize(const char rule[], const size_t sz, char **pbuf)
 		if (isalpha(rule[i]) || rule[i] == '_')
 		{
 			while (i < sz &&
-			       (isalpha(rule[i]) || rule[i] == '_'))
+				(isalpha(rule[i]) || rule[i] == '_'))
 			{
 				buf[j++] = rule[i++];
 			}
@@ -103,7 +103,7 @@ int tokenize(const char rule[], const size_t sz, char **pbuf)
 		}
 	}
 	buf[j] = 0;
-	
+
 	return j;
 }
 

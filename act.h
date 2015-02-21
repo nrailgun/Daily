@@ -24,10 +24,6 @@
 
 #define CONFIG_ACT_TEST_LSM
 
-// #define CONFIG_ACT_DEBUG_INFO
- 
-// #define CONFIG_ACT_VERB_INFO
-
 #define ACT_Info(fmt, args...)						\
 	do {								\
 		printk(KERN_INFO "Act: " fmt "\n", ##args);		\
@@ -44,11 +40,5 @@
 		if (printk_ratelimit())					\
 			printk(KERN_ERR "Act: " fmt "\n", ##args);	\
 	} while (0)
-
-int act_debug_flag(void);
-
-void act_set_debug_flag(void);
-
-void act_reset_debug_flag(void);
 
 #endif /* end of include guard: __LINUX_SECURITY_ACT_H */

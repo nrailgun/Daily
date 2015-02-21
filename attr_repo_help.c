@@ -36,7 +36,7 @@ char *act_owner_str(const act_owner_t owner)
 	switch (owner)
 	{
 	case ACT_OWNER_UNDEF:
-		return "Undefined";
+		return "UNDEFINED";
 
 	case ACT_OWNER_SUBJ:
 		return "SUBJECT";

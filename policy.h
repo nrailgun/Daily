@@ -104,9 +104,9 @@ typedef enum act_action
 } act_action_t;
 
 const char *
-act_action_str(const act_action_t act);
+act_action_str(const act_action_t);
 
-act_action_t act_str_action(const char s[], const size_t sz);
+act_action_t act_str_action(const char [], const size_t);
 
 typedef enum
 { 
@@ -138,16 +138,17 @@ typedef struct act_single_cond
 	};
 } act_single_cond_t;
 
-int act_empty_single_cond(act_single_cond_t *pt);
+int act_empty_single_cond(
+	act_single_cond_t *);
 
 int act_init_single_cond(
-		act_single_cond_t *, const act_attr_type_t,
-		const char *, const act_cmp_t, const void *, const int);
+	act_single_cond_t *, const act_attr_type_t,
+	const char *, const act_cmp_t, const void *, const int);
 
-void act_destroy_single_cond(act_single_cond_t *cond);
+void act_destroy_single_cond(act_single_cond_t *);
 
 int act_single_cond_str(
-		const act_single_cond_t *cond, char *buf, const size_t sz);
+	const act_single_cond_t *, char *, const size_t);
 
 typedef enum act_cond_type
 {
@@ -157,7 +158,7 @@ typedef enum act_cond_type
 } act_cond_type_t;
 
 const
-char *act_cond_type_str(const act_cond_type_t tp);
+char *act_cond_type_str(const act_cond_type_t);
 
 #define ACT_COND_MAX_CHILDREN 4
 
@@ -175,11 +176,11 @@ typedef struct act_cond
 
 act_cond_t *act_new_cond(void);
 
-int act_init_cond_empty(act_cond_t *pt);
+int act_init_cond_empty(act_cond_t *);
 
-void act_destroy_cond(act_cond_t *pt);
+void act_destroy_cond(act_cond_t *);
 
-int act_cond_str(const act_cond_t *cond, char buf[], const size_t sz);
+int act_cond_str(const act_cond_t *, char [], const size_t);
 
 typedef struct act_policy
 {
@@ -189,35 +190,35 @@ typedef struct act_policy
 	struct list_head	list;
 } act_policy_t;
 
-int act_init_policy_empty(act_policy_t *l);
+int act_init_policy_empty(act_policy_t *);
 
-void act_destroy_policy(act_policy_t *pl);
+void act_destroy_policy(act_policy_t *);
 
-int act_policy_str(const act_policy_t *pl, char *buf, const size_t sz);
+int act_policy_str(const act_policy_t *, char *, const size_t);
 
 #ifdef CONFIG_ACT_TEST
 
 int policy_check_single_int(
-		const act_single_cond_t *sg, const act_attr_t *at);
+	const act_single_cond_t *, const act_attr_t *);
 
 int policy_check_single_str(
-		const act_single_cond_t *sg, const act_attr_t *at);
+	const act_single_cond_t *, const act_attr_t *);
 
 int policy_check_single(
-		const act_single_cond_t *sg, const struct list_head *ats);
+	const act_single_cond_t *, const struct list_head *);
 
-int policy_check(const act_cond_t *cond,
-		const struct list_head *sats, const struct list_head *oats);
+int policy_check(const act_cond_t *,
+	const struct list_head *, const struct list_head *);
 
 #endif
 
-act_sign_t act_policy_check(const act_policy_t *pl,
-		const act_cert_t *subj, const act_cert_t *obj);
+act_sign_t act_policy_check(const act_policy_t *,
+	const act_cert_t *, const act_cert_t *);
 
 void act_policy_list_init(void);
 
-int act_policy_list_add(act_policy_t *pl);
+int act_policy_list_add(act_policy_t *);
 
-struct list_head *act_policy_list(const act_action_t act);
+struct list_head *act_policy_list(const act_action_t);
 
 #endif /* end of include guard: __LINUX_ACT_POLICY_H */

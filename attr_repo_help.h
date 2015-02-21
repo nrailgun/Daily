@@ -18,23 +18,25 @@
 #ifndef __LINUX_ATTR_REPO_HELP_H
 #define __LINUX_ATTR_REPO_HELP_H
 
-const
-char *act_owner_str(const act_owner_t owner);
+const char *
+act_owner_str(const act_owner_t);
 
 struct act_cert *
-act_cert_alloc(const act_owner_t owner);
+act_cert_alloc(const act_owner_t);
 
-int act_cert_str(const act_cert_t *cert, char buf[], const size_t sz);
+int
+act_cert_str(const act_cert_t *, char [], const size_t);
 
-void act_cert_add_attr(act_cert_t *cert,
-		       const act_attr_type_t tp, char *key, void *v);
+void
+act_cert_add_attr(act_cert_t *, const act_attr_type_t, char *, void *);
 
 #ifdef CONFIG_ACT_TEST
 
-act_attr_type_t act_xattr_parse_val(const char xattr[], void **vp);
+act_attr_type_t
+act_xattr_parse_val(const char [], void **);
 
-act_cert_t *act_xattr_parse(const act_owner_t owner,
-			    const char xattr[], const size_t sz);
+act_cert_t *
+act_xattr_parse(const act_owner_t, const char [], const size_t);
 
 #endif
 

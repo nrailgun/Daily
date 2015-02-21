@@ -18,8 +18,4 @@
 #ifndef __LINUX_ACT_ACTFS_H
 #define __LINUX_ACT_ACTFS_H
 
-#ifdef MODULE
-int init_act_fs(void);
-#endif
-
 #endif /* end of include guard: __LINUX_ACT_ACTFS_H */

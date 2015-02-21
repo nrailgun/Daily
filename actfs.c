@@ -68,14 +68,11 @@ int act_policy_open(struct inode *in, struct file *filp)
 
 static
 ssize_t act_policy_write(struct file *filp, const char __user *buf,
-		size_t sz, loff_t *off)
+	size_t sz, loff_t *off)
 {
 	act_policy_t *pl;
 	int rv;
 
-#ifdef CONFIG_ACT_DEBUG_INFO
-	ACT_Info("policy_write %s", buf);
-#endif
 	pl = kmalloc(sizeof(*pl), GFP_KERNEL);
 	if (!pl)
 		return -ENOMEM;
@@ -100,20 +97,11 @@ struct file_operations act_policy_fops = {
 	.write   = act_policy_write,
 };
 
-#ifndef MODULE
-static
-int __init
-#else
-int
-#endif
-
-init_act_fs(void)
+static int __init init_act_fs(void)
 {
 	proc_create("actpl", 0, NULL, &act_policy_fops);
 
 	return 0;
 }
 
-#ifndef MODULE
 __initcall(init_act_fs);
-#endif

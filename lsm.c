@@ -37,11 +37,6 @@ int act_bprm_set_creds(struct linux_binprm *bprm)
 	if (ctx) {
 		act_subj_attrs_destroy(ctx);
 	}
-#ifdef CONFIG_ACT_VERB_INFO
-	else {
-		ACT_Info("Proc has no attrs");
-	}
-#endif
 	ctx = act_subj_attrs(bprm);
 	bprm->cred->security = ctx;
 
