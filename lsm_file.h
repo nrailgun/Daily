@@ -22,10 +22,12 @@
 
 #include "act.h"
 
-int act_file_permission(struct file *filp, int mask);
-
 int act_file_alloc_security(struct file *filp);
 
 void act_file_free_security(struct file *filp);
+
+int act_file_open(struct file *filp, const struct cred *cred);
+
+int act_file_permission(struct file *filp, int mask);
 
 #endif /* end of include guard: __LINUX_ACT_LSM_FILE_H */

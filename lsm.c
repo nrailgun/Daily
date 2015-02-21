@@ -89,6 +89,7 @@ struct security_operations ops =
 	.bprm_set_creds		= act_bprm_set_creds,
 
 	.file_permission	= act_file_permission,
+	.file_open		= act_file_open,
 	.file_alloc_security	= act_file_alloc_security,
 	.file_free_security	= act_file_free_security,
 

@@ -1,1 +1,0 @@
-DENY FILE_PERMISSION IF { SUBJECT.security < 2; OBJECT.name = 'Admin'; };

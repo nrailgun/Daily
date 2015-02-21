@@ -26,6 +26,45 @@
 #include "lsm_file.h"
 #include "policy.h"
 
+int act_file_alloc_security(struct file *filp)
+{
+	act_cert_t *ctx;
+
+	ctx = NULL;
+	filp->f_security = (void *) ctx;
+
+#ifdef CONFIG_ACT_VERB_INFO
+	ACT_Info("file_alloc_security %p", ctx);
+#endif
+	return 0;
+}
+
+void act_file_free_security(struct file *filp)
+{
+	act_cert_t *ctx = (act_cert_t *) filp->f_security;
+
+#ifdef CONFIG_ACT_VERB_INFO
+	ACT_Info("file_free_security %p", ctx);
+#endif
+	if (ctx) {
+		act_obj_file_attrs_destroy(ctx);
+		filp->f_security = NULL;
+	}
+}
+
+int act_file_open(struct file *filp, const struct cred *cred)
+{
+	act_cert_t *ctx;
+
+	ctx = act_obj_file_attrs(filp);
+	filp->f_security = ctx;
+
+#ifdef CONFIG_ACT_VERB_INFO
+	ACT_Info("file_open %p", ctx);
+#endif
+	return 0;
+}
+
 int act_file_permission(struct file *filp, int mask)
 {
 	act_cert_t *subj, *obj;
@@ -88,30 +127,4 @@ int act_file_permission(struct file *filp, int mask)
 		}
 	}
 	return 0;
-}
-
-int act_file_alloc_security(struct file *filp)
-{
-	act_cert_t *ctx;
-
-	ctx = act_obj_file_attrs(filp);
-	filp->f_security = (void *) ctx;
-
-#ifdef CONFIG_ACT_VERB_INFO
-	ACT_Info("file_alloc_security %p", ctx);
-#endif
-	return 0;
-}
-
-void act_file_free_security(struct file *filp)
-{
-	act_cert_t *ctx = (act_cert_t *) filp->f_security;
-
-#ifdef CONFIG_ACT_VERB_INFO
-	ACT_Info("file_free_security %p", ctx);
-#endif
-	if (ctx) {
-		act_obj_file_attrs_destroy(ctx);
-		filp->f_security = NULL;
-	}
 }

@@ -255,43 +255,47 @@ act_subj_attrs_destroy(struct act_cert *cert)
 struct act_cert *
 act_obj_file_attrs(const struct file *filp)
 {
-	struct act_cert *cert = NULL;
+	struct act_cert *cert;
 
 #ifdef __KERNEL__
+	char buf[500];
+	int rv;
 	struct dentry *dent;
 	struct inode *ino;
 	const struct inode_operations *iop;
-	int rv;
-	char buf[500];
 
 	if (!filp) {
 		ACT_Warn("no file");
-		return act_cert_alloc(ACT_OWNER_OBJ);
+		goto out_empty;
 	}
 
 	dent = filp->f_dentry;
 	if (!dent) {
 		ACT_Warn("no dentry");
-		return act_cert_alloc(ACT_OWNER_OBJ);
+		goto out_empty;
 	}
 
 	ino = filp->f_inode;
 	if (!ino) {
 		ACT_Warn("no inode");
-		return act_cert_alloc(ACT_OWNER_OBJ);
+		goto out_empty;
 	}
 
 	iop = ino->i_op;
 	if (iop && iop->getxattr) {
-		rv = iop->getxattr(dent, XATTR_SECURITY_PREFIX "attrs", buf, 500);
+		rv = iop->getxattr(dent,
+				   XATTR_SECURITY_PREFIX "attrs", buf, 500);
 		if (rv < 0) {
-			ACT_Warn("no xattr");
-			return act_cert_alloc(ACT_OWNER_OBJ);
+			goto out_empty;
 		}
 		buf[rv] = 0;
-		cert = act_xattr_parse(ACT_OWNER_OBJ, buf, rv);
+
+		return act_xattr_parse(ACT_OWNER_OBJ, buf, rv);
 	}
 #endif
+
+out_empty:
+	cert = act_cert_alloc(ACT_OWNER_OBJ);
 	return cert;
 }
 
