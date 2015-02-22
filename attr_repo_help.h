@@ -30,7 +30,7 @@ act_cert_str(const act_cert_t *, char [], const size_t);
 void
 act_cert_add_attr(act_cert_t *, const act_attr_type_t, char *, void *);
 
-#ifdef CONFIG_ACT_TEST
+#if defined CONFIG_ACT_TEST && defined CONFIG_ACT_LSM_STUB
 
 act_attr_type_t
 act_xattr_parse_val(const char [], void **);

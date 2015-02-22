@@ -15,13 +15,13 @@
  * Copyright (C) Junyu wu, shibuyanorailgun@foxmail, 2014.
  */
 
-#include <linux/kernel.h>
-#include <linux/init.h>
-#include <linux/fs.h>
-#include <linux/slab.h>
-#include <linux/seq_file.h>
-#include <linux/proc_fs.h>
 #include <linux/errno.h>
+#include <linux/fs.h>
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+#include <linux/slab.h>
 
 #include "act.h"
 #include "parse.h"

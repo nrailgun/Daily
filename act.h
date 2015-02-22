@@ -22,7 +22,10 @@
 
 #define CONFIG_ACT_TEST
 
-#define CONFIG_ACT_TEST_LSM
+/*
+ * Config attr_repo stub for linux security module hooks.
+ */
+#define CONFIG_ACT_LSM_STUB
 
 #define ACT_Info(fmt, args...)						\
 	do {								\

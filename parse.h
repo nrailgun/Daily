@@ -23,30 +23,22 @@
 
 #ifdef CONFIG_ACT_TEST
 
-int tokenize(
-	const char [], const size_t, char **);
+int tokenize(const char [], const size_t, char **);
 
-int parse_int(
-	const char [], const size_t, int *);
+int parse_int(const char [], const size_t, int *);
 
-int parse_separator(
-	const char [], const size_t);
+int parse_separator(const char [], const size_t);
 
-int parse_single_cond(
-	act_cond_t *, const char [], const size_t);
+int parse_single_cond(act_cond_t *, const char [], const size_t);
 
-int parse_multi_conds(
-	act_cond_t *, const char [], const size_t);
+int parse_multi_conds(act_cond_t *, const char [], const size_t);
 
-int parse_policy_action(
-	act_policy_t *, const char [], const size_t);
+int parse_policy_action(act_policy_t *, const char [], const size_t);
 
-int parse_policy_sign(
-	act_policy_t *, const char [], const size_t);
+int parse_policy_sign(act_policy_t *, const char [], const size_t);
 
 #endif
 
-int act_parse_policy(
-	act_policy_t *, const char [], const size_t);
+int act_parse_policy(act_policy_t *, const char [], const size_t);
 
 #endif /* end of include guard: __LINUX_ACT_PARSE_H */

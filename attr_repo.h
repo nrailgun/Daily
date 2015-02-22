@@ -52,9 +52,6 @@ typedef struct act_attr {
 	struct act_attr_ctx *ctx;
 } act_attr_t;
 
-/*
- * Attributes certificate.
- */
 typedef struct act_cert {
 	act_owner_t owner;
 	struct list_head attrs;
@@ -65,7 +62,7 @@ typedef struct act_cert {
 /*
  * Get subject (process) attributes certificate.
  *
- * @bprm: Linux binary program to be `exec`ed.
+ * @bprm: Binary program to be `exec`ed, NULL on fork.
  *
  * @return: Subject (process) attributes certificate, NULL on failure.
  */

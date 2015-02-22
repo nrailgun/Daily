@@ -82,14 +82,16 @@ int act_cert_str(const act_cert_t *cert, char buf[], const size_t sz)
 		case ACT_ATTR_TYPE_INT:
 			if (i >= sz)
 				return -E2BIG;
-			snprintf(buf + i, sz - i, "%s = %d; ", a->key, a->intval);
+			snprintf(buf + i, sz - i, "%s = %d; ",
+				a->key, a->intval);
 			i = strlen(buf);
 			break;
 
 		case ACT_ATTR_TYPE_STR:
 			if (i >= sz)
 				return -E2BIG;
-			snprintf(buf + i, sz - i, "%s = '%s'; ", a->key, a->strval);
+			snprintf(buf + i, sz - i, "%s = '%s'; ",
+				a->key, a->strval);
 			i = strlen(buf);
 			break;
 
@@ -133,7 +135,10 @@ void act_cert_add_attr(act_cert_t *cert,
 	list_add_tail(&at->list, &cert->attrs);
 }
 
-#ifdef CONFIG_ACT_TEST
+/*
+ * Ugly attr_repo stub for lsm, ugly so.
+ */
+#ifdef CONFIG_ACT_LSM_STUB
 
 act_attr_type_t act_xattr_parse_val(const char xattr[], void **vp)
 {
@@ -203,9 +208,12 @@ act_cert_t *act_xattr_parse(const act_owner_t owner,
 	return cert;
 }
 
-#endif /* CONFIG_ACT_TEST */
+#endif /* CONFIG_ACT_LSM_STUB */
 
-#ifdef CONFIG_ACT_TEST_LSM
+/*
+ * Ugly attr_repo stub for lsm, ugly so.
+ */
+#ifdef CONFIG_ACT_LSM_STUB
 
 struct act_cert *
 act_subj_attrs(const struct linux_binprm *bprm)
@@ -227,7 +235,8 @@ act_subj_attrs(const struct linux_binprm *bprm)
 	iop = filp->f_inode->i_op;
 
 	if (iop->getxattr) {
-		rv = iop->getxattr(dent, XATTR_SECURITY_PREFIX "attrs", buf, 500);
+		rv = iop->getxattr(dent,
+			XATTR_SECURITY_PREFIX "attrs", buf, 500);
 		if (rv < 0) {
 			return act_cert_alloc(ACT_OWNER_SUBJ);
 		}
@@ -282,7 +291,7 @@ act_obj_file_attrs(const struct file *filp)
 	iop = ino->i_op;
 	if (iop && iop->getxattr) {
 		rv = iop->getxattr(dent,
-				   XATTR_SECURITY_PREFIX "attrs", buf, 500);
+			XATTR_SECURITY_PREFIX "attrs", buf, 500);
 		if (rv < 0) {
 			goto out_empty;
 		}
@@ -311,4 +320,4 @@ act_cert_verify(const struct act_cert *cert)
 	return !0;
 }
 
-#endif /* ifdef CONFIG_ACT_TEST_LSM */
+#endif /* ifdef CONFIG_ACT_LSM_STUB*/

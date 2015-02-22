@@ -113,10 +113,10 @@ __init int act_module_init(void)
 
 	rv = register_security(&ops);
 	if (rv) {
-		ACT_Error("failed to register security_operations.");
+		ACT_Error("failed to register security_operations");
 		return rv;
 	}
-	ACT_Info("register_security success.");
+	ACT_Info("register_security success");
 
 	act_policy_list_init();
 

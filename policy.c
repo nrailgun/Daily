@@ -81,7 +81,6 @@ act_action_t act_str_action(const char s[], const size_t sz)
 		"PATH_CHOWN",
 		"PATH_CHROOT",
 #endif
-
 		"INODE_CREATE",
 		"INODE_LINK",
 		"INODE_UNLINK",
@@ -338,11 +337,23 @@ act_cmp_str(const act_cmp_t cmp)
 	}
 }
 
+/*
+ * Initialize single condition to empty status.
+ *
+ * @pt: condition.
+ *
+ * @return: Always 0.
+ */
 int act_empty_single_cond(act_single_cond_t *pt)
 {
 	return !memset(pt, 0, sizeof(*pt));
 }
 
+/*
+ * Destroy single condition.
+ *
+ * @cond: condition to destroy.
+ */
 void act_destroy_single_cond(act_single_cond_t *cond)
 {
 	int i;
@@ -373,6 +384,15 @@ void act_destroy_single_cond(act_single_cond_t *cond)
 	}
 }
 
+/*
+ * Convert single condition to human-readable form string.
+ *
+ * @cond: condition.
+ * @buf: stores readable form string.
+ * @sz: size of buffer.
+ *
+ * @return: length of readable form string.
+ */
 int act_single_cond_str(
 		const act_single_cond_t *cond, char *buf, const size_t sz)
 {
@@ -419,6 +439,9 @@ int act_single_cond_str(
 	}
 }
 
+/*
+ * Convert cond_type to string.
+ */
 const
 char *act_cond_type_str(const act_cond_type_t tp)
 {
@@ -438,6 +461,11 @@ char *act_cond_type_str(const act_cond_type_t tp)
 	}
 }
 
+/*
+ * Allocate an empty condition.
+ *
+ * @return: empty condition, NULL on memory allocation failure.
+ */
 act_cond_t *act_new_cond(void)
 {
 	act_cond_t *pt;
@@ -450,6 +478,13 @@ act_cond_t *act_new_cond(void)
 	return pt;
 }
 
+/*
+ * Initialize condition to empty status.
+ *
+ * @pt: condition.
+ *
+ * @return: always 0.
+ */
 int act_init_cond_empty(act_cond_t *pt)
 {
 	memset(pt, 0, sizeof(*pt));
@@ -687,6 +722,17 @@ int policy_check(const act_cond_t *cond,
 	return -EINVAL;
 }
 
+/*
+ * Check if access is allowed with given policy, subject attributes, and
+ * object attributes.
+ *
+ * @pl: policy.
+ * @subj: subject attributes.
+ * @obj: object attributes.
+ *
+ * @return: `ACT_SIGN_ALLOW` if request allowed, `ACT_SIGN_DENY` if request
+ * denied, and `ACT_SIGN_NOT_APPLICABLE` if policy it's not applicable.
+ */
 act_sign_t act_policy_check(const act_policy_t *pl,
 		const act_cert_t *subj, const act_cert_t *obj)
 {
@@ -712,6 +758,9 @@ act_sign_t act_policy_check(const act_policy_t *pl,
 	return ACT_SIGN_NOT_APPLICABLE;
 }
 
+/*
+ * Initialize policy lists, should be called when module is set up.
+ */
 void act_policy_list_init(void)
 {
 	int i;
@@ -721,6 +770,13 @@ void act_policy_list_init(void)
 	}
 }
 
+/*
+ * Add policy `pl` to policy list.
+ *
+ * @pt: policy.
+ *
+ * @return: always 0.
+ */
 int act_policy_list_add(act_policy_t *pl)
 {
 	int i;
@@ -731,6 +787,14 @@ int act_policy_list_add(act_policy_t *pl)
 	return 0;
 }
 
+/*
+ * Corresponding policy list for action `act`. It's guest's responsibility to
+ * ensure `act` is valid.
+ *
+ * @act: action.
+ *
+ * @return: corresponding policy list list_head.
+ */
 struct list_head *act_policy_list(const act_action_t act)
 {
 	size_t i;

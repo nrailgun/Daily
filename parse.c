@@ -27,12 +27,13 @@
 #include "parse.h"
 
 /*
- * Remove duplicated spaces from rule buffer.
+ * Removes duplicated space characters, seperates tokens with space.
  *
- * @rule: Raw rule string buffer.
- * @sz: Size of string buffer.
+ * @rule: raw rule string buffer.
+ * @sz: size of string buffer.
+ * @pbuf: holds tokenized string.
  *
- * @return: 0 on success.
+ * @return: length of tokenized string on success, negative on failure.
  */
 #ifndef CONFIG_ACT_TEST
 static
@@ -108,13 +109,13 @@ int tokenize(const char rule[], const size_t sz, char **pbuf)
 }
 
 /*
- * Parse integer in rule.
+ * Parses integer in rule.
  *
- * @s: Rule string to parse.
- * @sz: Size of buffer.
- * @pt: Stores integer.
+ * @s: rule string to parse.
+ * @sz: size of buffer.
+ * @pt: holds parsed integer.
  *
- * @return: Length of chars read, -EINVAL on invalid case.
+ * @return: number of chars read, -EINVAL on invalid case.
  */
 #ifndef CONFIG_ACT_TEST
 static
@@ -145,6 +146,15 @@ int parse_int(const char s[], const size_t sz, int *pt)
 	return i;
 }
 
+/*
+ * Parses separator(';').
+ *
+ * @rule: rule string buffer.
+ * @sz: size of buffer.
+ *
+ * @return: number of charaters parsed in `rule` on success, negative on
+ * failure.
+ */
 #ifndef CONFIG_ACT_TEST
 static
 #endif
@@ -166,6 +176,16 @@ int parse_separator(const char rule[], const size_t sz)
 	return -EINVAL;
 }
 
+/*
+ * Parses single condition in rule string.
+ *
+ * @cond: condition container.
+ * @rule: rule string buffer.
+ * @sz: size of buffer.
+ *
+ * @return: number of charaters parsed in `rule` on success, negative on
+ * failure.
+ */
 #ifndef CONFIG_ACT_TEST
 static
 #endif
@@ -289,11 +309,12 @@ out_free_key:
 /*
  * Parses policy multi-condition ( and, or ).
  *
- * @cond: Condition.
- * @rule: Space removed rule string.
- * @sz: Size of rule string ( without terminating '\0' ).
+ * @cond: condition.
+ * @rule: rule string buffer.
+ * @sz: size of buffer.
  *
- * @return: Number of charaters parsed in `rule`.
+ * @return: number of charaters parsed in `rule` on success, negative on
+ * failure.
  * 
  * FIXME: Memory leaks on fail parsing.
  */
@@ -383,6 +404,16 @@ out_free_cond:
 	return rv;
 }
 
+/*
+ * Parses sign in rule.
+ *
+ * @pl: contains policy.
+ * @rule: rule string buffer.
+ * @sz: size of buffer.
+ *
+ * @return: number of charaters parsed in `rule` on success, negative on
+ * failure.
+ */
 #ifndef CONFIG_ACT_TEST
 static
 #endif
@@ -406,6 +437,16 @@ int parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
 	return rv;
 }
 
+/*
+ * Parses action in rule.
+ *
+ * @pl: contains policy.
+ * @rule: rule string buffer.
+ * @sz: size of buffer.
+ *
+ * @return: number of charaters parsed in `rule` on success, negative on
+ * failure.
+ */
 #ifndef CONFIG_ACT_TEST
 static
 #endif
@@ -431,6 +472,16 @@ int parse_policy_action(
 	return i + 4;
 }
 
+/*
+ * Parses policy with given raw string.
+ *
+ * @pl: contains policy.
+ * @rule: raw rule string buffer.
+ * @sz: size of raw string buffer.
+ *
+ * @return: number of charaters parsed, negative on
+ * failure.
+ */
 #ifndef CONFIG_ACT_TEST
 static
 #endif

@@ -138,17 +138,14 @@ typedef struct act_single_cond
 	};
 } act_single_cond_t;
 
-int act_empty_single_cond(
-	act_single_cond_t *);
+int act_empty_single_cond(act_single_cond_t *);
 
-int act_init_single_cond(
-	act_single_cond_t *, const act_attr_type_t,
+int act_init_single_cond(act_single_cond_t *, const act_attr_type_t,
 	const char *, const act_cmp_t, const void *, const int);
 
 void act_destroy_single_cond(act_single_cond_t *);
 
-int act_single_cond_str(
-	const act_single_cond_t *, char *, const size_t);
+int act_single_cond_str(const act_single_cond_t *, char *, const size_t);
 
 typedef enum act_cond_type
 {
@@ -198,14 +195,11 @@ int act_policy_str(const act_policy_t *, char *, const size_t);
 
 #ifdef CONFIG_ACT_TEST
 
-int policy_check_single_int(
-	const act_single_cond_t *, const act_attr_t *);
+int policy_check_single_int(const act_single_cond_t *, const act_attr_t *);
 
-int policy_check_single_str(
-	const act_single_cond_t *, const act_attr_t *);
+int policy_check_single_str(const act_single_cond_t *, const act_attr_t *);
 
-int policy_check_single(
-	const act_single_cond_t *, const struct list_head *);
+int policy_check_single(const act_single_cond_t *, const struct list_head *);
 
 int policy_check(const act_cond_t *,
 	const struct list_head *, const struct list_head *);
