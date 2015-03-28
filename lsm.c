@@ -94,7 +94,7 @@ struct security_operations ops =
 };
 
 static
-__init int act_module_init(void)
+int __init act_module_init(void)
 {
 	int rv;
 	struct cred *cr;

@@ -108,7 +108,7 @@ int act_cert_str(const act_cert_t *cert, char buf[], const size_t sz)
 }
 
 void act_cert_add_attr(act_cert_t *cert,
-		const act_attr_type_t tp, char *key, void *v)
+	const act_attr_type_t tp, char *key, void *v)
 {
 	act_attr_t *at;
 
@@ -181,7 +181,7 @@ act_attr_type_t act_xattr_parse_val(const char xattr[], void **vp)
 }
 
 act_cert_t *act_xattr_parse(const act_owner_t owner,
-			    const char xattr[], const size_t sz)
+	const char xattr[], const size_t sz)
 {
 	act_cert_t *cert;
 	int i, j;

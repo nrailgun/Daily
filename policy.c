@@ -394,7 +394,7 @@ void act_destroy_single_cond(act_single_cond_t *cond)
  * @return: length of readable form string.
  */
 int act_single_cond_str(
-		const act_single_cond_t *cond, char *buf, const size_t sz)
+	const act_single_cond_t *cond, char *buf, const size_t sz)
 {
 	size_t i;
 	int rv;
@@ -405,13 +405,13 @@ int act_single_cond_str(
 		return -EINVAL;
 	snprintf(buf, sz, "%s.%s", s, cond->key);
 	i = strlen(buf);
-	
+
 	s = act_cmp_str(cond->cmp);
 	if (!s)
 		return -EINVAL;
 	strcat(buf + i, s);
 	i += strlen(s);
-	
+
 	switch (cond->type)
 	{
 	case ACT_ATTR_TYPE_INT:
@@ -449,7 +449,7 @@ char *act_cond_type_str(const act_cond_type_t tp)
 	{
 	case ACT_COND_TYPE_SINGLE:
 		return "&";
-		
+
 	case ACT_COND_TYPE_OR:
 		return "|";
 
@@ -469,7 +469,7 @@ char *act_cond_type_str(const act_cond_type_t tp)
 act_cond_t *act_new_cond(void)
 {
 	act_cond_t *pt;
-	
+
 	pt = kmalloc(sizeof(act_cond_t), GFP_KERNEL);
 	if (!pt)
 		return NULL;
@@ -540,7 +540,7 @@ int act_cond_str(const act_cond_t *cond, char buf[], const size_t sz)
 				return rv;
 			j += rv;
 		}
-		
+
 		if (sz - j < 4)
 			return -E2BIG;
 		strcpy(buf + j, rb);
@@ -571,7 +571,7 @@ int act_policy_str(const act_policy_t *pl, char *buf, const size_t sz)
 	size_t i, j;
 
 	snprintf(buf, sz, "%s %s IF ",
-		 act_sign_str(pl->sign), act_action_str(pl->action));
+		act_sign_str(pl->sign), act_action_str(pl->action));
 	i = strlen(buf);
 
 	j = act_cond_str(&pl->cond, buf + i, sz - i);
@@ -585,7 +585,7 @@ int act_policy_str(const act_policy_t *pl, char *buf, const size_t sz)
 static
 #endif
 int policy_check_single_int(
-		const act_single_cond_t *sg, const act_attr_t *at)
+	const act_single_cond_t *sg, const act_attr_t *at)
 {
 	ACT_Assert(sg->type == ACT_ATTR_TYPE_INT);
 	ACT_Assert(at->type == ACT_ATTR_TYPE_INT);
@@ -612,7 +612,7 @@ int policy_check_single_int(
 static
 #endif
 int policy_check_single_str(
-		const act_single_cond_t *sg, const act_attr_t *at)
+	const act_single_cond_t *sg, const act_attr_t *at)
 {
 	ACT_Assert(sg->type == ACT_ATTR_TYPE_STR);
 	ACT_Assert(at->type == ACT_ATTR_TYPE_STR);
@@ -639,7 +639,7 @@ int policy_check_single_str(
 static
 #endif
 int policy_check_single(
-		const act_single_cond_t *sg, const struct list_head *ats)
+	const act_single_cond_t *sg, const struct list_head *ats)
 {
 	act_attr_t *at;
 	struct list_head *la;
@@ -675,7 +675,7 @@ int policy_check_single(
 static
 #endif
 int policy_check(const act_cond_t *cond,
-		const struct list_head *sats, const struct list_head *oats)
+	const struct list_head *sats, const struct list_head *oats)
 {
 	int i, rv = -EINVAL;
 	const act_single_cond_t *sg;
@@ -706,7 +706,7 @@ int policy_check(const act_cond_t *cond,
 		case ACT_OWNER_SUBJ:
 			rv = policy_check_single(sg, sats);
 			break;
-		
+
 		case ACT_OWNER_OBJ:
 			rv = policy_check_single(sg, oats);
 			break;
@@ -734,7 +734,7 @@ int policy_check(const act_cond_t *cond,
  * denied, and `ACT_SIGN_NOT_APPLICABLE` if policy it's not applicable.
  */
 act_sign_t act_policy_check(const act_policy_t *pl,
-		const act_cert_t *subj, const act_cert_t *obj)
+	const act_cert_t *subj, const act_cert_t *obj)
 {
 	int rv;
 	const act_cond_t *cond;
@@ -798,7 +798,7 @@ int act_policy_list_add(act_policy_t *pl)
 struct list_head *act_policy_list(const act_action_t act)
 {
 	size_t i;
-       
+
 	i = (size_t) act;
 
 	return &policy_ls[i];
