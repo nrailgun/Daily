@@ -15,8 +15,8 @@
  * Copyright (C) Junyu Wu, shibuyanorailgun@foxmail, 2015.
  */
 
-#ifndef __LINUX_POLICY_TEST_H
-#define __LINUX_POLICY_TEST_H
+#ifndef __LINUX_ACT_POLICY_TEST_H
+#define __LINUX_ACT_POLICY_TEST_H
 
 #include <linux/slab.h>
 
@@ -356,4 +356,4 @@ void policy_test_check4(void)
 	ACT_Test(rv == ACT_SIGN_DENY);
 }
 
-#endif /* end of include guard: __LINUX_POLICY_TEST_H */
+#endif /* end of include guard: __LINUX_ACT_POLICY_TEST_H */

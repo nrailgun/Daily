@@ -190,7 +190,7 @@ int parse_separator(const char rule[], const size_t sz)
 static
 #endif
 int parse_single_cond(
-		act_cond_t *cond, const char rule[], const size_t sz)
+	act_cond_t *cond, const char rule[], const size_t sz)
 {
 	static const char *patterns[] = {
 		"= ", "< ", "> ", "~ "
@@ -199,7 +199,7 @@ int parse_single_cond(
 	static const size_t patlens[] = {
 		2, 2, 2, 3
 	};
-	
+
 	static const act_cmp_t cmps[] = {
 		ACT_CMP_EQUAL, ACT_CMP_LESS, ACT_CMP_GREATER, ACT_CMP_IN
 	};
@@ -322,7 +322,7 @@ out_free_key:
 static
 #endif
 int parse_multi_conds(
-		act_cond_t *cond, const char rule[], const size_t sz)
+	act_cond_t *cond, const char rule[], const size_t sz)
 {
 	act_cond_type_t type;
 	int i, rv = -EINVAL;
@@ -334,7 +334,7 @@ int parse_multi_conds(
 		type = ACT_COND_TYPE_AND;
 		rb = '}';
 		break;
-	
+
 	case '[':
 		type = ACT_COND_TYPE_OR;
 		rb = ']';
@@ -374,7 +374,7 @@ int parse_multi_conds(
 
 			cond->conds[cond->nconds] = act_new_cond();
 			rv = parse_multi_conds(cond->conds[cond->nconds++],
-					&rule[i], sz - i);
+				&rule[i], sz - i);
 			if (rv < 0) {
 				goto out_free_cond;
 			}
@@ -388,7 +388,7 @@ int parse_multi_conds(
 
 			cond->conds[cond->nconds] = act_new_cond();
 			rv = parse_single_cond(cond->conds[cond->nconds++],
-					&rule[i], sz - i);
+				&rule[i], sz - i);
 			if (rv < 0) {
 				goto out_free_cond;
 			}
@@ -420,7 +420,7 @@ static
 int parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
 {
 	int rv;
-	
+
 	if (!strncmp(rule, "ALLOW ", 6)) {
 		pl->sign = ACT_SIGN_ALLOW;
 		rv = 6;
@@ -451,7 +451,7 @@ int parse_policy_sign(act_policy_t *pl, const char rule[], const size_t sz)
 static
 #endif
 int parse_policy_action(
-		act_policy_t *pl, const char rule[], const size_t sz)
+	act_policy_t *pl, const char rule[], const size_t sz)
 {
 	size_t i;
 

@@ -15,8 +15,8 @@
  * Copyright (C) Junyu wu, shibuyanorailgun@foxmail, 2015.
  */
 
-#ifndef ACT_ASSERTS_H
-#define ACT_ASSERTS_H 
+#ifndef __LINUX_ACT_ASSERTS_H
+#define __LINUX_ACT_ASSERTS_H
 
 #include "act.h"
 
@@ -64,4 +64,4 @@
 		}						\
 	} while (0)
 
-#endif /* end of include guard: ACT_ASSERTS_H */
+#endif /* end of include guard: __LINUX_ACT_ASSERTS_H */

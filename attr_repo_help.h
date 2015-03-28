@@ -15,8 +15,8 @@
  * Copyright (C) Junyu Wu, shibuyanorailgun@foxmail, 2015.
  */
 
-#ifndef __LINUX_ATTR_REPO_HELP_H
-#define __LINUX_ATTR_REPO_HELP_H
+#ifndef __LINUX_ACT_ATTR_REPO_HELP_H
+#define __LINUX_ACT_ATTR_REPO_HELP_H
 
 const char *
 act_owner_str(const act_owner_t);
@@ -40,4 +40,4 @@ act_xattr_parse(const act_owner_t, const char [], const size_t);
 
 #endif
 
-#endif /* end of include guard: __LINUX_ATTR_REPO_HELP_H */
+#endif /* end of include guard: __LINUX_ACT_ATTR_REPO_HELP_H */
