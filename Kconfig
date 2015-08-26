@@ -1,7 +1,0 @@
-config SECURITY_ACT
-	bool "ACT! Double time!"
-	depends on SECURITY
-	default n
-	help
-	  Attribute based access prototype control security module.
-
