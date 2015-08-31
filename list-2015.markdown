@@ -1,9 +1,0 @@
-# 2015 reading
-
-# aug
-* triplet-based face reidentification
-
-# nov
-* deepid2
-
-$ \sum $

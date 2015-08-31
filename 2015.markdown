@@ -1,0 +1,7 @@
+# 2015
+
+## 08.30
+* http://www.cnblogs.com/nrblog/p/4770862.html
+
+## 08.31
+* Try using Hadoop
