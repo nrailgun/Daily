@@ -5,3 +5,4 @@
 
 ## 08.31
 * Try using Hadoop
+* Watching MOOC ML video chapter 10 & chapter 11
