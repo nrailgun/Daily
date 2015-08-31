@@ -5,4 +5,7 @@
 
 ## 08.31
 * Try using Hadoop
+* Hadoop: The Definitive Guide ?~42, wrote some example codes
+
+## 09.01
 * Watching MOOC ML video chapter 10 & chapter 11
