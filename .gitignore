@@ -5,3 +5,6 @@ m
 nros
 caffe
 xv6
+
+*.class
+*.jar
