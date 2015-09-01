@@ -1,0 +1,54 @@
+import java.io.IOException;
+
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.v2.app.webapp.JobsBlock;
+
+public class Main {
+
+	public class MaxMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+		@Override
+		public void map(LongWritable key, Text t, Context cnxt)
+				throws IOException, InterruptedException {
+			cnxt.write(new Text("1997"), new IntWritable(0));
+		}
+	}
+
+	public class MaxReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+		@Override
+		public void reduce(Text key, Iterable<IntWritable> vals, Context cnxt)
+				throws IOException, InterruptedException {
+			cnxt.write(key, new IntWritable(1));
+		}
+	}
+
+	public static void main(String args[])
+			throws IOException, ClassNotFoundException, InterruptedException {
+		System.out.println("hello, world\n");
+		
+		Job job = new Job();
+		job.setJarByClass(Main.class);
+		job.setJobName("Max");
+		
+		FileInputFormat.addInputPath(job, new Path(args[0]));
+		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		
+		job.setMapperClass(MaxMapper.class);
+		job.setReducerClass(MaxReducer.class);
+		
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
+		
+		boolean rv = job.waitForCompletion(true);
+		System.exit(rv ? 0 : 1);
+	}
+}

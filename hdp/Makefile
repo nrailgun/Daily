@@ -1,13 +1,13 @@
-MAIN = WordCount
-JAR = wc.jar
+MAIN = Main
+JAR = a.jar
 INPUT_DIR = input
 OUTPUT_DIR = output
 
-all:
-	hadoop com.sun.tools.javac.Main WordCount.java
-	jar cf wc.jar WordCount*.class
+$(JAR): $(MAIN).java
+	hadoop com.sun.tools.javac.Main $(MAIN).java
+	jar cf $(JAR) $(MAIN)*.class
 
-run: clean_output
+run: $(JAR) clean_output
 	hadoop jar $(JAR) $(MAIN) $(INPUT_DIR) $(OUTPUT_DIR)
 	cat $(OUTPUT_DIR)/*
 
