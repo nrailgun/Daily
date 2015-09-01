@@ -8,4 +8,5 @@
 * Hadoop: The Definitive Guide ?~42, wrote some example codes
 
 ## 09.01
+* tried using Eclipse to build Hadoop, failed, I hate this idea.
 * Watching MOOC ML video chapter 10 & chapter 11
