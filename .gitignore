@@ -8,3 +8,9 @@ xv6
 
 *.class
 *.jar
+
+*.aux
+*.log
+*.pdf
+*.toc
+*.out

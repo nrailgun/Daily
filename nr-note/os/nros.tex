@@ -1,0 +1,58 @@
+\input{head}
+
+\title{自己实现一个简单操作系统}	
+\maketitle
+
+出于个人兴趣和学习目的，也为了在读论文做实验之余调节情绪，我决定自己写一个操作系统玩，全部自己手写，仅依赖：
+\begin{itemize}
+	\item 硬件设备（只支持 x86）
+	\item GNU 编译器和链接器
+\end{itemize}
+
+恩，这感觉起来还是蛮酷炫的，有一种上世纪 Unix 黑客风格（自我感觉良好的错觉 ：）。出于实现癖，不使用 Grub 这种成熟的 Bootloader 而是自己写（并没任何软件工程实际好处）。
+
+\section{储备知识}
+
+\subsection{编程语言}
+\begin{itemize}
+	\item The c programing language（经典如何能不看）
+	\item C expert programing（可看可不看，但还是挺有意思的，当做娱乐）
+	\item Professional assembly language（入门汇编速度较快，然而都是用户态程序）
+	\item x86 Assembly Language Reference Manual（没全部看过，感觉比较工整全面）
+\end{itemize}
+
+\subsection{计算机体系结构}
+\begin{itemize}
+	\item x86 PC 汇编语言、设计与接口（很好的书，写 OS 必看；代码除 Dos 部分基本都可以在核心态跑，建议配合 qemu 虚拟机配合学习）
+\end{itemize}
+
+\subsection{操作系统}
+\begin{itemize}
+	\item 操作系统概念（这书，虽然比较经典易懂，算是一个基本概念的导论；然而个人觉得值得商榷啊，作者尝试尽量脱离硬件和代码讨论计算机和 OS，个人觉得比较玄）
+	\item Advanced Programming in the UNIX Environment（这、姑且算吧，虽然和 OS 没有直接联系，认识下 Unix）
+\end{itemize}
+
+\subsection{数据结构与算法}
+\begin{itemize}
+	\item 算法导论（这书我目前也只看了一半啊，感觉写 OS 用不上这么复杂的算法）
+	\item 数据结构与算法，C++ 实现（通俗易懂，算法简单；= =，然而这翔一样的 example code 是怎么回事）
+\end{itemize}
+
+\section{实用工具}
+
+\begin{itemize}
+	\item GCC \& GNU-binutils
+	\item Make（参考书目 Managing-projects-with-GNU-Make）
+	\item GNU-coreutils
+	\item Vim
+	\item Clang \& LLVM
+	\item qemu
+\end{itemize}
+
+\section{项目地址}
+从项目 Github 克隆仓库：
+\begin{lstlisting}[frame=single]
+git clone git@github.com:shibuyanorailgun/nros.git
+\end{lstlisting}
+
+\input{foot}
