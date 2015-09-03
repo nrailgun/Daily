@@ -13,7 +13,6 @@
 \maketitle
 
 \section{Abstraction}
-
 We proposed a new approach for detecting facial keypoint with 3-level carefully designed
 convolutional neural networks. At each level, the outputs are fused for robust and accurate
 estimations. There are 2 folds of advantages. 1st, the texture information over the entire
@@ -23,7 +22,6 @@ The networks at the following two levels are trained to locally refine initial p
 their inputs are limited to small regions around the initial predictions.
 
 \section{Introduction}
-
 Facial keypoint detection problem is challenging when face images are taken with extreme poses,
 lightings, and occlusions. Existing approaches can be generally devided into 2 categories:
 classifying search windows, or directly predicting keypoint positions.
@@ -41,5 +39,23 @@ their task are low-level and their inputs are small local regions around the ini
 Many significant approches used Adaboost, SVM, or random forest.
 
 \section{Cascaded convolutional networks}
+Figure 2 is an overview of our approach. Five keypoints to detect:
+\begin{itemize}
+	\item LE
+	\item RE
+	\item N
+	\item LM
+	\item RM
+\end{itemize}
+
+Level 1 contains 3 deep convolutional networks: F1(face), EN1(eye \& nose), and NM1(nose \& mouth).
+Each predicts multiple facial points. The outputs are averaged to reduce variance. Figure 3
+illustrates the strucuture of F1, which contains 4 convolutional layers followed by max pooling and
+2 fully connected layers. EN1 and EM1 take the same structure but different size. Level 2 and level
+3 takes local patches centered at the predicted positions and are allowed to make only small
+changes. The sizes of patches and search ranges keep reducing along the cascade. The predicted
+position at the last 2 levels is given by the average of 2 networks.
+
+\subsection{Network structure selection}
 
 \end{document}
