@@ -1,0 +1,45 @@
+\documentclass{ctexart}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\begin{document}
+
+\setlength{\parindent}{0pt}
+
+\title{Deep Convolutional Network Cascasde for Facial Point Detection}
+\maketitle
+
+\section{Abstraction}
+
+We proposed a new approach for detecting facial keypoint with 3-level carefully designed
+convolutional neural networks. At each level, the outputs are fused for robust and accurate
+estimations. There are 2 folds of advantages. 1st, the texture information over the entire
+image is used to locate keypoints; 2nd, since the networks are trained to predict all keypoints
+simutaneously, geometric constraints among keypoints are implicitly encoded.
+The networks at the following two levels are trained to locally refine initial predictions and
+their inputs are limited to small regions around the initial predictions.
+
+\section{Introduction}
+
+Facial keypoint detection problem is challenging when face images are taken with extreme poses,
+lightings, and occlusions. Existing approaches can be generally devided into 2 categories:
+classifying search windows, or directly predicting keypoint positions.
+
+Many approaches update the positions of keypoints iteratively and a good initialization is
+critical. In addition, many approaches face the problem that the visual features extracted are
+not discriminative or not reliable enough.
+
+To solve these problems, we proposes a cascaded regression approach for facial keypoint detection.
+It effectively avoid the problem of local optimal. The remaining 2 levels of convolutional networks
+refine the initial estimation of keypoints. The structure at these 2 levels are shallower, since
+their task are low-level and their inputs are small local regions around the initial keypoints.
+
+\section{Related Work}
+Many significant approches used Adaboost, SVM, or random forest.
+
+\section{Cascaded convolutional networks}
+
+\end{document}

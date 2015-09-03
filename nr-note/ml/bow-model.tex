@@ -1,0 +1,35 @@
+\documentclass{ctexart}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\begin{document}
+
+\setlength{\parindent}{0pt}
+
+\title{Bag-of-words model}
+\maketitle
+
+\section{Introduction}
+The \textbf{Bag-of-words} is a simplifying representation used in NLP and IR. In this model, a
+string is represented as a multiset of words (say, bag of words), disregarding grammar and even
+word order but multiplicity.
+
+\section{Model}
+Let $s$ denotes a text document, $w$ denotes words in $s$:
+\begin{equation}
+	w_i \in s
+\end{equation}
+
+Based on this document, we can construct vector $f$:
+\begin{equation}
+	f_i = n(w_i);
+\end{equation}
+where $n(w_i)$ denotes times word $w_i$ appears in $s$. You might consider BoW model as sort of
+histogram.
+
+\section{In CV}
+
+\end{document}
