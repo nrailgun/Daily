@@ -57,5 +57,11 @@ changes. The sizes of patches and search ranges keep reducing along the cascade.
 position at the last 2 levels is given by the average of 2 networks.
 
 \subsection{Network structure selection}
+Three import factors on the choice of network structure:
+\begin{enumerate}
+	\item Convolutional networks at the 1st level should be deep (for global non-linear features);
+	\item Absolute rectification after hyperbolic tangent improve performance;
+	\item Locally sharing weights of neurons on the same map inproves the performance.
+\end{enumerate}
 
 \end{document}
