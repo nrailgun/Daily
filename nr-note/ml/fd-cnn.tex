@@ -55,4 +55,25 @@ Three import factors on the choice of network structure:
 	\item Locally sharing weights of neurons on the same map inproves the performance.
 \end{enumerate}
 
+\subsection{Multi-level regression}
+We find several effective ways to combine multiple convolutional networks.
+
+\subsubsection{Multi-level regression}
+The input region at the first level should be large enough to cover possible predictions, but too
+large input region causes inaccurary for irrelavant areas included. The second level detection can
+be done within a small region, where the disruption from other areas is reduced.
+
+\subsubsection{Multi-network each level}
+The final output of facial point can be formally expressed as:
+\[
+	x = \frac{x_1^{(1)} + x_2^{(1)} + \dots + x_{l_1}^{(1)}}{l_1}
+		+ \sum_{i=2}^{n}
+		\frac{x_1^{(i)} + x_2^{(i)} + \dots + x_{l_i}^{(i)}}{l_i}
+	,
+\]
+for an $n$-level cascade with $l_i$ network at level $i$.
+
+\section{Conclusion}
+We proposed a effective convolutional network cascade for facial point detection.
+
 \input{foot}
