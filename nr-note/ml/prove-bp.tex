@@ -106,11 +106,11 @@ where
 \section{Vectorized approach}
 Denoting paratermeters at layer $l$ as $W^{(l)}$:
 \[
-	\frac{\partial E}{\partial W^{(l)}} = \delta^{(l)} \times a^{(l-1)},
+	\frac{\partial E}{\partial W^{(l)}} = \delta^{(l)} (a^{(l-1)})^T,
 \]
 where
 \[
-	\delta^{(l)} = /TODO/
+	\delta^{(l)} = (W^{(l+1)})^T * \delta^{(l+1)} .*
 		\frac{\partial a^{(l)} }{\partial z^{(l)}}.
 \]
 
