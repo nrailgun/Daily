@@ -1,0 +1,117 @@
+\input{head}
+
+\title{Proving backward propagation}
+\maketitle
+
+\section{Denotes}
+Let $x$ denotes network input, $y$ denotes predictions, $t$ denotes targets. The squared error is
+\[
+	E = \frac{1}{2} (t - y)^2.
+\]
+	
+For neuron $j$ at layer $l$, the output $a_j^{(l)}$ is defined as:
+\[
+	a_j^{(l)} = \varphi(z_j^{(l)}) = \varphi(W_j^{(l)} a^{(l-1)}),
+\]
+where $W_j^l$ is neuron $j$ network parameters at layer $l$. A commonly used activition function
+$\varphi$ is sigmoid:
+\[
+	\varphi(z) = \frac{1}{1 + e^{-z}},
+\]
+which has such a derivative:
+\[
+	\frac{\partial \varphi}{\partial z} = \varphi(z)(1 - \varphi(z)).
+\]
+
+\section{Derivative}
+Calculating the partial derivates of the error with respect to weight $W$ using chain rule:
+\[
+	\frac{\partial E}{\partial W_j^{(l)}} =
+		\frac {\partial E} {\partial a_j^{(l)}}
+		\frac {\partial a_j^{(l)}} {\partial z_j^{(l)}}
+		\frac {\partial z_j^{(l)}} {\partial W_j^{(l)}}
+	,
+\]
+where $\frac {\partial z_j^{(l)}} {\partial W_j^{(l)}} = a^{(l-1)}$.
+
+$\frac {\partial a_j^{(l)}} {\partial z_j^{(l)}}$ can be calculated easily from definition of $\varphi$.
+If $\varphi$ is sigmoid function, we have:
+\[
+	\frac{\partial a_j^{(l)}}{\partial z_j^{(l)}} = \varphi(z_j^{(l)}) (1 - \varphi(z_j^{(l)})).
+\]
+
+If layer $l$ is output layer, calculating $\frac {\partial E} {\partial a_j^{(l)}}$ could be quite
+straightforward:
+\[
+	\frac {\partial E} {\partial a_j^{(l)}} = t_j - a_j^{(l)} = t_j - y_j.
+\]
+Any how, if layer $l$ is an inner layer of network, finding the derivative with respect to $a_j^{(l)}$
+is less obvious.
+
+\section{Derivative with respect to inner layer parameter}
+Denoting neurons at layer $l+1$, which receive input from neuron $a_j^{(l)}$, as:
+\[
+	\left\{ a_1^{(l+1)}, a_2^{(l+1)}, a_3^{(l+1)}, \dots, a_m^{(l+1)} \right\}.
+\]
+Considering $E$ as a function of neurons at layer $l+1$:
+\[
+	E = E( a_1^{(l+1)}, a_2^{(l+1)}, a_3^{(l+1)}, \dots, a_m^{(l+1)} ),
+\]
+\[
+	\frac{\partial E}{\partial a_j^{(l)}}
+		= \sum_{i=1}^{m}
+		\frac{\partial E }{\partial a_i^{(l+1)}}
+		\frac{\partial a_i^{(l+1)} }{\partial z_i^{(l+1)}}
+		\frac{\partial z_i^{(l+1)} }{\partial a_j^{(l)}}
+		,
+\]
+\[
+	\frac{\partial E}{\partial a_j^{(l)}}	
+		= \sum_{i=1}^{m}
+		\frac{\partial E }{\partial a_i^{(l+1)}}
+		\frac{\partial a_i^{(l+1)} }{\partial z_i^{(l+1)}}
+		W_{i,j}^{(l+1)}
+	.
+\]
+
+By now, we can calculate $\frac{\partial E}{\partial W}$ by calculate $\frac{\partial E}{\partial a}$ iteratively:
+\[
+	\frac{\partial E}{\partial W_j^{(l)}} =
+		\begin{cases}
+			(t - y) \frac {\partial a_j^{(l)}} {\partial z_j^{(l)}} a^{(l-1)} & l \textrm{ is output layer} \\
+			( \sum_{i=1}^{m}
+				\frac{\partial E }{\partial a_i^{(l+1)}}
+				\frac{\partial a_i^{(l+1)} }{\partial z_i^{(l+1)}}
+				W_{i,j}^{(l+1)}
+			)
+			\frac {\partial a_j^{(l)}} {\partial z_j^{(l)}} a^{(l-1)} & l \textrm{ is inner layer}
+		\end{cases}
+	.
+\]
+But there is a more efficient approach.
+
+\section{A more efficient approach}
+$\frac{\partial E }{\partial a_i^{(l+1)}} \frac{\partial a_i^{(l+1)} }{\partial z_i^{(l+1)}}$ has already calculated.
+To use these intermediate results, we introduce:
+\[
+	\frac{\partial E}{\partial W_j^{(l)}} = \delta_j^{(l)} a^{(l-1)},
+\]
+where
+\[
+	\delta_j^{(l)} = (\sum_{i=1}^{m} \delta_i^{(l+1)} W_{i,j}^{(l+1)})
+		\frac{\partial a_j^{(l)} }{\partial z_j^{(l)}}
+		.
+\]
+
+\section{Vectorized approach}
+Denoting paratermeters at layer $l$ as $W^{(l)}$:
+\[
+	\frac{\partial E}{\partial W^{(l)}} = \delta^{(l)} \times a^{(l-1)},
+\]
+where
+\[
+	\delta^{(l)} = /TODO/
+		\frac{\partial a^{(l)} }{\partial z^{(l)}}.
+\]
+
+\input{foot}
