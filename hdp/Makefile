@@ -3,8 +3,10 @@ JAR = a.jar
 INPUT_DIR = input
 OUTPUT_DIR = output
 
+# Using `hadoop com.sun.tools.javac.Main $(MAIN).java', but I prefer keep it simple.
+# Not a good idea set CLASSPATH env variable, but, works now.
 $(JAR): $(MAIN).java
-	hadoop com.sun.tools.javac.Main $(MAIN).java
+	javac $(MAIN).java
 	jar cf $(JAR) $(MAIN)*.class
 
 run: $(JAR) clean_output

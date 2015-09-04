@@ -1,0 +1,35 @@
+<project name="WordCount" basedir="." default="compile">
+	<property name="dir.src"	value="src"/>
+	<property name="dir.build"	value="build"/>
+	<property name="dir.class"	value="${dir.build}/classes"/>
+	<property name="dir.jar"	value="${dir.build}/jar"/>
+	<property name="class.main"	value="nr.WordCount"/>
+
+	<target name="clean">
+		<delete dir="${dir.build}"/>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${dir.class}"/>
+		<javac srcdir="${dir.src}" destdir="${dir.class}"/>
+	</target>
+
+	<!--
+	<target name="jar" depends="compile">
+		<mkdir dir="${dir.jar}"/>
+		<jar destfile="${dir.jar}/${ant.project.name}.jar" basedir="${dir.class}">
+			<manifest>
+				<attribute name="Main-Class" value="${class.main}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="jar">
+		<java jar="${dir.jar}/${ant.project.name}.jar" fork="true"/>
+	</target>
+
+	<target name="clean-build" depends="clean,jar"/>
+
+	<target name="main" depends="clean,run"/>
+	-->
+</project>
