@@ -1,10 +1,96 @@
-\documentclass{ctexart}
+\input{head}
 
 \title{Deep feature learning with relative distance comparison for person re-identification}
-\author{Junyu Wu}
-
-\begin{document}
-
 \maketitle
 
-\end{document}
+\section{Introduction}
+Person re-identification（简称 pid）的难处在于在外形、结构巨大变化的情况下，既要找到个体差异，还要找到个体相似之处。
+文章提供了一种\textbf{可规模化距离驱动特征学习框架}。具体而言，给定标记 ID 的人像，先产生 triplet units
+$ \left< O_1, O_{match}, O_{mismatch} \right>$，输入卷积神经网络产生特征，特征输入 L2 matric 产生距离。
+对于 triplet 数量巨大的问题，本文提出一种 triplet generation scheme 并改进梯度下降算法，使得计算代价主要依赖于图片
+数量而不是 triplet 数量。
+
+\section{Model}
+Let $O_i = \left\{ O_i^1, O_i^2, O_i^3 \right\}$ denote triplet. Let $W = \left\{ W_j \right\}$ denote network
+parameter, and $F_W(I)$ denote network output with respect image $I$. For a training triplet $O_i$, $F_W(I)$
+should satisfy such condition:
+\begin{equation}
+	\parallel F_W(O^1) - F_W(O^2) \parallel < \parallel F_W(O^1) - F_W(O^3) \parallel
+\end{equation}
+
+Define objective:
+\begin{equation}
+	f(W, O) = \sum_{i=1}^{n} \max \left\{
+		\parallel F_W(O_i^1) - F_W(O_i^2) \parallel^2 - \parallel F_W(O_i^1) - F_W(O_i^3) \parallel^2,
+		C \right\}
+\end{equation}
+In this paper, C is set $-1$.
+
+\section{Learning}
+
+\subsection{Triplet based}
+We introduce $d(W, O_i)$, which denotes the difference in distance between matched / mismatched pairs:
+\begin{equation}
+	d(W, O_i) = \parallel F_W(O_i^1) - F_W(O_i^2) \parallel^2 - \parallel F_W(O_i^1) - F_W(O_i^3) \parallel^2
+\end{equation}
+Rewrite objective as:
+\begin{equation}
+	f(W, O_i) = \sum_{O_i} \max \{ d(W, O_i), C \}
+\end{equation}
+
+Then, the partial derivative of objective becomes:
+\begin{equation}
+	\frac{\delta f}{\delta W_j} = \sum_{O_i} h(O_i)
+\end{equation}
+\begin{equation}
+	h(O_i) = 
+	\begin{cases}
+		\frac{ \delta d(W, O_i) }{ \delta W_j } & f(W, O_i) > C \\
+		0										& f(W, O_i) \leqq C
+	\end{cases}
+\end{equation}
+
+By the definition of $d(W, O_i)$, we can obtain the gradient of it as follows:
+\begin{equation}
+\begin{split}
+	\frac{ \delta d(W, O_i) }{ \delta W_j } =
+		2 (F_W(O_i^1) - F_W(O_i^2)) \cdot \frac{ \delta F_W(O_i^1) - \delta F_W(O_i^2) }{ \delta W_j }
+		\\ -
+		2 (F_W(O_i^1) - F_W(O_i^3)) \cdot \frac{ \delta F_W(O_i^1) - \delta F_W(O_i^3) }{ \delta W_j }
+\end{split}
+\end{equation}
+We can calculate gradient easily given $\frac{\delta F_W(O_i^1)}{\delta W_j}$, $\frac{\delta F_W(O_i^2)}{\delta W_j}$,
+and $\frac{\delta F_W(O_i^3)}{\delta W_j}$.
+
+\subsection{Image based gradient descent}
+In the triplet based gradient descent algorithm, the number of network propagation depends on the number
+of triplets. But if one image appears in different triplets, the propagation result can be reused.
+
+We introduce $f$, which denotes conventional CNN objective:
+\begin{equation}
+	f(I_1, I_2, \dots, I_n) = \frac{1}{n} \sum_{i=1}^{n} loss(F_W(I_i))
+\end{equation}
+\begin{equation}
+	\frac{\delta f}{W} = \frac{1}{n} \sum_{i=1}^{n} \frac{\delta loss(F_W(I_i))}{\delta W}
+\end{equation}
+
+For network weight $W^l$ and image $I_i$, the gradient can be calculated by the chain rule, which is given
+as follows:
+\begin{equation}
+	\frac{\delta loss(F_W(I_i))}{\delta W^l} = \frac{\delta loss(F_W(I_i))}{\delta X_i^l}
+		\frac{\delta X_i^l}{\delta W^l}
+\end{equation}
+\begin{equation}
+	\frac{\delta loss(F_W(I_i))}{\delta X_i^l} = \frac{\delta loss(F_W(I_i))}{ \delta X_i^{l+1} }
+		\frac{ \delta X_i^{l+1} }{ \delta X_i^l }
+\end{equation}
+
+We now turn to the triplet-based objective function and show
+that the overall gradient can also be obtained from the image-
+based gradients, which can be calculated separately. The difficulty
+lies on the impossibility of writing the objective function directly
+as the sum of the loss functions on the images, as in Eq. (10),
+because it takes the following form, where n is the number of
+triplets:
+
+\input{foot}
