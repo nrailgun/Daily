@@ -1,35 +1,79 @@
-<project name="WordCount" basedir="." default="compile">
+<project name="Main" basedir="." default="pack">
+	<property environment="env"/>
 	<property name="dir.src"	value="src"/>
 	<property name="dir.build"	value="build"/>
 	<property name="dir.class"	value="${dir.build}/classes"/>
 	<property name="dir.jar"	value="${dir.build}/jar"/>
-	<property name="class.main"	value="nr.WordCount"/>
+	<property name="class.main"	value="Main"/>
+	<property name="dir.hadoop" value="/opt/hadoop"/>
 
 	<target name="clean">
 		<delete dir="${dir.build}"/>
 	</target>
 
+	<path id="hadoop.classpath">
+		<fileset dir="${dir.hadoop}/share/hadoop/common">
+			<include name="**/*.jar"/>
+		</fileset>
+
+		<fileset dir="${dir.hadoop}/share/hadoop/hdfs">
+			<include name="**/*.jar"/>
+		</fileset>
+
+		<fileset dir="${dir.hadoop}/share/hadoop/mapreduce">
+			<include name="**/*.jar"/>
+		</fileset>
+
+		<fileset dir="${dir.hadoop}/share/hadoop/yarn">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="hadoop.depend.classpath">
+		<fileset dir="${dir.hadoop}/share/hadoop/common/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+
+		<fileset dir="${dir.hadoop}/share/hadoop/hdfs/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+
+		<fileset dir="${dir.hadoop}/share/hadoop/mapreduce/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+
+		<fileset dir="${dir.hadoop}/share/hadoop/yarn/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="classpath">
+		<path refid="hadoop.classpath"/>
+		<path refid="hadoop.depend.classpath"/>
+	</path>
+
 	<target name="compile">
 		<mkdir dir="${dir.class}"/>
-		<javac srcdir="${dir.src}" destdir="${dir.class}"/>
+		<javac classpathref="classpath" includeantruntime="false"
+			srcdir="${dir.src}" destdir="${dir.class}">
+		</javac>
 	</target>
 
-	<!--
-	<target name="jar" depends="compile">
+	<target name="pack" depends="compile">
+		<pathconvert property="jar.classpath" pathsep=":" refid="classpath"/>
 		<mkdir dir="${dir.jar}"/>
-		<jar destfile="${dir.jar}/${ant.project.name}.jar" basedir="${dir.class}">
+		<jar basedir="${dir.class}"
+			destfile="${dir.jar}/${ant.project.name}.jar">
 			<manifest>
 				<attribute name="Main-Class" value="${class.main}"/>
+				<attribute name="Class-Path" value="${jar.classpath}"/>
 			</manifest>
 		</jar>
 	</target>
 
-	<target name="run" depends="jar">
+	<!--
+	<target name="run" depends="pack">
 		<java jar="${dir.jar}/${ant.project.name}.jar" fork="true"/>
 	</target>
-
-	<target name="clean-build" depends="clean,jar"/>
-
-	<target name="main" depends="clean,run"/>
 	-->
 </project>
