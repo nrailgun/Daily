@@ -10,3 +10,11 @@
 ## 09.01
 * tried using Eclipse to build Hadoop, failed, I hate this idea.
 * Watching MOOC ML video chapter 10 & chapter 11
+
+## 09.08
+* Reading "Deep Convolutional Network Cascade for Facial Point Detection" for 3 days (2 days actually).
+* Working on Caffe to solve this problem for 4+ days. It should not be too hard. however, I suck in C++ and OOP, and the Caffe code seems a little bit overcoupled.
+* No, no, no. I need a new plan:
+  * Read Caffe tutorials for overview.
+  * Understand Caffe code more carefully.
+  * Rewrite code, implement cascnn fp.
