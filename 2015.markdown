@@ -18,3 +18,6 @@
   * Read Caffe tutorials for overview.
   * Understand Caffe code more carefully.
   * Rewrite code, implement cascnn fp.
+
+## 09.08, 9pm
+* After read Caffe `Net`, `Layer`, `DataLayer`, and `LossLayer` **patiently**, I found it not so hard. I started to came up with solutions. Ok, for now.
