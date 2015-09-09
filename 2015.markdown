@@ -21,3 +21,8 @@
 
 ## 09.08, 9pm
 * After read Caffe `Net`, `Layer`, `DataLayer`, and `LossLayer` **patiently**, I found it not so hard. I started to came up with solutions. Ok, for now.
+
+## 09.09
+* Questions:
+  * Are all levels trained together, or individually? (Answer: mother fucking **individually**.)
+  * Backward from average layer, or fully-connected layer?
