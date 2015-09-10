@@ -26,3 +26,7 @@
 * Questions:
   * Are all levels trained together, or individually? (Answer: mother fucking **individually**.)
   * Backward from average layer, or fully-connected layer?
+
+## 09.10
+* Caffe homepage tutorials. I should have read it earlier. Learned some tricks.
+* Weight sharing, stride concept.
