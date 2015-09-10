@@ -30,3 +30,4 @@
 ## 09.10
 * Caffe homepage tutorials. I should have read it earlier. Learned some tricks.
 * Weight sharing, stride concept.
+* Found the problem of failing to converge is caused by the too large learning rate! What the fuck... I already adjust it to 0.001. But unfortunately it has to be 0.0001.
