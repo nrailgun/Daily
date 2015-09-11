@@ -31,3 +31,8 @@
 * Caffe homepage tutorials. I should have read it earlier. Learned some tricks.
 * Weight sharing, stride concept.
 * Found the problem of failing to converge is caused by the too large learning rate! What the fuck... I already adjust it to 0.001. But unfortunately it has to be 0.0001.
+
+## 09.11
+* Checked data layer landmark & image data so carefully, no problem found.
+* Caffed failed to converge even with only one sample in `CasCNN`.
+* Find that Caffe failed to converge with CasCNN.proto, but converges so fast with simple inner layer. I decided to make experiments by adding layers (one by one).
