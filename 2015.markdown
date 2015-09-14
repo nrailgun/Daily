@@ -1,15 +1,11 @@
 # 2015
 
-## 08.30
-* http://www.cnblogs.com/nrblog/p/4770862.html
-
 ## 08.31
-* Try using Hadoop
-* Hadoop: The Definitive Guide ?~42, wrote some example codes
+* Try using Hadoop.
+* Hadoop: The Definitive Guide ?~42, wrote some example codes.
 
 ## 09.01
 * tried using Eclipse to build Hadoop, failed, I hate this idea.
-* Watching MOOC ML video chapter 10 & chapter 11
 
 ## 09.08
 * Reading "Deep Convolutional Network Cascade for Facial Point Detection" for 3 days (2 days actually).
@@ -49,5 +45,7 @@
 ## 09.14
 * [OpenCV C++ 核心接口简览](https://www.zybuluo.com/nrailgun/note/173782)
 * [C++：使用 gflags 解释命令行参数](https://www.zybuluo.com/nrailgun/note/173987)
+* Read Git book, reinit my github account.
 
-Edit test.
+## 09.15
+* Watching MOOC ML video chapter 10 & chapter 11.
