@@ -38,6 +38,14 @@
 * Find that Caffe failed to converge with CasCNN.proto, but converges so fast with simple inner layer. I decided to make experiments by adding layers (one by one).
 * I have found the cause! It's `TanH`'s fault! `TanH`'s value **ranges from -1 to 1**, but landmark **ranges from [0, 39)**. That's why the diffs were so large!
 
+## 09.13
+* [NROS-00 实现一个微型操作系统](https://www.zybuluo.com/nrailgun/note/173098)
+* [Git 忽略分支中文件](https://www.zybuluo.com/nrailgun/note/173131)
+* [利用 Caffe 编程实现神经网络](https://www.zybuluo.com/nrailgun/note/172947)
+* [L1 norm & L2 norm](https://www.zybuluo.com/nrailgun/note/173101)
+* [快速矩阵乘法：Strassen 演算法](https://www.zybuluo.com/nrailgun/note/173102)
+* [C++：::operator new 与 new operator](https://www.zybuluo.com/nrailgun/note/173063)
+
 ## 09.14
-[OpenCV C++ 核心接口简览](https://www.zybuluo.com/nrailgun/note/173782)
-[C++：使用 gflags 解释命令行参数](https://www.zybuluo.com/nrailgun/note/173987)
+* [OpenCV C++ 核心接口简览](https://www.zybuluo.com/nrailgun/note/173782)
+* [C++：使用 gflags 解释命令行参数](https://www.zybuluo.com/nrailgun/note/173987)
