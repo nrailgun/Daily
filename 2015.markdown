@@ -37,3 +37,7 @@
 * Caffed failed to converge even with only one sample in `CasCNN`.
 * Find that Caffe failed to converge with CasCNN.proto, but converges so fast with simple inner layer. I decided to make experiments by adding layers (one by one).
 * I have found the cause! It's `TanH`'s fault! `TanH`'s value **ranges from -1 to 1**, but landmark **ranges from [0, 39)**. That's why the diffs were so large!
+
+## 09.14
+[OpenCV C++ 核心接口简览](https://www.zybuluo.com/nrailgun/note/173782)
+[C++：使用 gflags 解释命令行参数](https://www.zybuluo.com/nrailgun/note/173987)
