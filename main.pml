@@ -1,19 +1,9 @@
 
-active proctype nodent()
-{
-	int i = 0;
+inline Q() {
+	printf("Q\n");
+	printf("hello, world\n");
+}
 
-	do
-	:: true ->
-		i++;
-		if
-		:: true ->
-			printf("1\n");
-		:: true ->
-			printf("2\n");
-		:: true ->
-			printf("3\n");
-		fi
-	od
-	printf("%d\n", i);
+active[3] proctype P() {
+	Q();
 }
