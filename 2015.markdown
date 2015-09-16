@@ -52,3 +52,6 @@
 * Read [The Git Book](http://git-scm.com/book/zh/v2) Chapter 1, 2, 3, 5.
 * [Git 分支处理与冲突解决](https://www.zybuluo.com/nrailgun/note/173255)
 * [Promela / spin 正规化方法](https://www.zybuluo.com/nrailgun/note/174932)
+
+## 09.16
+* [Finding Similar Items](https://www.zybuluo.com/nrailgun/note/175274)
