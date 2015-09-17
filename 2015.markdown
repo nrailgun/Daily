@@ -52,7 +52,11 @@
 * Read [The Git Book](http://git-scm.com/book/zh/v2) Chapter 1, 2, 3, 5.
 * [Git 分支处理与冲突解决](https://www.zybuluo.com/nrailgun/note/173255)
 * [Promela / spin 正规化方法](https://www.zybuluo.com/nrailgun/note/174932)
+* NROS multiple processor floating point structure search.
 
 ## 09.16
 * [Finding Similar Items](https://www.zybuluo.com/nrailgun/note/175274)
 * [使用 TMUX](https://www.zybuluo.com/nrailgun/note/175794)
+* liboftenr image rotate.
+* NROS `ctype`.
+* NROS multiple processor floating point structure search.
