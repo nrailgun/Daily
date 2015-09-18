@@ -65,3 +65,4 @@
 * [死锁与 LTL](https://www.zybuluo.com/nrailgun/note/176993)
 * `liboftenr` template print able to print to ostream now.
 * Update `fp_conv` & `fp_extract` code with new features provided by `liboftenr`.
+* FP: checked output in training set, come out with under fitting.
