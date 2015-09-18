@@ -60,3 +60,6 @@
 * liboftenr image rotate.
 * NROS `ctype`.
 * NROS multiple processor floating point structure search.
+
+## 09.17
+* [死锁与 LTL](https://www.zybuluo.com/nrailgun/note/176993)
