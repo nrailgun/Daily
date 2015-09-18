@@ -16,3 +16,5 @@ xv6
 *.out
 
 *.pre
+
+output

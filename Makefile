@@ -1,4 +1,4 @@
 %.pml.run: %.pml
-	~/Downloads/spin $?
+	~/Downloads/spin -T $?
 
 .PHONY: all
