@@ -9,8 +9,15 @@ proctype phil(int id)
 {
 	int i, fl, fr;
 
-	fl = id;
-	fr = (id + 1) % N_PHIL;
+	if
+	:: id < N_PHIL - 1 ->
+		fl = id;
+		fr = (id + 1) % N_PHIL;
+	:: else ->
+		assert(id == N_PHIL - 1);
+		fl = 0;
+		fr = id;
+	fi
 
 	do
 	:: true ->
