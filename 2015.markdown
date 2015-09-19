@@ -72,3 +72,4 @@
 * `imgmark` supports multi-channel img.
 * [C++ template 多重定义与实例化](https://www.zybuluo.com/nrailgun/note/177737)
 * [Caffe 损失层实现反向传播](https://www.zybuluo.com/nrailgun/note/177778)
+* Finished ASE homework 2 & 3 code.
