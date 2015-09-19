@@ -1,4 +1,7 @@
 %.pml.run: %.pml
 	~/Downloads/spin -T $?
 
-.PHONY: all
+.PHONY: all clean
+
+clean:
+	trash-put pan* *.trail a.out
