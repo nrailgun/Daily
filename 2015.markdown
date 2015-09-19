@@ -70,3 +70,4 @@
 
 ## 09.18
 * `imgmark` supports multi-channel img.
+* [C++ template 多重定义与实例化](https://www.zybuluo.com/nrailgun/note/177737)
