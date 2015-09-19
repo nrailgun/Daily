@@ -67,3 +67,6 @@
 * Update `fp_conv` & `fp_extract` code with new features provided by `liboftenr`.
 * FP: checked output in training set, come out with under fitting.
 * Templated img point mark. Planning to support multi-channel img.
+
+## 09.18
+* `imgmark` supports multi-channel img.
