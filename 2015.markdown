@@ -80,5 +80,5 @@
 * [CNN 方法寻找人脸关键点](https://www.zybuluo.com/nrailgun/note/177447)
 * Pushed `assert`, `vararg`, `string ops` to NROS.
 
-## 09.20
-* 算法课老师思维泰国发散，莫名其妙提深度学习，简直奇怪。
+## 09.21
+* 算法课老师思维太过发散，莫名其妙提深度学习，简直奇怪。
