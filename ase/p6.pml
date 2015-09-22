@@ -21,7 +21,8 @@ active proctype ARRAY()
 	}
 	printf("%d\n", prod);
 
+	assert(prod >= 0);
 	for (i : 0 .. N - 1) {
-		assert(prod > a[i]);
+		assert(prod >= a[i]);
 	}
 }
