@@ -84,4 +84,4 @@
 * 算法课老师思维太过发散，莫名其妙提深度学习，简直奇怪。
 
 ## 09.22
-* [C++ Primer & Effective C++ 阅读笔记 3~7 章](https://www.zybuluo.com/nrailgun/note/179858)
+* [C++ Primer 阅读笔记 3~7、12~13、15 章](https://www.zybuluo.com/nrailgun/note/179858)
