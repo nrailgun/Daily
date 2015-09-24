@@ -88,4 +88,5 @@
 
 ## 09.23
 * [C++ Primer 阅读笔记 15~17 章](https://www.zybuluo.com/nrailgun/note/179858)
-* [统计学习方法概论](https://www.zybuluo.com/nrailgun/note/181315)
+* [统计学习方法：概论](https://www.zybuluo.com/nrailgun/note/181315)
+* [统计学习方法：感知机](https://www.zybuluo.com/nrailgun/note/181812)
