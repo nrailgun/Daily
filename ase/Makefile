@@ -4,4 +4,4 @@
 .PHONY: all clean
 
 clean:
-	trash-put pan* *.trail a.out
+	rm pan* *.trail a.out
