@@ -92,3 +92,4 @@
 
 ## 09.24
 * [统计学习方法：感知机](https://www.zybuluo.com/nrailgun/note/181812)
+* Wrote ASE homework, with haroopad.
