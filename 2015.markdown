@@ -98,3 +98,4 @@
 * 上课：数理逻辑
 * 上课：软件工程
 * [Lp Distance, L1 norm, and L2 norm](https://www.zybuluo.com/nrailgun/note/173101)
+* [统计学习方法：k-NN](https://www.zybuluo.com/nrailgun/note/182737)
