@@ -93,3 +93,8 @@
 ## 09.24
 * [统计学习方法：感知机](https://www.zybuluo.com/nrailgun/note/181812)
 * Wrote ASE homework, with haroopad.
+
+## 09.25
+* 上课：数理逻辑
+* 上课：软件工程
+* [Lp Distance, L1 norm, and L2 norm](https://www.zybuluo.com/nrailgun/note/173101)
