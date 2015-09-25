@@ -1,8 +1,8 @@
 Advanced Software Engineering Homework 2
 ========================================
 
-## Problem 5: Basic Verification
-I wrote my code as this:
+# Problem 5: Basic Verification
+I wrote the code as the example did:
 
 ```c
 active proctype P() {
@@ -13,7 +13,7 @@ active proctype P() {
 }
 ```
 
-And typing these commands under LINUX:
+And typed these commands under LINUX:
 
 ```bash
 spin -a p5.pml
@@ -21,7 +21,7 @@ gcc -DSAFETY pan.c
 ./a.out
 ```
 
-The result turn out to be like this:
+The result turned out to be like this:
 ```bash
 (Spin Version 6.4.3 -- 16 December 2014)
 	+ Partial Order Reduction
@@ -49,7 +49,7 @@ Stats on memory usage (in Megabytes):
 unreached in proctype P
 	(0 of 4 states)
 ```
-No error at all.
+No error at all. But my classmate run it with spin installed with Mac `brew` and failed. I guess in elder version of spin, variables have to defined before statements, like old C.
 
 # Problem 6: Arrays
 
@@ -58,7 +58,7 @@ Verify property (1) like this:
     assert(prod >= 0);
 ```
 
-Using for clause can verify property (2) with only 1 assertion:
+Using `for` clause can verify property (2) with only 1 assertion:
 ```c
     for (i : 0 .. N - 1) {
         assert(prod >= a[i]);
@@ -118,14 +118,23 @@ $$
 $$
 
 # Problem 8: Concurrency: shared variable
-Neither of them works. I implemented my own fix in `p8-3.pml` by adding keyword `atomic`:
+Since `b++` is atomic, the following code works.
+```c
+proctype P() {
+	b++;
+}
+```
+
+But version 2 won't work due to data race. I implemented my own fix in `p8-3.pml` by adding keyword `atomic`:
 ```c
 	atomic {
-		byte tmp = b;
+		byte tmp; // `tmp = b` dont't work !?
+        b = tmp;
 		tmp++;
 		b = tmp;
 	}
 ```
+By the way, combining variable define and assignment like `byte tmp = b` is allowed but doesn't work in spin.
 
 # Problem 9: Modeling
 Check `p9.pml` for implementation. I implemented lock using `atomic`:
@@ -175,5 +184,4 @@ unreached in proctype PC
 
 pan: elapsed time 0.07 seconds
 pan: rate 1916214.3 states/second
-
 ```

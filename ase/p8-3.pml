@@ -2,7 +2,8 @@ byte b = 0;
 
 proctype P() {
 	atomic {
-		byte tmp = b;
+		byte tmp;
+		tmp = b;
 		tmp++;
 		b = tmp;
 	}
