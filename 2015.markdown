@@ -109,4 +109,5 @@
 * Separate testing code from NROS kernel into a sub source tree.
 * Implemented `snprintf`, `vsnprintf`, `printf`.
 * [spin 追踪失败 case](https://www.zybuluo.com/nrailgun/note/184598)
-* ASE 04 Experiments.
+* ASE 04 / 05 slides.
+* [Modeling Distributed Systems with spin chan](https://www.zybuluo.com/nrailgun/note/184765)
