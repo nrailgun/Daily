@@ -14,3 +14,7 @@ xv6
 *.pdf
 *.toc
 *.out
+
+*.pre
+
+output
