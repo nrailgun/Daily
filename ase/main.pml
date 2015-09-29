@@ -2,12 +2,14 @@ chan req = [0] of { int, int };
 
 active proctype P()
 {
-	req ! 0, 0;
+	req ! 1, 14;
 }
 
 active proctype Q()
 {
 	int i, j;
 
-	req ? i, j;
+	req ? 0, j;
+
+	printf("%d\n", j);
 }
