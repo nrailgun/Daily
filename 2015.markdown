@@ -104,3 +104,7 @@
 ## 09.27
 * 和老婆玩。
 * 和各位表亲一同庆祝中秋。
+
+## 09.28
+* Separate testing code from NROS kernel into a sub source tree.
+* Implemented `snprintf`, `vsnprintf`, `printf`.
