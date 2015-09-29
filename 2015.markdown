@@ -113,3 +113,4 @@
 * [spin 追踪失败 case](https://www.zybuluo.com/nrailgun/note/184598)
 * ASE 04 / 05 slides.
 * [Modeling Distributed Systems with spin chan](https://www.zybuluo.com/nrailgun/note/184765)
+* [Mining Data Streams part 1](https://www.zybuluo.com/nrailgun/note/182820), Fuck the fucking text book.
