@@ -18,108 +18,114 @@ using namespace std;
 
 static const int MAXN = 30;
 
-int n;
+int N, k, m;
 
-int bins[MAXN];
+typedef struct list_node {
+	int v;
+	struct list_node *prev, *nxt;
+} list_node_t;
 
-list<int> piles[MAXN];
+list_node_t nodes[MAXN];
 
-void move_back(list<int> &pile, int block)
+void init_list(list_node_t *n)
 {
-	while (pile.back() != block) {
-		int b = pile.back();
-		pile.pop_back();
-		piles[b].push_back(b);
-		bins[b] = b;
-	}
-	pile.pop_back();
+	n->prev = n;
+	n->nxt = n;
 }
 
-void move(int a, int b, char *cmd2)
+void list_add(list_node_t *l, list_node_t *n)
 {
-	list<int> &apile = piles[bins[a]];
-	list<int> &bpile = piles[bins[b]];
+	list_node_t *tail = l->prev;
 
-	move_back(apile, a);
-
-	if (!strcmp(cmd2, "onto")) {
-		move_back(bpile, b);
-		bpile.push_back(b);
-	}
-
-	bpile.push_back(a);
-	bins[a] = bins[b];
+	tail->nxt = n;
+	l->prev = n;
+	n->prev = tail;
+	n->nxt = l;
 }
 
-void pile(int a, int b, char *cmd2)
+list_node_t *list_remove(const list_node_t *n)
 {
-	list<int> &apile = piles[bins[a]];
-	list<int> &bpile = piles[bins[b]];
+	list_node_t *prev = n->prev;
+	list_node_t *nxt = n->nxt;
 
-	if (!strcmp(cmd2, "onto")) {
-		move_back(bpile, b);
-		bpile.push_back(b);
+	if (prev == n) {
+		assert(nxt == n);
+		return NULL;
 	}
 
-	for (list<int>::iterator it = apile.begin(); it != apile.end(); it++)
-	{
-		assert(it != apile.end());
+	prev->nxt = nxt;
+	nxt->prev = prev;
 
-		if (*it == a) {
-			bpile.insert(bpile.end(), it, apile.end());
-
-			for (list<int>::iterator it2 = it; it2 != apile.end();
-				it2++) {
-				bins[*it2] = bins[b];
-			}
-			apile.erase(it, apile.end());
-			break;
-		}
-	}
+	return nxt;
 }
 
-void display()
+list_node_t *kit, *mit;
+
+bool count(int &i1, int &i2)
 {
-	for (int i = 0; i < n; i++) {
-		cout << i << ":";
-		for (list<int>::const_iterator it = piles[i].begin();
-			it != piles[i].end(); it++)
-		{
-			cout << ' ' << *it;
-		}
-		cout << endl;
+	for (int i = 1; i < k; ++i) {
+		kit = kit->nxt;
 	}
+	i1 = kit->v;
+
+	for (int i = 1; i < m; ++i) {
+		mit = mit->prev;
+	}
+	i2 = mit->v;
+	
+	if (kit == mit) {
+		mit = mit->prev;
+		kit = list_remove(kit);
+		if (kit == NULL)
+			return false;
+	}
+	else if (kit->nxt == mit) {
+		assert(mit->prev = kit);
+
+		if (kit->prev == mit)
+			return false;
+		mit = kit->prev;
+		kit = list_remove(kit);
+		kit = list_remove(kit);
+	}
+	else {
+		list_remove(mit);
+		mit = mit->prev;
+		kit = list_remove(kit);
+	}
+
+	return true;
 }
 
 int main(int argc, char *argv[])
 {
-	char cmd1[10], cmd2[10];
-	int a, b, i;
-
-	scanf("%d", &n);
-	for (i = 0; i < n; i++) {
-		piles[i].push_back(i);
-		bins[i] = i;
-	}
-	//display();
-
-	while (EOF != scanf("%s %d %s %d", cmd1, &a, cmd2, &b)) {
-		if (!strcmp("quit", cmd1))
+	while (EOF != scanf("%d %d %d", &N, &k, &m)) {
+		if (N == 0)
 			break;
+		memset(&nodes, 0, sizeof(nodes));
 
-		//printf("a: %d b: %d\n", a, b);
-		if (a == b)
-			continue;
-		if (bins[a] == bins[b])
-			continue;
+		list_node_t *ls = &nodes[0];
+		ls->v = 1;
+		init_list(ls);
+		for (int i = 1; i < N; i++) {
+			nodes[i].v = i + 1;
+			list_add(ls, &nodes[i]);
+		}
+		kit = ls;
+		mit = ls->prev;
 
-		if (!strcmp("move", cmd1))
-			move(a, b, cmd2);
+		int i1, i2;
+		while (count(i1, i2)) {
+			if (i1 != i2)
+				printf("%3d%3d,", i1, i2);
+			else
+				printf("%3d,", i1);
+		}
+		if (i1 != i2)
+			printf("%3d%3d\n", i1, i2);
 		else
-			pile(a, b, cmd2);
-		//display();
+			printf("%3d\n", i1);
 	}
-	display();
 
 	return EXIT_SUCCESS;
 }
