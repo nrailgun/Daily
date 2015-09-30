@@ -114,3 +114,7 @@
 * ASE 04 / 05 slides.
 * [Modeling Distributed Systems with spin chan](https://www.zybuluo.com/nrailgun/note/184765)
 * [Mining Data Streams part 1](https://www.zybuluo.com/nrailgun/note/182820), Fuck the fucking text book.
+
+## 09.30
+* Read *Mining Massive DataSet* chap 4.
+* UVA 107, 133. I gave up ACM 4 years ago, and now I realized it was a mistake.
