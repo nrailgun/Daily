@@ -16,157 +16,110 @@
 
 using namespace std;
 
-class Card
+static const int MAXN = 30;
+
+int n;
+
+int bins[MAXN];
+
+list<int> piles[MAXN];
+
+void move_back(list<int> &pile, int block)
 {
-public:
-	char face;
-	char suit;
-
-	Card(char f, char s)
-		: face(f), suit(s)
-	{}
-
-	bool meets(const Card &rhs) const {
-		return face == rhs.face || suit == rhs.suit;
+	while (pile.back() != block) {
+		int b = pile.back();
+		pile.pop_back();
+		piles[b].push_back(b);
+		bins[b] = b;
 	}
-};
+	pile.pop_back();
+}
 
-typedef list<Card> Pile;
-
-void display(list <Pile> &piles)
+void move(int a, int b, char *cmd2)
 {
-	for (list<Pile>::const_iterator it = piles.begin(); it != piles.end(); it++) {
-		for (Pile::const_iterator it2 = it->begin();
-			it2 != it->end(); it2++)
+	list<int> &apile = piles[bins[a]];
+	list<int> &bpile = piles[bins[b]];
+
+	move_back(apile, a);
+
+	if (!strcmp(cmd2, "onto")) {
+		move_back(bpile, b);
+		bpile.push_back(b);
+	}
+
+	bpile.push_back(a);
+	bins[a] = bins[b];
+}
+
+void pile(int a, int b, char *cmd2)
+{
+	list<int> &apile = piles[bins[a]];
+	list<int> &bpile = piles[bins[b]];
+
+	if (!strcmp(cmd2, "onto")) {
+		move_back(bpile, b);
+		bpile.push_back(b);
+	}
+
+	for (list<int>::iterator it = apile.begin(); it != apile.end(); it++)
+	{
+		assert(it != apile.end());
+
+		if (*it == a) {
+			bpile.insert(bpile.end(), it, apile.end());
+
+			for (list<int>::iterator it2 = it; it2 != apile.end();
+				it2++) {
+				bins[*it2] = bins[b];
+			}
+			apile.erase(it, apile.end());
+			break;
+		}
+	}
+}
+
+void display()
+{
+	for (int i = 0; i < n; i++) {
+		cout << i << ":";
+		for (list<int>::const_iterator it = piles[i].begin();
+			it != piles[i].end(); it++)
 		{
-			cout << it2->face << it2->suit << ' ';
+			cout << ' ' << *it;
 		}
 		cout << endl;
 	}
-	cout << endl;
-}
-
-void _solve(list<Pile> &piles)
-{
-	list<Pile>::iterator it, it1, it3;
-
-	for (it = piles.begin(); it != piles.end(); it++) {
-		Card &c = it->back();
-
-		it1 = it;
-		it1++;
-		if (it1 == piles.end())
-			break;
-
-		Card &c1 = it1->back();
-		if (c.meets(c1)) {
-			it->push_back(c1);
-			it1->pop_back();
-			if (it1->empty())
-				piles.erase(it1);
-			display(piles);
-			_solve(piles);
-			return;
-		}
-
-		it3 = it1;
-		if (++it3 == piles.end())
-			continue;
-		if (++it3 == piles.end())
-			continue;
-		Card &c3 = it3->back();
-		if (c.meets(c3)) {
-			it->push_back(c3);
-			it3->pop_back();
-			if (it3->empty())
-				piles.erase(it3);
-			display(piles);
-			return _solve(piles); // FIXME
-		}
-	}
-}
-
-int solve()
-{
-	char buf[BUFSIZ];
-	list<Pile> piles;
-
-	for (int i = 0; i < 52; i++) {
-		scanf("%s", buf);
-		if (!strcmp(buf, "#"))
-			return -1;
-		printf("Input: %s\n", buf);
-
-		Card card(buf[0], buf[1]);
-
-		Pile newpl;
-		newpl.push_back(card);
-		piles.push_back(newpl);
-		display(piles);
-#if 0
-		if (piles.size() >= 3) {
-			list<Pile>::iterator it = piles.end();
-			advance(it, -3);
-			if (card.meets(it->back())) {
-				it->push_back(card);
-				display(piles);
-			}
-		}
-
-		Pile &pl = piles.back();
-		if (card.meets(pl.back())) {
-			pl.push_back(card);
-		}
-		else {
-			Pile newpl;
-			newpl.push_back(card);
-			piles.push_back(newpl);
-		}
-		display(piles);
-#endif
-
-		_solve(piles);
-	}
-
-	if (piles.size() == 1) {
-		cout << "1 pile remaining:";
-	}
-	else {
-		cout << piles.size() << " piles remaining:";
-	}
-	for (list<Pile>::const_iterator it = piles.begin(); it != piles.end(); it++) {
-		cout << " " << it->size();
-	}
-	cout << endl;
-
-	return 0;
 }
 
 int main(int argc, char *argv[])
 {
-#ifdef GENOUTPUT
-	vector<string> v;
-	char buf[10];
-	for (int i = 0; i < 52; ++i) {
-		scanf("%s", buf);
-		v.push_back(string(buf));
+	char cmd1[10], cmd2[10];
+	int a, b, i;
+
+	scanf("%d", &n);
+	for (i = 0; i < n; i++) {
+		piles[i].push_back(i);
+		bins[i] = i;
 	}
+	//display();
 
-	for (int j = 0; j < 10; j++) {
-		std::random_shuffle(v.begin(), v.end());
-		for (int i = 0; i < 52; ++i) {
-			printf("%s ", v[i].c_str());
-		}
-		cout << endl;
+	while (EOF != scanf("%s %d %s %d", cmd1, &a, cmd2, &b)) {
+		if (!strcmp("quit", cmd1))
+			break;
+
+		//printf("a: %d b: %d\n", a, b);
+		if (a == b)
+			continue;
+		if (bins[a] == bins[b])
+			continue;
+
+		if (!strcmp("move", cmd1))
+			move(a, b, cmd2);
+		else
+			pile(a, b, cmd2);
+		//display();
 	}
-	return 0;
-#endif
-
-	string line, cards;
-
-	solve();
-	//while (0 == solve())
-	//	;
+	display();
 
 	return EXIT_SUCCESS;
 }
