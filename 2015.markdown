@@ -123,3 +123,4 @@
 * I found cause for failure in NROS mp fp struct. It's caused by careless type casting.
 * [C Type Casting](https://www.zybuluo.com/nrailgun/note/185826)
 * [C 返回值截断问题](https://www.zybuluo.com/nrailgun/note/185856)
+* Finished NROS `mp_init` part.
