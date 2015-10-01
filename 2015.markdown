@@ -118,3 +118,7 @@
 ## 09.30
 * Read *Mining Massive DataSet* chap 4.
 * UVA 107, 133. I gave up ACM 4 years ago, and now I realized it was a mistake.
+
+## 10.01
+* I found cause for failure in NROS mp fp struct. It's caused by careless type casting.
+* [C Type Casting](https://www.zybuluo.com/nrailgun/note/185826)
