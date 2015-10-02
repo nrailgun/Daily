@@ -124,3 +124,4 @@
 
 ## 10.02
 * [Bloom filter, Flajolet-Martin, Moment estimates](https://www.zybuluo.com/nrailgun/note/182820).
+* [k-NN kd tree build](https://www.zybuluo.com/nrailgun/note/182737)
