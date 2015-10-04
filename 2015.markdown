@@ -129,3 +129,5 @@
 
 ## 10.03
 * [中断](https://www.zybuluo.com/nrailgun/note/186446) 与 [内存屏障](https://www.zybuluo.com/nrailgun/note/186473)
+* ASE HW 4.
+* Mathematical Logic, so confusing, learnt nothing.
