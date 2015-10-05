@@ -131,3 +131,6 @@
 * [中断](https://www.zybuluo.com/nrailgun/note/186446) 与 [内存屏障](https://www.zybuluo.com/nrailgun/note/186473)
 * ASE HW 4.
 * Mathematical Logic, so confusing, learnt nothing.
+
+## 10.05
+* [决策树 ID3，C4.5，剪枝](https://www.zybuluo.com/nrailgun/note/187264)
