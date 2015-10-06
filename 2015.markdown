@@ -140,3 +140,4 @@
 ## 10.05
 * [MIT Xv Chap 1](https://th0ar.gitbooks.io/xv6-chinese/content/content/chapter1.html)
 * English homework, translated a bullshit paper.
+* [Geometric distribution, binomial distribution, Poisson Distribution](https://www.zybuluo.com/nrailgun/note/187183)
