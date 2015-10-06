@@ -136,3 +136,6 @@
 * [决策树 ID3，C4.5，剪枝](https://www.zybuluo.com/nrailgun/note/187264)
 * [Boost Smart Pointer](https://www.zybuluo.com/nrailgun/note/187392)
 * Wrote a Application & Thanks letter.
+
+## 10.05
+* [MIT 操作系统 Xv6 进程解释](https://th0ar.gitbooks.io/xv6-chinese/content/content/chapter1.html)
