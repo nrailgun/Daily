@@ -2,6 +2,8 @@
 
 ## 10.07
 * Uva 10035, 455, 642.
+* [CART Decision Tree](https://www.zybuluo.com/nrailgun/note/187264)
+* [Normal Distribution](https://www.zybuluo.com/nrailgun/note/187183)
 
 ## 10.06
 * [MIT Xv Chap 1](https://th0ar.gitbooks.io/xv6-chinese/content/content/chapter1.html)
