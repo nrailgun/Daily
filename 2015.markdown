@@ -1,5 +1,39 @@
 # 2015
 
+## 10.07
+* Uva 10035, 455, 642.
+
+## 10.06
+* [MIT Xv Chap 1](https://th0ar.gitbooks.io/xv6-chinese/content/content/chapter1.html)
+* English homework, translated a bullshit paper.
+* [Geometric distribution, binomial distribution, Poisson Distribution](https://www.zybuluo.com/nrailgun/note/187183)
+* UVA 424.
+
+## 10.05
+* [决策树 ID3，C4.5，剪枝](https://www.zybuluo.com/nrailgun/note/187264)
+* [Boost Smart Pointer](https://www.zybuluo.com/nrailgun/note/187392)
+* Wrote a Application & Thanks letter.
+
+## 10.02
+* [Bloom filter, Flajolet-Martin, Moment estimates](https://www.zybuluo.com/nrailgun/note/182820).
+* [k-NN kd tree build](https://www.zybuluo.com/nrailgun/note/182737)
+* [朴素贝叶斯分类](https://www.zybuluo.com/nrailgun/note/186253)
+
+## 10.03
+* [中断](https://www.zybuluo.com/nrailgun/note/186446) 与 [内存屏障](https://www.zybuluo.com/nrailgun/note/186473)
+* ASE HW 4.
+* Mathematical Logic, so confusing, learnt nothing.
+
+## 10.01
+* I found cause for failure in NROS mp fp struct. It's caused by careless type casting.
+* [C Type Casting](https://www.zybuluo.com/nrailgun/note/185826)
+* [C 返回值截断问题](https://www.zybuluo.com/nrailgun/note/185856)
+* Finished NROS `mp_init` part.
+
+## 09.30
+* Read *Mining Massive DataSet* chap 4.
+* UVA 107, 133. I gave up ACM 4 years ago, and now I realized it was a mistake.
+
 ## 08.31
 * Try using Hadoop.
 * Hadoop: The Definitive Guide ?~42, wrote some example codes.
@@ -111,37 +145,3 @@
 * ASE 04 / 05 slides.
 * [Modeling Distributed Systems with spin chan](https://www.zybuluo.com/nrailgun/note/184765)
 * [Mining Data Streams part 1](https://www.zybuluo.com/nrailgun/note/182820), Fuck the fucking text book.
-
-## 09.30
-* Read *Mining Massive DataSet* chap 4.
-* UVA 107, 133. I gave up ACM 4 years ago, and now I realized it was a mistake.
-
-## 10.01
-* I found cause for failure in NROS mp fp struct. It's caused by careless type casting.
-* [C Type Casting](https://www.zybuluo.com/nrailgun/note/185826)
-* [C 返回值截断问题](https://www.zybuluo.com/nrailgun/note/185856)
-* Finished NROS `mp_init` part.
-
-## 10.02
-* [Bloom filter, Flajolet-Martin, Moment estimates](https://www.zybuluo.com/nrailgun/note/182820).
-* [k-NN kd tree build](https://www.zybuluo.com/nrailgun/note/182737)
-* [朴素贝叶斯分类](https://www.zybuluo.com/nrailgun/note/186253)
-
-## 10.03
-* [中断](https://www.zybuluo.com/nrailgun/note/186446) 与 [内存屏障](https://www.zybuluo.com/nrailgun/note/186473)
-* ASE HW 4.
-* Mathematical Logic, so confusing, learnt nothing.
-
-## 10.05
-* [决策树 ID3，C4.5，剪枝](https://www.zybuluo.com/nrailgun/note/187264)
-* [Boost Smart Pointer](https://www.zybuluo.com/nrailgun/note/187392)
-* Wrote a Application & Thanks letter.
-
-## 10.06
-* [MIT Xv Chap 1](https://th0ar.gitbooks.io/xv6-chinese/content/content/chapter1.html)
-* English homework, translated a bullshit paper.
-* [Geometric distribution, binomial distribution, Poisson Distribution](https://www.zybuluo.com/nrailgun/note/187183)
-* UVA 424.
-
-## 10.07
-* Uva 10035, 455, 642.
