@@ -142,3 +142,6 @@
 * English homework, translated a bullshit paper.
 * [Geometric distribution, binomial distribution, Poisson Distribution](https://www.zybuluo.com/nrailgun/note/187183)
 * UVA 424.
+
+## 10.06
+* Uva 10035, 455, 642.
