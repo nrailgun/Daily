@@ -137,11 +137,11 @@
 * [Boost Smart Pointer](https://www.zybuluo.com/nrailgun/note/187392)
 * Wrote a Application & Thanks letter.
 
-## 10.05
+## 10.06
 * [MIT Xv Chap 1](https://th0ar.gitbooks.io/xv6-chinese/content/content/chapter1.html)
 * English homework, translated a bullshit paper.
 * [Geometric distribution, binomial distribution, Poisson Distribution](https://www.zybuluo.com/nrailgun/note/187183)
 * UVA 424.
 
-## 10.06
+## 10.07
 * Uva 10035, 455, 642.
