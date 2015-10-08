@@ -1,5 +1,8 @@
 # 2015
 
+## 10.08
+* [逻辑回归模型](https://www.zybuluo.com/nrailgun/note/188254)
+
 ## 10.07
 * Uva 10035, 455, 642.
 * [CART Decision Tree](https://www.zybuluo.com/nrailgun/note/187264)
