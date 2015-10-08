@@ -1,6 +1,7 @@
 # 2015
 
 ## 10.08
+* 英语课
 * [逻辑回归模型](https://www.zybuluo.com/nrailgun/note/188254)
 
 ## 10.07
