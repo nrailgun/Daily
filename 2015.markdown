@@ -3,6 +3,7 @@
 ## 10.08
 * 英语课
 * [逻辑回归模型](https://www.zybuluo.com/nrailgun/note/188254)
+* Uva 160, 264.
 
 ## 10.07
 * Uva 10035, 455, 642.
