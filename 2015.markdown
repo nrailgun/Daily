@@ -4,6 +4,7 @@
 * [Head First Statistics: Using Statistical Sampling, Estimating Population and Samples](https://www.zybuluo.com/nrailgun/note/187183)
 * [拉格朗日对偶性](https://www.zybuluo.com/nrailgun/note/190602)
 * [最大熵模型](https://www.zybuluo.com/nrailgun/note/188254)
+* [PageRank and Sparse Matrix](https://www.zybuluo.com/nrailgun/note/190820)
 
 ## 10.09
 * 数理逻辑：图灵机
