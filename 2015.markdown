@@ -3,6 +3,7 @@
 ## 10.10
 * [Head First Statistics: Using Statistical Sampling, Estimating Population and Samples](https://www.zybuluo.com/nrailgun/note/187183)
 * [拉格朗日对偶性](https://www.zybuluo.com/nrailgun/note/190602)
+* [最大熵模型](https://www.zybuluo.com/nrailgun/note/188254)
 
 ## 10.09
 * 数理逻辑：图灵机
