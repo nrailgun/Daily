@@ -1,5 +1,8 @@
 # 2015
 
+## 10.10
+* [Head First Statistics: Using Statistical Sampling, Estimating Population and Samples](https://www.zybuluo.com/nrailgun/note/187183)
+
 ## 10.09
 * 数理逻辑：图灵机
 * 高级软件工程：自动机（玄学课）
