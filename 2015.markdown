@@ -4,6 +4,8 @@
 * [Enumerable Set](https://www.zybuluo.com/nrailgun/note/186582)
 * [命题逻辑](https://www.zybuluo.com/nrailgun/note/191122)
 * [时序逻辑](https://www.zybuluo.com/nrailgun/note/191208)
+* ASE Lab-1 Part-1 完成，Part-2 进行中。
+* 一直在看漫画，做自我检讨。
 
 ## 10.10
 * [Head First Statistics: Using Statistical Sampling, Estimating Population and Samples](https://www.zybuluo.com/nrailgun/note/187183)
