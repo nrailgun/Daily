@@ -57,9 +57,42 @@ active proctype Alice() {
 	inet ! MSG_3 (partner_a, msgab);
 
 	/* and last - update the auxilary status variable */
+	printf("Alice\n");
 	status_a = OK;
 }
 
-active proctype Bob() {
-	printf("placeholder for Bob\n")
+/*
+ * X -> Y: {X, NX}_{kY}
+ * Y -> X: {NX, NY}_{kX}
+ * X -> Y: {NY}_{kY}
+ */
+active proctype Bob()
+{
+	mtype pubkey;
+	mtype sender;
+	mtype nonce;
+	Crypt msgba;
+	Crypt received;
+
+	inet ? MSG_1, AGENT_B, received;
+	received.k == KEY_B;
+
+	pubkey = KEY_A; // How do I get what is the key for the sender?
+	sender = received.c1;
+	nonce = received.c2;
+
+	msgba.k = pubkey;
+	msgba.c1 = nonce;
+	msgba.c2 = NOUNCE_B;
+	inet ! MSG_2, sender, msgba;
+
+	inet ? MSG_3, AGENT_B, received;
+	(received.k == KEY_B) && (received.c1 == NOUNCE_B);
+
+	printf("Bob\n");
+	status_b = OK;
+}
+
+ltl {
+	always eventually (status_a == KEY_A && status_b == OK)
 }

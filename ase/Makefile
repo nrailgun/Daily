@@ -1,9 +1,10 @@
 %.pml.run: %.pml
 	spin -T $?
 
-verify: dining-3.pml
+verify: ns-2.pml
 	spin -a $<
-	gcc -DSAFETY -o pan pan.c
+	#gcc -DSAFETY -o pan pan.c
+	gcc -o pan pan.c
 	./pan
 
 .PHONY: all clean
