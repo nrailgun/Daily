@@ -1,5 +1,5 @@
 %.pml.run: %.pml
-	~/Downloads/spin -T $?
+	spin -T $?
 
 verify: dining-3.pml
 	spin -a $<
@@ -9,4 +9,4 @@ verify: dining-3.pml
 .PHONY: all clean
 
 clean:
-	rm pan* *.trail pan
+	rm pan* *.trail *.tmp pan
