@@ -1,7 +1,7 @@
 %.pml.run: %.pml
 	~/Downloads/spin -T $?
 
-verify: p4.pml
+verify: dining-3.pml
 	spin -a $<
 	gcc -DSAFETY -o pan pan.c
 	./pan
