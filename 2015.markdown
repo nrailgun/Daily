@@ -3,6 +3,7 @@
 ## 10.12
 * 算法课：动态规划
 * [AdaBoost](https://www.zybuluo.com/nrailgun/note/192051)
+* 算法竞赛入门经典：101～121
 
 ## 10.11
 * [Enumerable Set](https://www.zybuluo.com/nrailgun/note/186582)
