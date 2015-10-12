@@ -1,5 +1,9 @@
 # 2015
 
+## 10.12
+* 算法课：动态规划
+* [AdaBoosting](https://www.zybuluo.com/nrailgun/note/192051)
+
 ## 10.11
 * [Enumerable Set](https://www.zybuluo.com/nrailgun/note/186582)
 * [命题逻辑](https://www.zybuluo.com/nrailgun/note/191122)
