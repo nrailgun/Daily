@@ -2,7 +2,7 @@
 
 ## 10.13
 * [Construct Confidence Intervals, Hypothesis Tests](https://www.zybuluo.com/nrailgun/note/187183#11-construct-confidence-intervals)
-* Expectaion Maximization
+* [Expectaion Maximization](https://www.zybuluo.com/nrailgun/note/192927)
 
 ## 10.12
 * 算法课：动态规划
