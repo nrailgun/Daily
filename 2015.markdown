@@ -1,5 +1,8 @@
 # 2015
 
+## 10.14
+* HITS, Hub & Authority, SVD.
+
 ## 10.13
 * [Construct Confidence Intervals, Hypothesis Tests](https://www.zybuluo.com/nrailgun/note/187183#11-construct-confidence-intervals)
 * [Expectaion Maximization](https://www.zybuluo.com/nrailgun/note/192927)
