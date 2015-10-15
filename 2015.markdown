@@ -1,9 +1,37 @@
 # 2015
 
+## 10.15
+* 英语课；我觉得自己应该加强学习英语。
+
+## 10.14
+* HITS, Hub & Authority, SVD.
+
+## 10.13
+* [Construct Confidence Intervals, Hypothesis Tests](https://www.zybuluo.com/nrailgun/note/187183#11-construct-confidence-intervals)
+* [Expectaion Maximization](https://www.zybuluo.com/nrailgun/note/192927)
+
+## 10.12
+* 算法课：动态规划
+* [AdaBoost](https://www.zybuluo.com/nrailgun/note/192051)
+* 算法竞赛入门经典：101～121
+* [Confidence Interval](https://www.zybuluo.com/nrailgun/note/187183)
+
+## 10.11
+* [Enumerable Set](https://www.zybuluo.com/nrailgun/note/186582)
+* [命题逻辑](https://www.zybuluo.com/nrailgun/note/191122)
+* [时序逻辑](https://www.zybuluo.com/nrailgun/note/191208)
+* ASE Lab-1 Part-1 完成，Part-2 进行中。
+
+## 10.10
+* [Head First Statistics: Using Statistical Sampling, Estimating Population and Samples](https://www.zybuluo.com/nrailgun/note/187183)
+* [拉格朗日对偶性](https://www.zybuluo.com/nrailgun/note/190602)
+* [最大熵模型](https://www.zybuluo.com/nrailgun/note/188254)
+* [PageRank and Sparse Matrix](https://www.zybuluo.com/nrailgun/note/190820)
+
 ## 10.09
 * 数理逻辑：图灵机
 * 高级软件工程：自动机（玄学课）
-* Uva 400
+* Uva 400, 514, 679.
 
 ## 10.08
 * 英语课
