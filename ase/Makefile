@@ -1,7 +1,7 @@
 %.pml.run: %.pml
 	spin -T $?
 
-verify: ns-2.pml
+verify: main.pml
 	spin -a $<
 	#gcc -DSAFETY -o pan pan.c
 	gcc -o pan pan.c
