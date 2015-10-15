@@ -3,6 +3,7 @@
 ## 10.15
 * 英语课；我觉得自己应该加强学习英语。
 * Uva 122, 536, 10152, 673.
+* 重读 *Cascaded Convolutional Network for Facial Point Detection*，产生新思考，对于实现还在考虑，估计比较麻烦；
 
 ## 10.14
 * HITS, Hub & Authority, SVD.
