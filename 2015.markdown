@@ -3,6 +3,8 @@
 ## 10.16
 * 数理逻辑：可计算性。
 * 高级软工：感觉不是很难，睡一觉起来不知所云。
+* NROS lapic.
+* Fixed NROS access failure caused by silently failed memory map.
 
 ## 10.15
 * 英语课；我觉得自己应该加强学习英语。
