@@ -1,6 +1,8 @@
 # 2015
 
 ## 10.17
+* 实验室例会
+* 自由泳各种僵硬。
 * [Standford CNN for VR: Linear Classification](https://www.zybuluo.com/nrailgun/note/196182)
 * [Standford CNN for VR: Optimization](https://www.zybuluo.com/nrailgun/note/196244)
 * [Standford CNN for VR: Neural Network and Backpropagation](https://www.zybuluo.com/nrailgun/note/196436)
