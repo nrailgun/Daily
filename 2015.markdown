@@ -3,6 +3,7 @@
 ## 10.18
 * [Standford CNN for VR: Training Tricks](https://www.zybuluo.com/nrailgun/note/196754)
 * [Standford CNN for VR: CNN Tricks](https://www.zybuluo.com/nrailgun/note/196797)
+* 复习 [Python 和 Numpy](http://cs231n.github.io/python-numpy-tutorial/)
 
 ## 10.17
 * 实验室例会
