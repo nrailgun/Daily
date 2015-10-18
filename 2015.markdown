@@ -1,5 +1,8 @@
 # 2015
 
+## 10.18
+* [Standford CNN for VR: Training Tricks](https://www.zybuluo.com/nrailgun/note/196754)
+
 ## 10.17
 * 实验室例会
 * 自由泳各种僵硬。
