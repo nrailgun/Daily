@@ -2,6 +2,7 @@
 
 ## 10.18
 * [Standford CNN for VR: Training Tricks](https://www.zybuluo.com/nrailgun/note/196754)
+* [Standford CNN for VR: CNN Tricks](https://www.zybuluo.com/nrailgun/note/196797)
 
 ## 10.17
 * 实验室例会
