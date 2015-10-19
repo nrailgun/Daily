@@ -4,6 +4,7 @@
 * 算法：动态规划与贪心算法
 * 算法竞赛入门经典：130～146
 * [改进人脸关键点检测算法](https://www.zybuluo.com/nrailgun/note/177447#%E5%86%8D%E6%AC%A1%E6%94%B9%E8%BF%9B%E7%AE%97%E6%B3%95)
+* 阅读 APIC 介绍。
 
 ## 10.18
 * [Standford CNN for VR: Training Tricks](https://www.zybuluo.com/nrailgun/note/196754)
