@@ -3,6 +3,7 @@
 ## 10.20
 * [Ubuntu NVidia Driver](https://help.ubuntu.com/community/BinaryDriverHowto/Nvidia)
 * [Ubuntu CUDA](http://docs.nvidia.com/cuda/cuda-getting-started-guide-for-linux/#ubuntu-installation)
+* [统计学习方法：隐马模型](https://www.zybuluo.com/nrailgun/note/199744)
 
 ## 10.19
 * 算法：动态规划与贪心算法
