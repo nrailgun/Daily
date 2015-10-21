@@ -1,5 +1,9 @@
 # 2015
 
+## 10.20
+* [Ubuntu NVidia Driver](https://help.ubuntu.com/community/BinaryDriverHowto/Nvidia)
+* [Ubuntu CUDA](http://docs.nvidia.com/cuda/cuda-getting-started-guide-for-linux/#ubuntu-installation)
+
 ## 10.19
 * 算法：动态规划与贪心算法
 * 算法竞赛入门经典：130～146
