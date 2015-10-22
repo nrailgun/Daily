@@ -3,6 +3,7 @@
 ## 10.21
 * 英语课
 * 调整显示器显示高分辨率，不成功。
+* [Buchi Automaton](https://www.zybuluo.com/nrailgun/note/191208#buchi-automaton)
 
 ## 10.20
 * [Ubuntu NVidia Driver](https://help.ubuntu.com/community/BinaryDriverHowto/Nvidia)
