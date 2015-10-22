@@ -1,5 +1,9 @@
 # 2015
 
+## 10.21
+* 英语课
+* 调整显示器显示高分辨率，不成功。
+
 ## 10.20
 * [Ubuntu NVidia Driver](https://help.ubuntu.com/community/BinaryDriverHowto/Nvidia)
 * [Ubuntu CUDA](http://docs.nvidia.com/cuda/cuda-getting-started-guide-for-linux/#ubuntu-installation)
