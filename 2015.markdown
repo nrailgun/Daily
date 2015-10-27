@@ -2,6 +2,7 @@
 
 ## 10.27
 * Understood maximum entropy model, finally.
+* 数理逻辑作业
 
 ## 10.26
 * 算法课：Total Bullshit.
