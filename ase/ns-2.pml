@@ -94,5 +94,5 @@ active proctype Bob()
 }
 
 ltl {
-	always eventually (status_a == KEY_A && status_b == OK)
+	<> (status_a == OK && status_b == OK)
 }
