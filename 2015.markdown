@@ -1,5 +1,8 @@
 # 2015
 
+## 10.27
+* Understood maximum entropy model, finally.
+
 ## 10.26
 * 算法课：Total Bullshit.
 * [Spin Linear Temporal Logic Checking](https://www.zybuluo.com/nrailgun/note/203396)
