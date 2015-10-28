@@ -3,6 +3,7 @@
 ## 10.28
 * 算法竞赛入门经典：149～159
 * 数理逻辑作业画图。
+* [SVD](https://www.zybuluo.com/nrailgun/note/205340)
 
 ## 10.27
 * Understood maximum entropy model, finally.
