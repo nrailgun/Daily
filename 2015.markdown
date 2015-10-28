@@ -5,6 +5,7 @@
 * 数理逻辑作业画图。
 * [SVD](https://www.zybuluo.com/nrailgun/note/205340)
 * 实验 LINUX 内存颠簸的情形。
+* [A-Priori](https://www.zybuluo.com/nrailgun/note/205492)
 
 ## 10.27
 * Understood maximum entropy model, finally.
