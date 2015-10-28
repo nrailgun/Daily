@@ -4,6 +4,7 @@
 * 算法竞赛入门经典：149～159
 * 数理逻辑作业画图。
 * [SVD](https://www.zybuluo.com/nrailgun/note/205340)
+* 实验 LINUX 内存颠簸的情形。
 
 ## 10.27
 * Understood maximum entropy model, finally.
