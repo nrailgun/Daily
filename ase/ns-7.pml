@@ -3,7 +3,7 @@
 mtype = { ok, err, msg1, msg2, msg3, keyA, keyB, agentA, agentB,
 	nonceA, nonceB, agentI, keyI, nonceI };
 
-typedef Crypt { mtype key, content1, content2 };
+typedef Crypt { mtype key, content1, content2, content3 };
 
 chan network = [0] of { mtype, /* msg# */
                         mtype, /* receiver */
@@ -68,7 +68,7 @@ active proctype Alice() {
      received nonce is the one that we have sent earlier; block
      otherwise.  */
 
-  (data.key == keyA) && (data.content1 == nonceA);
+  (data.key == keyA) && (data.content1 == nonceA) && (data.content3 == partnerA);
 
   /* Obtain Bob's nonce */
   
@@ -113,6 +113,7 @@ active proctype Bob()
 	msgba.key = pubkey;
 	msgba.content1 = nonce;
 	msgba.content2 = nonceB;
+	msgba.content3 = agentB;
 	network ! msg2, sender, msgba;
 
 	network ? msg3, agentB, received;
@@ -149,6 +150,7 @@ active proctype Intruder() {
 		:: intercepted.key   = data.key;
 		   intercepted.content1 = data.content1;
 		   intercepted.content2 = data.content2;
+		   intercepted.content3 = data.content3;
 		:: skip;
 		fi ;
 	
@@ -167,6 +169,7 @@ active proctype Intruder() {
 			data.key       = intercepted.key;
 			data.content1  = intercepted.content1;
 			data.content2  = intercepted.content2;
+			data.content3  = intercepted.content3;
 		::
 			if /* assemble key */
 			:: recpt == agentA ->
@@ -217,6 +220,23 @@ active proctype Intruder() {
 
 			:: msg == msg3 ->
 				data.content2 = 0;
+
+			:: else ->
+				assert(false);
+			fi
+
+			if // Assemble content 3
+			:: msg == msg1 ->
+				data.content3 = 0;
+			:: msg == msg3 ->
+				data.content3 = 0;
+
+			:: msg == msg2 ->
+				data.content3 = agentA;
+			:: msg == msg2 ->
+				data.content3 = agentB;
+			:: msg == msg2 ->
+				data.content3 = agentI;
 
 			:: else ->
 				assert(false);
