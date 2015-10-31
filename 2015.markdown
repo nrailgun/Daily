@@ -2,6 +2,7 @@
 
 ## 10.31
 * 写完了愚蠢的软工作业。
+* [在远端服务器建立可视化 IPython 交互环境](https://www.zybuluo.com/nrailgun/note/207708)
 
 ## 10.30
 * 数理逻辑：递归
