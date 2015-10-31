@@ -16,17 +16,16 @@ mtype statusA = err;
 mtype statusB = err; 
 bool knows_nonceA = false, knows_nonceB = false;
 
-ltl {
-	<> ([](statusA == err && statusB == err))
-	//[] (statusA == ok && partnerA == agentB -> !knows_nonceA)
+ltl ltl1 {
+	[] (statusA == ok && statusB == ok -> partnerA == agentB && partnerB == agentA)
+}
 
-	//[] (
-	//(statusA == ok && statusB == ok -> partnerA == agentB && partnerB == agentA)
-	//&&
-	//(statusA == ok && partnerA == agentB -> !knows_nonceA)
-	//&&
-	//(statusB == ok && partnerB == agentA -> !knows_nonceB)
-	//)
+ltl ltl2 {
+	[] (statusA == ok && partnerA == agentB -> !knows_nonceA)
+}
+
+ltl ltl3 {
+	[] (statusB == ok && partnerB == agentA -> !knows_nonceB)
 }
 
 /* Agent (A)lice */
@@ -104,17 +103,11 @@ active proctype Bob()
 	Crypt received;
 
 	network ? msg1, agentB, received;
-	received.key == keyB;
+	(received.key == keyB) && (received.content1 == agentA);
 
 	sender = received.content1;
-	if
-	:: sender == agentA ->
-		partnerB = agentA;
-		pubkey = keyA;
-	:: sender == agentI ->
-		partnerB = agentI;
-		pubkey = keyI;
-	fi
+	partnerB = agentA;
+	pubkey = keyA;
 	nonce = received.content2;
 
 	msgba.key = pubkey;
@@ -125,7 +118,7 @@ active proctype Bob()
 	network ? msg3, agentB, received;
 	(received.key == keyB) && (received.content1 == nonceB);
 
-	printf("Bob finished\n");
+	printf("Bob is OK.\n");
 	statusB = ok;
 }
 
@@ -140,16 +133,12 @@ active proctype Intruder() {
 	do
 	:: network ? (msg, partner, data) ->
 		if
-		:: data.key == keyI && msg == msg1 && data.content1 == agentA ->
+		:: data.key == keyI && msg == msg1 -> // send by A
 			knows_nonceA = true;
-		:: data.key == keyI && msg == msg1 && data.content1 == agentB ->
-			knows_nonceB = true;
-		:: data.key == keyI && msg == msg2 ->
+		:: data.key == keyI && msg == msg2 -> // send by B
 			knows_nonceA = true;
 			knows_nonceB = true;
-		:: data.key == keyI && msg == msg3 && partner == agentA ->
-			knows_nonceA = true;
-		:: data.key == keyI && msg == msg3 && partner == agentB ->
+		:: data.key == keyI && msg == msg3 -> // send by A
 			knows_nonceB = true;
 		:: else ->
 			skip;
@@ -163,32 +152,91 @@ active proctype Intruder() {
 		fi ;
 	
 	:: /* Replay or send a message */
-	   if /* choose message type */
-	     :: msg = msg1;
-	     :: msg = msg2;
-	     :: msg = msg3;
-	   fi ;
-	   if /* choose a recepient */
-	     :: recpt = agentA;
-	     :: recpt = agentB;
-	   fi ;
-	   if /* replay intercepted message or assemble it */
-	     :: data.key    = intercepted.key;
-	        data.content1  = intercepted.content1;
-	        data.content2  = intercepted.content2;
-	     :: if /* assemble content1 */
-	          :: data.content1 = agentA;
-	          :: data.content1 = agentB;
-	          :: data.content1 = agentI;
-	          :: data.content1 = nonceI;
-	        fi ;     
-	        if /* assemble key */
-	          :: data.key = keyA;
-	          :: data.key = keyB;
-	          :: data.key = keyI;
-	        fi ;
-	        data.content2 = nonceI;
-	   fi ;
-	  network ! msg (recpt, data);
-	od 
+		if /* choose message type */
+			:: msg = msg1;
+			:: msg = msg2;
+			:: msg = msg3;
+		fi ;
+		if /* choose a recepient */
+			:: recpt = agentA;
+			:: recpt = agentB;
+		fi ;
+		if /* replay intercepted message or assemble it */
+		::
+			data.key       = intercepted.key;
+			data.content1  = intercepted.content1;
+			data.content2  = intercepted.content2;
+		::
+			if /* assemble key */
+			:: recpt == agentA ->
+				data.key = keyA;
+			:: recpt == agentB ->
+				data.key = keyB;
+			fi ;
+			if /* assemble content1 */
+			:: msg == msg1 ->
+			      	data.content1 = agentA;
+			:: msg == msg1 ->
+		      		data.content1 = agentB;
+			:: msg == msg1 ->
+		      		data.content1 = agentI;
+
+			:: msg == msg2 ->
+				data.content1 = nonceI;
+			:: msg == msg2 && knows_nonceA ->
+				data.content1 = nonceA;
+			:: msg == msg2 && knows_nonceB ->
+				data.content1 = nonceB;
+			:: msg == msg2 ->
+				data.content1 = intercepted.content1;
+			:: msg == msg2 ->
+				data.content1 = intercepted.content2;
+
+			:: msg == msg3 ->
+				data.content1 = nonceI;
+			:: msg == msg3 && knows_nonceA ->
+				data.content1 = nonceA;
+			:: msg == msg3 && knows_nonceB ->
+				data.content1 = nonceB;
+			:: msg == msg3 ->
+				data.content1 = intercepted.content1;
+			:: msg == msg3 ->
+				data.content1 = intercepted.content2;
+
+			:: else ->
+				assert(false);
+			fi ;
+
+			if // Assemble content 2
+			:: msg == msg1 ->
+				data.content2 = nonceI;
+			:: msg == msg1 && knows_nonceA ->
+				data.content2 = nonceA;
+			:: msg == msg1 && knows_nonceB->
+				data.content2 = nonceB;
+			:: msg == msg1 ->
+				data.content2 = intercepted.content1;
+			:: msg == msg1 ->
+				data.content2 = intercepted.content2;
+
+			:: msg == msg2 ->
+				data.content2 = nonceI;
+			:: msg == msg2 && knows_nonceA ->
+				data.content2 = nonceA;
+			:: msg == msg2 && knows_nonceB->
+				data.content2 = nonceB;
+			:: msg == msg2 ->
+				data.content2 = intercepted.content1;
+			:: msg == msg2 ->
+				data.content2 = intercepted.content2;
+
+			:: msg == msg3 ->
+				data.content2 = 0;
+
+			:: else ->
+				assert(false);
+			fi
+		fi ;
+		network ! msg (recpt, data);
+	od
 }
