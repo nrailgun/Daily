@@ -187,10 +187,6 @@ active proctype Intruder() {
 				data.content1 = nonceA;
 			:: msg == msg2 && knows_nonceB ->
 				data.content1 = nonceB;
-			:: msg == msg2 ->
-				data.content1 = intercepted.content1;
-			:: msg == msg2 ->
-				data.content1 = intercepted.content2;
 
 			:: msg == msg3 ->
 				data.content1 = nonceI;
@@ -198,10 +194,6 @@ active proctype Intruder() {
 				data.content1 = nonceA;
 			:: msg == msg3 && knows_nonceB ->
 				data.content1 = nonceB;
-			:: msg == msg3 ->
-				data.content1 = intercepted.content1;
-			:: msg == msg3 ->
-				data.content1 = intercepted.content2;
 
 			:: else ->
 				assert(false);
@@ -214,10 +206,6 @@ active proctype Intruder() {
 				data.content2 = nonceA;
 			:: msg == msg1 && knows_nonceB->
 				data.content2 = nonceB;
-			:: msg == msg1 ->
-				data.content2 = intercepted.content1;
-			:: msg == msg1 ->
-				data.content2 = intercepted.content2;
 
 			:: msg == msg2 ->
 				data.content2 = nonceI;
@@ -225,10 +213,6 @@ active proctype Intruder() {
 				data.content2 = nonceA;
 			:: msg == msg2 && knows_nonceB->
 				data.content2 = nonceB;
-			:: msg == msg2 ->
-				data.content2 = intercepted.content1;
-			:: msg == msg2 ->
-				data.content2 = intercepted.content2;
 
 			:: msg == msg3 ->
 				data.content2 = 0;
