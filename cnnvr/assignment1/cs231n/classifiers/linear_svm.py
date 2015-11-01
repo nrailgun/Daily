@@ -35,7 +35,7 @@ def svm_loss_naive(W, X, y, reg):
   loss /= num_train
 
   # Add regularization to the loss.
-  loss += 0.5 * reg * np.sum(W * W)
+  #loss += 0.5 * reg * np.sum(W * W)
 
   #############################################################################
   # TODO:                                                                     #
@@ -50,11 +50,13 @@ def svm_loss_naive(W, X, y, reg):
     scores = W.dot(X[:, i])
     correct_class_score = scores[y[i]]
     for j in xrange(num_classes):
-      if j == y[i]:
-        continue
       margin = scores[j] - correct_class_score + 1 # note delta = 1
-      if margin > 0:
+      if margin <= 0:
+        pass
+      elif j != y[i]:
         dW[j, :] += X[:, i]
+      else:
+        dW[j, :] += (1 - num_classes) * X[:, i]
   dW /= num_train
 
   return loss, dW
