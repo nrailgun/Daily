@@ -1,5 +1,9 @@
 # 2015
 
+# 11.02
+* 算法竞赛入门经典：161～168
+* 找到了 SVM 求导过程中的错误：由于脑残使用了错误的求和序列。
+
 # 11.01
 * 斯坦福的作业真他妈难，一个下午搞不定 KNN + SVM。
 * Read paper *Supervised Descent Model and its Applications to Face Alignment*. OMG, what the fuck.
