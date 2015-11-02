@@ -36,10 +36,8 @@ def grad_check_sparse(f, x, analytic_grad, num_checks):
   """
   h = 1e-5
 
-  x.shape
   for i in xrange(num_checks):
     ix = tuple([randrange(m) for m in x.shape])
-    #ix = tuple([1 for m in x.shape])
 
     x[ix] += h # increment by h
     fxph = f(x) # evaluate f(x + h)
@@ -52,3 +50,14 @@ def grad_check_sparse(f, x, analytic_grad, num_checks):
     rel_error = abs(grad_numerical - grad_analytic) / (abs(grad_numerical) + abs(grad_analytic))
     print 'numerical: %f analytic: %f, relative error: %e' % (grad_numerical, grad_analytic, rel_error)
 
+def nr_grad_check(f, x, agrad):
+  h = 1e-5
+
+  x += h
+  fxph = f(x)
+  x -= 2 * h
+  fxmh = f(x)
+  x += h
+
+  ngrad = (fxph - fxmh) / h * .5
+  print 'numerical: %f, analytic: %f' % (ngrad, agrad)
