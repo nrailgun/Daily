@@ -1,11 +1,10 @@
 %.pml.run: %.pml
 	spin -T $?
 
-verify: main.pml
+%.pml.verify: %.pml
 	spin -a $<
-	#gcc -DSAFETY -o pan pan.c
-	gcc -o pan pan.c
-	./pan
+	gcc -DMEMLIM=1024 -O2 -DXUSAFE -w -o pan pan.c
+	./pan -m10000 -a
 
 .PHONY: all clean
 

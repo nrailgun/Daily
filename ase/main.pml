@@ -1,15 +1,14 @@
+int var = 0;
 
-bool bullshit = false;
+ltl { <> (var == 300) }
 
 active proctype P()
 {
-	int i, j;
+	var = 100;
+	var = 0;
 
-	for (i : 1..10) {
-		printf("%d\n", i);
-	}
-}
-
-ltl {
-	eventually bullshit
+	if
+	:: true ->
+		var = 200;
+	fi
 }
