@@ -3,6 +3,7 @@
 # 11.02
 * 算法竞赛入门经典：161～168
 * 找到了 [SVM 求导过程中的错误](https://www.zybuluo.com/nrailgun/note/209169)：由于脑残使用了错误的求和序列。
+* Some [numpy tricks](https://www.zybuluo.com/nrailgun/note/209206).
 
 # 11.01
 * 斯坦福的作业真他妈难，一个下午搞不定 KNN + SVM。
