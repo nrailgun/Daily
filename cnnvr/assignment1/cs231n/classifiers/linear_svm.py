@@ -84,14 +84,19 @@ def svm_loss_vectorized(W, X, y, reg):
     np.zeros((num_classes, num_train - num_classes)) ])
   Y = Y[:, y] # Ground Truth
 
-  for i in xrange(num_train):
-    xi = X[:, i]
-    yi = y[i]
-    l = np.dot(W, xi) - np.dot(W[yi, :], xi) + 1
-    l = np.maximum.reduce([l, np.zeros_like(l)])
-    l = np.sum(l) - 1
-    loss += l
-  loss /= num_train
+  WX = np.dot(W, X)
+  WyX = WX[y, xrange(num_train)]
+  l = WX - WyX + 1 - Y
+  l = np.maximum.reduce([l, np.zeros_like(l)])
+  loss = np.sum(l) / num_train
+  #for i in xrange(num_train):
+  #  xi = X[:, i]
+  #  yi = y[i]
+  #  l = np.dot(W, xi) - np.dot(W[yi, :], xi) + 1
+  #  l = np.maximum.reduce([l, np.zeros_like(l)])
+  #  l = np.sum(l) - 1
+  #  loss += l
+  #loss /= num_train
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
