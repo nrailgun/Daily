@@ -77,19 +77,19 @@ def svm_loss_vectorized(W, X, y, reg):
   # Implement a vectorized version of the structured SVM loss, storing the    #
   # result in loss.                                                           #
   #############################################################################
-  num_classes = W.shape[0]
-  num_train = X.shape[1]
+  n_cls = W.shape[0]
+  n_train = X.shape[1]
 
-  Y = np.hstack([ np.eye(num_classes),
-    np.zeros((num_classes, num_train - num_classes)) ])
+  Y = np.hstack([ np.eye(n_cls),
+    np.zeros((n_cls, n_train - n_cls)) ])
   Y = Y[:, y] # Ground Truth
 
   WX = np.dot(W, X)
-  WyX = WX[y, xrange(num_train)]
+  WyX = WX[y, xrange(n_train)]
   l = WX - WyX + 1 - Y
   l = np.maximum.reduce([l, np.zeros_like(l)])
-  loss = np.sum(l) / num_train
-  #for i in xrange(num_train):
+  loss = np.sum(l) / n_train
+  #for i in xrange(n_train):
   #  xi = X[:, i]
   #  yi = y[i]
   #  l = np.dot(W, xi) - np.dot(W[yi, :], xi) + 1
@@ -111,7 +111,20 @@ def svm_loss_vectorized(W, X, y, reg):
   # to reuse some of the intermediate values that you used to compute the     #
   # loss.                                                                     #
   #############################################################################
-  pass
+  WX = np.dot(W, X)
+  WyX = WX[y, xrange(n_train)]
+  l = WX - WyX + 1 - Y
+  l = np.maximum.reduce([l, np.zeros_like(l)])
+
+  for i in xrange(n_train):
+    xi = X[:, i]
+    yi = y[i]
+    li = l[:, i]
+    dW += xi
+    dW[li <= 0] -= xi
+    dW[yi] -= np.sum(li > 0) * xi
+  dW /= n_train
+
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
