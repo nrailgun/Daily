@@ -1,5 +1,9 @@
 # 2015
 
+# 11.03
+* *Supervised Descent Model and its Applications to Face Alignment* half through.
+* Standford CNNVR assignment 1 SVM vectorized loss and gradient. It does cost me lots of time. I must grasp some vectorize coding skill from it.
+
 # 11.02
 * 算法竞赛入门经典：161～168
 * 找到了 [SVM 求导过程中的错误](https://www.zybuluo.com/nrailgun/note/209169)：由于脑残使用了错误的求和序列。
