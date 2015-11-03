@@ -112,17 +112,14 @@ def svm_loss_vectorized(W, X, y, reg):
   # loss.                                                                     #
   #############################################################################
 
-  #WX = np.dot(W, X)
-  #WyX = WX[y, xrange(n_train)]
-  #l = WX - WyX + 1 - Y
-  #l = np.maximum.reduce([l, np.zeros_like(l)])
-
   lb = np.array(l > 0, dtype=int) # k * m
   dW = np.dot(lb, X.T) # k * n
 
-  dWy = X * np.sum(lb, 0) # n * m
-  for i in xrange(n_cls):
-    dW[i, :] -= np.sum(dWy[:, y == i], 1)
+  dWy = X * np.sum(lb, 0) # dWy: n * m, Y: k * m
+  dWy = np.dot(Y, dWy.T)
+  dW -= dWy
+  #for i in xrange(n_cls):
+  #  dW[i, :] -= np.sum(dWy[:, y == i], 1)
 
   dW /= n_train
 
