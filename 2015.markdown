@@ -1,5 +1,9 @@
 # 2015
 
+# 11.04
+* SDM 看不懂，需要补充牛顿法、海森矩阵，和雅各布矩阵。
+* SIFT 看不懂。
+
 # 11.03
 * *Supervised Descent Model and its Applications to Face Alignment* half through.
 * Standford CNNVR assignment 1 SVM vectorized loss and gradient. It does cost me lots of time. I must grasp some vectorize coding skill from it.
