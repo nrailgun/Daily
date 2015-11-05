@@ -1,7 +1,99 @@
 # 2015
 
+# 11.05
+* 英语课：扯淡
+* [Newton Method and Quasi Newton Method](https://www.zybuluo.com/nrailgun/note/211706)
+* [Positive-definite matrix](https://www.zybuluo.com/nrailgun/note/211772)
+* [More Numpy Tricks](https://www.zybuluo.com/nrailgun/note/209206)
+
+# 11.04
+* SDM 看不懂，需要补充牛顿法、海森矩阵，和雅各布矩阵。
+* SIFT 教程混乱，得看看论文。
+
+# 11.03
+* *Supervised Descent Model and its Applications to Face Alignment* half through.
+* Standford CNNVR assignment 1 SVM vectorized loss and gradient. It does cost me lots of time. I must grasp some vectorize coding skill from it.
+
+# 11.02
+* 算法竞赛入门经典：161～168
+* 找到了 [SVM 求导过程中的错误](https://www.zybuluo.com/nrailgun/note/209169)：由于脑残使用了错误的求和序列。
+* Some [numpy tricks](https://www.zybuluo.com/nrailgun/note/209206).
+
+# 11.01
+* 斯坦福的作业真他妈难，一个下午搞不定 KNN + SVM。
+* Read paper *Supervised Descent Model and its Applications to Face Alignment*. OMG, what the fuck.
+* Calculate Hinge loss analytic gradient, found cause for failure: Wrong formula (WTF).
+
+## 10.31
+* 写完了愚蠢的软工作业。
+* [在远端服务器建立可视化 IPython 交互环境](https://www.zybuluo.com/nrailgun/note/207708)
+
+## 10.30
+* 数理逻辑：递归
+* 高级软工
+
+## 10.29
+* 英语课
+* 维护实验室网站信息
+
+## 10.28
+* 算法竞赛入门经典：149～159
+* 数理逻辑作业画图。
+* [SVD](https://www.zybuluo.com/nrailgun/note/205340)
+* 实验 LINUX 内存颠簸的情形。
+* [A-Priori](https://www.zybuluo.com/nrailgun/note/205492)
+
+## 10.27
+* Understood maximum entropy model, finally.
+* 数理逻辑作业
+* Advanced software engineering lab 1 don't know how to work out, so weired.
+
+## 10.26
+* 算法课：Total Bullshit.
+* [Spin Linear Temporal Logic Checking](https://www.zybuluo.com/nrailgun/note/203396)
+
+## 10.24
+* [常见可枚举集合](https://www.zybuluo.com/nrailgun/note/186582)
+
+## 10.21
+* 英语课
+* 调整显示器显示高分辨率，不成功。
+* [Buchi Automaton](https://www.zybuluo.com/nrailgun/note/191208#buchi-automaton)
+
+## 10.20
+* [Ubuntu NVidia Driver](https://help.ubuntu.com/community/BinaryDriverHowto/Nvidia)
+* [Ubuntu CUDA](http://docs.nvidia.com/cuda/cuda-getting-started-guide-for-linux/#ubuntu-installation)
+* [统计学习方法：隐马模型](https://www.zybuluo.com/nrailgun/note/199744)
+* [$\omega$ Language](https://www.zybuluo.com/nrailgun/note/191208)
+
+## 10.19
+* 算法：动态规划与贪心算法
+* 算法竞赛入门经典：130～146
+* [改进人脸关键点检测算法](https://www.zybuluo.com/nrailgun/note/177447#%E5%86%8D%E6%AC%A1%E6%94%B9%E8%BF%9B%E7%AE%97%E6%B3%95)
+* 阅读 APIC 介绍。
+
+## 10.18
+* [Standford CNN for VR: Training Tricks](https://www.zybuluo.com/nrailgun/note/196754)
+* [Standford CNN for VR: CNN Tricks](https://www.zybuluo.com/nrailgun/note/196797)
+* 复习 [Python 和 Numpy](http://cs231n.github.io/python-numpy-tutorial/)
+
+## 10.17
+* 实验室例会
+* 自由泳各种僵硬。
+* [Standford CNN for VR: Linear Classification](https://www.zybuluo.com/nrailgun/note/196182)
+* [Standford CNN for VR: Optimization](https://www.zybuluo.com/nrailgun/note/196244)
+* [Standford CNN for VR: Neural Network and Backpropagation](https://www.zybuluo.com/nrailgun/note/196436)
+
+## 10.16
+* 数理逻辑：可计算性。
+* 高级软工：感觉不是很难，睡一觉起来不知所云。
+* NROS lapic.
+* Fixed NROS access failure caused by silently failed memory map.
+
 ## 10.15
 * 英语课；我觉得自己应该加强学习英语。
+* Uva 122, 536, 10152, 673.
+* 重读 *Cascaded Convolutional Network for Facial Point Detection*，产生新思考，对于实现还在考虑，估计比较麻烦；
 
 ## 10.14
 * HITS, Hub & Authority, SVD.

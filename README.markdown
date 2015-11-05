@@ -1,4 +1,6 @@
 Homework
 ========
 
-I decided to store my homeworks here.
+* Tech Diaries
+* Homeworks
+* Solved OJ codes
