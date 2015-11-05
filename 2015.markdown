@@ -3,6 +3,7 @@
 # 11.05
 * 英语课：扯淡
 * [Newton Method and Quasi Newton Method](https://www.zybuluo.com/nrailgun/note/211706)
+* [Positive-definite matrix](https://www.zybuluo.com/nrailgun/note/211772)
 
 # 11.04
 * SDM 看不懂，需要补充牛顿法、海森矩阵，和雅各布矩阵。
