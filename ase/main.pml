@@ -1,14 +1,17 @@
 int var = 0;
 
-ltl { <> (var == 300) }
-
 active proctype P()
 {
-	var = 100;
-	var = 0;
+	var = -10;
 
-	if
-	:: true ->
-		var = 200;
-	fi
+	var = 2;
+	var = 10;
+}
+
+never {
+	skip;
+//	do
+//	:: var < 0 ->
+//	:: else
+//	od
 }
