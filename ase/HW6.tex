@@ -73,6 +73,69 @@
 
 \maketitle
 
+\section*{Problem 1 LTL2GeneralizedBchi}
+
+Produce Buchi Automaton for \lstinline|(false U p)|.
+
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+\node[state,initial] (q_1) {};
+\node[state,accepting] (q_2) [right=of q_1] {};
+\path[->]
+
+(q_1) edge node {$\Sigma_p$} (q_2)
+(q_2)
+edge [loop above] node {$\Sigma$} ()
+;
+\end{tikzpicture}
+
+Produce Buchi Automaton for \lstinline|(p -> (p U q))|.
+
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+\node[state,initial] (q_1) {};
+\node[state] (q_2) [right=of q_1] {};
+\node[state,accepting] (q_3) [right=of q_2] {};
+\path[->]
+
+(q_1) edge node {$\{p\}$} (q_2)
+edge [loop above] node {$\Sigma_{\lnot p}$} ()
+(q_2) edge node {$\{q\}$} (q_3)
+edge [loop above] node {$\{p\}$} ()
+(q_3)
+edge [loop above] node {$\Sigma$} ()
+;
+\end{tikzpicture}
+
+\section*{Problem 2 Intersection Automaton}
+
+Produce Buchi Automaton for $(a + b)^* b^\omega$ and $ab(a + b)^\omega$.
+
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+\node[state,initial] (q_1) {};
+\node[state,accepting] (q_2) [right=of q_1] {};
+\path[->]
+
+(q_1) edge node {$b$} (q_2)
+edge [loop above] node {$a, b$} ()
+(q_2)
+edge [loop above] node {$b$} ()
+;
+\end{tikzpicture}
+
+\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+\node[state,initial] (q_1) {};
+\node[state] (q_2) [right=of q_1] {};
+\node[state,accepting] (q_3) [right=of q_2] {};
+\path[->]
+
+(q_1) edge node {$a$} (q_2)
+(q_2) edge node {$b$} (q_3)
+(q_3)
+edge [loop above] node {$a, b$} ()
+;
+\end{tikzpicture}
+
+And their intersection is $ab(a+b)^*b^\omega$.
+
 \section*{Problem 3 Rendez-Vous Revisited}
 
 Express the property with LTL
