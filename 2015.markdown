@@ -1,5 +1,12 @@
 # 2015
 
+# 11.07
+* WTF is the HW6 of ASE?
+
+# 11.06
+* ASE
+* Mathematical Logic
+
 # 11.05
 * 英语课：扯淡
 * [Newton Method and Quasi Newton Method](https://www.zybuluo.com/nrailgun/note/211706)
