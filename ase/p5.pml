@@ -25,14 +25,14 @@ active proctype n() {
 	od
 }
 
-//ltl a { [] (count < BOUND) }
+ltl a { [] (count < BOUND) }
 
-//ltl b { [] (
-//	(count > 0) -> ((count > 0) U (mode > 1))
-//) }
+ltl b { [] (
+	(count > 0) -> ((count > 0) U (mode > 1))
+) }
 
 ltl c { [] (
 	(count > 0) -> (<> (count == 0))
 ) }
 
-//ltl d { <> (mode == 3) }
+ltl d { <> (mode == 3) }
