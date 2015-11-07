@@ -3,6 +3,7 @@
 # 11.07
 * WTF is the HW6 of ASE?
 * [Eclipse Mars 使用 OpenJML](https://www.zybuluo.com/nrailgun/note/213228)
+* My efforts trying to run OpenJML under Ubuntu turned out to be in vain.
 
 # 11.06
 * ASE
