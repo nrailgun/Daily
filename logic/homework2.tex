@@ -80,6 +80,8 @@
 %;
 %\end{tikzpicture}
 
+\section*{}
+
 \textbf{5.6} Write an abacus-machine flow chart for computing the quotient function quo of the preceding problem.
 
 Solution:
@@ -144,6 +146,8 @@ edge node [right] {} +(-1.1,-1.1)
 ;
 \end{tikzpicture}
 
+\section*{}
+
 \textbf{6.6} An alternative coding of pairs of numbers by numbers was considered in
 Example 1.2, based on the fact that every natural number n can be written
 in one and only one way as 1 less than a power of 2 times an odd number,
@@ -171,6 +175,21 @@ l(n) = odd(n) \times [\frac{n + 1}{2^{k(n)+1}} + \frac 1 2] + (1 - odd(n)) \time
 \end{cases}
 $$
 
+\section*{}
+
+\textbf{6.8} Given a reasonable way of coding recursive functions by natural numbers, let
+d(x) = 1 if the one-place recursive function with code number x is defined and
+has value 0 for argument x, and d(x) = 0 otherwise. Show that this function is
+not recursive.
+
+Solution:
+
+Suppose function $c: f \to N$. Assuming $d(x)$ is recursive, let $c_d = c(d)$. $d(c_d) = 1$ if
+$f_{c_d}(c_d) = d(c_d) = 0$, $d(c_d) = 0$ if $f_{c_d}(c_d) = d(c_d) \not= 0$. It's a contradition,
+thus, $d(x)$ is not recursive.
+
+\section*{}
+
 \textbf{7.3} For natural numbers, write u | v to mean that u divides v without remainder,
 that is, there is a w such that u · w = v. [Thus u | 0 holds for all u, but 0 | v
 holds only for v = 0.] We say z is the greatest common divisor of x and y, and
@@ -194,5 +213,33 @@ h(x, y, w') = \begin{cases}
 $$
 Obviously $u | v = \overline{sg}(v \bmod u)$ is primitive recursive,
 its composition $h(x, y, w)$ is primitive recursive, too.
+
+\section*{}
+
+\textbf{7.6} Let f be a (primitive) recursive total function, and let A be the set of all n such
+that the value f (n) is ‘new’ in the sense of being different from f (m) for all
+m < n. Show that A is (primitive) recursive.
+
+Solution:
+
+Let $a(n)$ denotes the characteristic function of $A$
+$$
+a(n) = \forall_{m < n} f(m) \not= f(n)
+$$
+(primitive) Recursive relations are closed under bounded universal quantification, thus $A$ is
+(primitive) recursive.
+
+\section*{}
+
+\textbf{7.11} Show that the substitution function of Example 7.22 is primitive recursive.
+
+Solution:
+
+Function $sub(s, c, d)$ can be expanded into
+$$
+sub(s, c, d) = \prod_{i=1}^{k} (ent(s, i) = c) \times \pi(i)^d
+	+ (ent(s, i) \not= c) \times \pi(i)^{ent(s, i)}
+$$
+Since all functions used in this formula are primitive functions, so be $sub(s, c, d)$.
 
 \end{document}
