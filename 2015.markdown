@@ -2,6 +2,7 @@
 
 # 11.09
 * 算法课
+* 数理逻辑 Chap 8
 
 # 11.08
 * [数理逻辑 5，6，7 章](https://www.zybuluo.com/nrailgun/note/213626)
