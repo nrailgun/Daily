@@ -1,5 +1,9 @@
 # 2015
 
+# 11.10
+* Read SDM paper.
+* [Recommender System: Latent Factor Model](https://www.zybuluo.com/nrailgun/note/214534)
+
 # 11.09
 * 算法课
 * 数理逻辑 Chap 8
