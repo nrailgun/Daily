@@ -1,5 +1,9 @@
 # 2015
 
+# 11.11
+* Read SDM paper.
+* What the fuck, SIFT.
+
 # 11.10
 * Read SDM paper.
 * [Recommender System: Latent Factor Model](https://www.zybuluo.com/nrailgun/note/214534)
