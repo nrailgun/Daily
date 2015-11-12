@@ -157,21 +157,27 @@ Solution:
 
 If $n$ is even ($n + 1$ is odd), then $k(n) = 0$, $l(n) = \frac{n + 2}{2}$, obviously they are primitive recursive.
 
-If $n$ is odd ($n+1$ is even), let $l(n) = (\frac{n + 1}{2^{k(n)}} + 1) / 2$. $l(n)$ is primitive recursive if $k(n)$
+If $n$ is odd ($n+1$ is even), let $l(n) = \frac{n + 1}{2^{k(n) + 1}} + \frac 1 2$. $l(n)$ is primitive recursive if $k(n)$
 is primitive recursive. Let $k(n) = \mathrm{lo}(n + 1)$, and $\mathrm{lo}(n)$ is primitive recursive, so be $k(n)$.
 
 Define function
 $$
 odd(x') = \begin{cases}
 0 & x' = 0 \\
-1 - odd(x) & x' \not= 0
+1 - odd(x) & x' \ne 0
 \end{cases}
 $$
 which is primitive recursive. Finally, we have
 $$
-\begin{cases}
-k(n) = odd(n) \times \mathrm{lo}(n + 1) \\
-l(n) = odd(n) \times [\frac{n + 1}{2^{k(n)+1}} + \frac 1 2] + (1 - odd(n)) \times \frac{n + 2}{2}
+k(n) = \begin{cases}
+\mathrm{lo}(n + 1) & odd(n) = 1 \\
+0 & odd(n) = 0
+\end{cases}
+$$
+$$
+l(n) = \begin{cases}
+\frac{n + 1}{2^{k(n)+1}} + \frac 1 2 & odd(n) = 1 \\
+\frac{n + 2}{2} & odd(n) = 0
 \end{cases}
 $$
 
@@ -185,7 +191,7 @@ not recursive.
 Solution:
 
 Suppose function $c: f \to N$. Assuming $d(x)$ is recursive, let $c_d = c(d)$. $d(c_d) = 1$ if
-$f_{c_d}(c_d) = d(c_d) = 0$, $d(c_d) = 0$ if $f_{c_d}(c_d) = d(c_d) \not= 0$. It's a contradition,
+$f_{c_d}(c_d) = d(c_d) = 0$, $d(c_d) = 0$ if $f_{c_d}(c_d) = d(c_d) \ne 0$. It's a contradition,
 thus, $d(x)$ is not recursive.
 
 \section*{}
@@ -208,11 +214,12 @@ Define $gcd(x, y) = h(x, y, x)$, where
 $$
 h(x, y, w') = \begin{cases}
 0 & w' = 0 \\
-\overline{sg}(w' | x + w' | y) W' + sg(w' | x + w' | y) h(x, y, w) & w' \not= 0
+w' & w' \ne 0, w' | x, w' | y \\
+h(x, y, w) & \mathrm{otherwise}
 \end{cases}
 $$
 Obviously $u | v = \overline{sg}(v \bmod u)$ is primitive recursive,
-its composition $h(x, y, w)$ is primitive recursive, too.
+and its composition $h(x, y, w)$ is primitive recursive, too.
 
 \section*{}
 
@@ -224,7 +231,7 @@ Solution:
 
 Let $a(n)$ denotes the characteristic function of $A$
 $$
-a(n) = \forall_{m < n} f(m) \not= f(n)
+a(n) = \forall_{m < n} f(m) \ne f(n)
 $$
 (primitive) Recursive relations are closed under bounded universal quantification, thus $A$ is
 (primitive) recursive.
@@ -237,8 +244,11 @@ Solution:
 
 Function $sub(s, c, d)$ can be expanded into
 $$
-sub(s, c, d) = \prod_{i=1}^{k} (ent(s, i) = c) \times \pi(i)^d
-	+ (ent(s, i) \not= c) \times \pi(i)^{ent(s, i)}
+sub(s, c, d) = \prod_{i=1}^{k} \left[
+	\left(ent(s, i) = c \right) \times \pi(i)^d
+	+
+	\left(ent(s, i) \ne c \right) \times \pi(i)^{ent(s, i)}
+	\right]
 $$
 Since all functions used in this formula are primitive functions, so be $sub(s, c, d)$.
 
