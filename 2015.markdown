@@ -1,5 +1,9 @@
 # 2015
 
+# 11.12
+* English Class
+* Mathematical Logic: Equivalence of computability, Semi-decidable.
+
 # 11.11
 * Read SDM paper.
 * What the fuck, SIFT.
