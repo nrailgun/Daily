@@ -1,5 +1,8 @@
 # 2015
 
+# 11.13
+* Mathematical Logic: Semi-recursive, and something about HW1.
+
 # 11.12
 * English Class
 * Mathematical Logic: Equivalence of computability, Semi-decidable.
