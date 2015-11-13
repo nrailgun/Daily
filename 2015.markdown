@@ -2,6 +2,9 @@
 
 # 11.13
 * Mathematical Logic: Semi-recursive, and something about HW1.
+* ASE: JML
+* Install KeY.
+* Sequent calculus.
 
 # 11.12
 * English Class
