@@ -9,4 +9,4 @@
 .PHONY: all clean
 
 clean:
-	rm pan* *.trail *.tmp pan
+	rm pan* *.trail *.tmp pan *.aux *.log

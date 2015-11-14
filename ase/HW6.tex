@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{listings}
+\usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{automata,positioning}
 
@@ -64,7 +65,8 @@
 	commentstyle=\itshape\color{purple!40!black},
 }
 
-\lstset{escapechar=@,style=customc}
+%\lstset{escapechar=@,style=customc}
+\lstset{style=customc}
 
 \title{Advanced Software Engineering HW6}
 \author{吴俊宇 15212880}
@@ -73,68 +75,50 @@
 
 \maketitle
 
-\section*{Problem 1 LTL2GeneralizedBchi}
-
-Produce Buchi Automaton for \lstinline|(false U p)|.
-
-\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
-\node[state,initial] (q_1) {};
-\node[state,accepting] (q_2) [right=of q_1] {};
-\path[->]
-
-(q_1) edge node {$\Sigma_p$} (q_2)
-(q_2)
-edge [loop above] node {$\Sigma$} ()
-;
-\end{tikzpicture}
-
-Produce Buchi Automaton for \lstinline|(p -> (p U q))|.
-
-\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
-\node[state,initial] (q_1) {};
-\node[state] (q_2) [right=of q_1] {};
-\node[state,accepting] (q_3) [right=of q_2] {};
-\path[->]
-
-(q_1) edge node {$\{p\}$} (q_2)
-edge [loop above] node {$\Sigma_{\lnot p}$} ()
-(q_2) edge node {$\{q\}$} (q_3)
-edge [loop above] node {$\{p\}$} ()
-(q_3)
-edge [loop above] node {$\Sigma$} ()
-;
-\end{tikzpicture}
+%\section*{Problem 1 LTL2GeneralizedBchi}
+%
+%Produce Buchi Automaton for \lstinline|(false U p)|.
+%
+%\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+%\node[state,initial] (q_1) {};
+%\node[state,accepting] (q_2) [right=of q_1] {};
+%\path[->]
+%
+%(q_1) edge node {$\Sigma_p$} (q_2)
+%(q_2)
+%edge [loop above] node {$\Sigma$} ()
+%;
+%\end{tikzpicture}
+%
+%Produce Buchi Automaton for \lstinline|(p -> (p U q))|.
+%
+%\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
+%\node[state,initial] (q_1) {};
+%\node[state] (q_2) [right=of q_1] {};
+%\node[state,accepting] (q_3) [right=of q_2] {};
+%\path[->]
+%
+%(q_1) edge node {$\{p\}$} (q_2)
+%edge [loop above] node {$\Sigma_{\lnot p}$} ()
+%(q_2) edge node {$\{q\}$} (q_3)
+%edge [loop above] node {$\{p\}$} ()
+%(q_3)
+%edge [loop above] node {$\Sigma$} ()
+%;
+%\end{tikzpicture}
 
 \section*{Problem 2 Intersection Automaton}
 
-Produce Buchi Automaton for $(a + b)^* b^\omega$ and $ab(a + b)^\omega$.
+The language it accepts is
+$$
+a (b + b (a + b)^* b) b^\omega
+$$
 
-\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
-\node[state,initial] (q_1) {};
-\node[state,accepting] (q_2) [right=of q_1] {};
-\path[->]
-
-(q_1) edge node {$b$} (q_2)
-edge [loop above] node {$a, b$} ()
-(q_2)
-edge [loop above] node {$b$} ()
-;
-\end{tikzpicture}
-
-\begin{tikzpicture}[shorten >=1pt,node distance=2cm,on grid,auto] 
-\node[state,initial] (q_1) {};
-\node[state] (q_2) [right=of q_1] {};
-\node[state,accepting] (q_3) [right=of q_2] {};
-\path[->]
-
-(q_1) edge node {$a$} (q_2)
-(q_2) edge node {$b$} (q_3)
-(q_3)
-edge [loop above] node {$a, b$} ()
-;
-\end{tikzpicture}
-
-And their intersection is $ab(a+b)^*b^\omega$.
+\includegraphics[scale=0.3]{/home/nr/Downloads/1114_6.jpg}
+\includegraphics[scale=0.3]{/home/nr/Downloads/1114_7.jpg}
+\includegraphics[scale=0.3]{/home/nr/Downloads/1114_8.jpg}
+\includegraphics[scale=0.3]{/home/nr/Downloads/1114_9.jpg}
+\includegraphics[scale=0.4]{/home/nr/Downloads/1114_10.jpg}
 
 \section*{Problem 3 Rendez-Vous Revisited}
 
@@ -153,11 +137,11 @@ pan:1: acceptance cycle (at depth 26)
 pan: wrote p3.pml.trail
 \end{lstlisting}
 
-See file `p3.pml` for details.
+See file \lstinline|p3.pml| for details.
 
 \section*{Problem 4 Office Printer}
 
-Add label `cs` to process `P` and process `Q`:
+Add label \lstinline|cs| to process \lstinline|P| and process \lstinline|Q|:
 \begin{lstlisting}[frame=single]
 if
 :: usable ? true ->
@@ -167,7 +151,7 @@ printf("P printing...\n");
 
 And verify with LTL:
 \begin{lstlisting}[frame=single]
-ltl not_starve { [] (<> (P@cs) \&\& <> (Q@cs)) }
+ltl not_starve { [] (<> (P@cs) && <> (Q@cs)) }
 \end{lstlisting}
 
 Verify with SPIN:
@@ -191,7 +175,7 @@ ltl b { [] (
 	(count > 0) -> ((count > 0) U (mode > 1))
 	) }
 \end{lstlisting}
-No errors found if run with weak-fairness, but failed without weak-fairness. Without ensuring weak-fairness, process `n` might be never executed, and `mode > 1` never come true.
+No errors found if run with weak-fairness, but failed without weak-fairness. Without ensuring weak-fairness, process \lstinline|n| might be never executed, and \lstinline|mode > 1| never come true.
 
 c) Below LTL
 \begin{lstlisting}[frame=single]
@@ -218,19 +202,19 @@ proc  0 (m:1) p5.pml:17 (state 12)	[else]
 proc  1 (n:1) p5.pml:24 (state 1)	[mode = 3]
 proc  0 (m:1) p5.pml:10 (state 1)	[mode = 1]
 \end{lstlisting}
-That's why `count` will never be `0` again.
+That's why \lstinline|count| will never be \lstinline|0| again.
 
 d) Without ensuring weak-fairness, following LTL
 \begin{lstlisting}[frame=single]
 ltl d { <> (mode == 3) } 
 \end{lstlisting}
-will fail, since process `n` can be never executed.
+will fail, since process \lstinline|n| can be never executed.
 
 \section*{Problem 6 Never Claims}
-The never claim ensure positive property `p` stay true. It's equivalent to such LTL
+The never claim ensure positive property \lstinline|p| stay true. It's equivalent to such LTL
 \begin{lstlisting}[frame=single]
 ltl { [] (!p) }
 \end{lstlisting}
-`p6-1.pml' provided a model I win, and `p6-2.pml' provided a model the never claim win.
+\lstinline|p6-1.pml| provided a model I win, and \lstinline|p6-2.pml| provided a model the never claim win.
 
 \end{document}
