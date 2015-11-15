@@ -2,6 +2,7 @@
 
 # 11.15
 * [`tlmgr` install package](https://www.zybuluo.com/nrailgun/note/218943)
+* Get Fucking ASE HW7 done.
 
 # 11.13
 * Mathematical Logic: Semi-recursive, and something about HW1.
