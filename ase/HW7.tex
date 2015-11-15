@@ -156,6 +156,65 @@
 	\UnaryInfC{$\forall x; p \to q \Rightarrow p \to \forall x; q$}
 \end{prooftree}
 
+(g)
+\begin{prooftree}
+	\AxiomC{*}
+	\UnaryInfC{$
+		e_1 = e_2
+		\Rightarrow
+		e_1 = e_2
+		$}
+	\UnaryInfC{$
+		e_1 = e,
+		e_2 = e
+		\Rightarrow
+		e_1 = e_2
+		$}
+	\UnaryInfC{$
+		m(e, e_1) = e_1,
+		m(e, e_2) = e_2,
+		m(e, e_1) = m(e_1, e),
+		m(e, e_2) = m(e_2, e),
+		m(e_1, e) = e = m(e_2, e)
+		\Rightarrow
+		e_1 = e_2
+		$}
+	\UnaryInfC{$
+		m(e, e_1) = e_1,
+		m(e, e_2) = e_2,
+		\forall x; \forall y; m(x, y) = m(y, x),
+		m(e_1, e) = e,
+		m(e_2, e) = e
+		\Rightarrow
+		e_1 = e_2
+		$}
+	\UnaryInfC{$
+		\forall x; m(e, x) = x,
+		\forall x; \forall y; m(x, y) = m(y, x),
+		m(e_1, e) = e,
+		m(e_2, e) = e
+		\Rightarrow
+		e_1 = e_2
+		$}
+	\UnaryInfC{$
+		\forall x; m(e, x) = x,
+		\forall x; \forall y; m(x, y) = m(y, x),
+		\forall x; m(e_1, x) = x \land m(e_2, x) = x
+		\Rightarrow
+		e_1 = e_2
+		$}
+	\UnaryInfC{$
+		\forall x; m(e, x) = x, \forall x; \forall y; m(x, y) = m(y, x)
+		\Rightarrow
+		\forall x; m(e_1, x) = x \land m(e_2, x) = x \to e_1 = e_2
+		$}
+	\UnaryInfC{$
+		\forall x; m(e, x) = x, \forall x; \forall y; m(x, y) = m(y, x)
+		\Rightarrow
+		\forall e_1; \forall e_2; (\forall x; m(e_1, x) = x \land m(e_2, x) = x) \to e_1 = e_2
+		$}
+\end{prooftree}
+
 (h)
 
 $c$ for car, $p$ for person, $d$ for drive, $a$ for adult, and $r$ for isRed.
@@ -210,5 +269,20 @@ $c$ for car, $p$ for person, $d$ for drive, $a$ for adult, and $r$ for isRed.
 		\Rightarrow \exists p; a(p)
 		$}
 \end{prooftree}
+
+\section{Using KeY}
+
+All finished proofs are saved in \lstinline|*.proof| files. Formula (h) can't be proved by prover itself, and
+have to be initialized manually. Check \lstinline|*.key| and \lstinline|*.proof| for details.
+
+\section{Reserved Symbols}
+
+Interpreting $=$ as referential identity allow
+\begin{prooftree}
+	\AxiomC{$t = t', [t/t']\phi \Rightarrow [t/t']\psi$}
+	\UnaryInfC{$t = t', \phi \Rightarrow \psi$}
+\end{prooftree}
+
+Likewise, preserving $\ne$ works in a similar way.
 
 \end{document}
