@@ -4,6 +4,7 @@
 * Tried `superviseddescent` c++ library. It looks good.
 * Consulted seniors for advices.
 * Understood [SDM](https://www.zybuluo.com/nrailgun/note/220878).
+* [CMake](https://www.zybuluo.com/nrailgun/note/221011)
 
 # 11.15
 * [`tlmgr` install package](https://www.zybuluo.com/nrailgun/note/218943)
