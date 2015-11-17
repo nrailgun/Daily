@@ -2,7 +2,8 @@
 
 # 11.17
 * Tried `superviseddescent` c++ library. It looks good.
-* SDM
+* Consulted seniors for advices.
+* SDM.
 
 # 11.15
 * [`tlmgr` install package](https://www.zybuluo.com/nrailgun/note/218943)
