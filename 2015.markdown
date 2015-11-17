@@ -1,5 +1,9 @@
 # 2015
 
+# 11.17
+* Tried `superviseddescent` c++ library. It looks good.
+* SDM
+
 # 11.15
 * [`tlmgr` install package](https://www.zybuluo.com/nrailgun/note/218943)
 * Get Fucking ASE HW7 done.
