@@ -1,5 +1,11 @@
 # 2015
 
+# 11.18
+* 上课：TA 和老师一样口齿不清。
+* 在 Dell 服务器安装系统。
+* 英语课作文。
+* ASE Chapter 10 PPT。
+
 # 11.17
 * Tried `superviseddescent` c++ library. It looks good.
 * Consulted seniors for advices.
