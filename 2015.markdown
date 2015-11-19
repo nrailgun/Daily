@@ -4,6 +4,7 @@
 * 英语课
 * 服务器系统安装失败，因为 iso 镜像有问题，重新安装。
 * 完成英语作业。
+* Review [Softmax](https://www.zybuluo.com/nrailgun/note/222666)
 
 # 11.18
 * 上课：TA 和老师一样口齿不清。
