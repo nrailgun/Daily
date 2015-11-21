@@ -1,7 +1,8 @@
 # 2015
 
 # 11.21
-* Finished CNNVR assignment 1
+* Finished CNNVR assignment 
+* Mathematical Logic: chapter 9
 
 # 11.20
 * 数理逻辑
