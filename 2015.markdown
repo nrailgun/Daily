@@ -1,5 +1,8 @@
 # 2015
 
+# 11.21
+* Finished CNNVR assignment 1
+
 # 11.20
 * 数理逻辑
 * 高级软工
