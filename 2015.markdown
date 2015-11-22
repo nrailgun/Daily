@@ -1,10 +1,82 @@
 # 2015
 
+# 11.22
+
+# 11.21
+* Finished CNNVR assignment 
+* Mathematical Logic: chapter 9
+* Mathematical Logic: chapter 10
+
+# 11.20
+* 数理逻辑
+* 高级软工
+
+# 11.19
+* 英语课
+* 服务器系统安装失败，因为 iso 镜像有问题，重新安装。
+* 完成英语作业。
+* Review [Softmax](https://www.zybuluo.com/nrailgun/note/222666)
+* CNNVR assignment-1 softmax.
+
+# 11.18
+* 上课：TA 和老师一样口齿不清。
+* 在 Dell 服务器安装系统。
+* 英语课作文。
+* ASE Chapter 10 PPT。
+
+# 11.17
+* Tried `superviseddescent` c++ library. It looks good.
+* Consulted seniors for advices.
+* Understood [SDM](https://www.zybuluo.com/nrailgun/note/220878).
+* [CMake](https://www.zybuluo.com/nrailgun/note/221011)
+
+# 11.15
+* [`tlmgr` install package](https://www.zybuluo.com/nrailgun/note/218943)
+* Get Fucking ASE HW7 done.
+
+# 11.13
+* Mathematical Logic: Semi-recursive, and something about HW1.
+* ASE: JML
+* Install KeY.
+* Sequent calculus.
+
+# 11.12
+* English Class
+* Mathematical Logic: Equivalence of computability, Semi-decidable.
+
+# 11.11
+* Read SDM paper.
+* What the fuck, SIFT.
+
+# 11.10
+* Read SDM paper.
+* [Recommender System: Latent Factor Model](https://www.zybuluo.com/nrailgun/note/214534)
+
+# 11.09
+* 算法课
+* 数理逻辑 Chap 8
+* [推荐系统](https://www.zybuluo.com/nrailgun/note/214534)
+
+# 11.08
+* [数理逻辑 5，6，7 章](https://www.zybuluo.com/nrailgun/note/213626)
+* 数理逻辑作业
+
+# 11.07
+* WTF is the HW6 of ASE?
+* [Eclipse Mars 使用 OpenJML](https://www.zybuluo.com/nrailgun/note/213228)
+* My efforts trying to run OpenJML under Ubuntu turned out to be in vain.
+* 数理逻辑：算盘机
+
+# 11.06
+* ASE
+* Mathematical Logic
+
 # 11.05
 * 英语课：扯淡
 * [Newton Method and Quasi Newton Method](https://www.zybuluo.com/nrailgun/note/211706)
 * [Positive-definite matrix](https://www.zybuluo.com/nrailgun/note/211772)
 * [More Numpy Tricks](https://www.zybuluo.com/nrailgun/note/209206)
+* [Hesse Matrix and Jacobian Matrix](https://www.zybuluo.com/nrailgun/note/211916)
 
 # 11.04
 * SDM 看不懂，需要补充牛顿法、海森矩阵，和雅各布矩阵。
