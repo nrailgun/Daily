@@ -3,6 +3,7 @@
 # 11.23
 * Fucked by *Going Deeper with Convolutions*.
 * Searched for information about medical imagings.
+* Lab server os installation shit done, the hd was totally screwed up.
 
 # 11.22
 * Fuck ASE.
