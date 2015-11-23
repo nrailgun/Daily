@@ -1,6 +1,11 @@
 # 2015
 
+# 11.23
+* Fucked by *Going Deeper with Convolutions*.
+* Searched for information about medical imagings.
+
 # 11.22
+* Fuck ASE.
 
 # 11.21
 * Finished CNNVR assignment 
