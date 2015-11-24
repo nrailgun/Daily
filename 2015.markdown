@@ -1,5 +1,9 @@
 # 2015
 
+# 11.24
+* Read paper.
+* Chat with classmates about research.
+
 # 11.23
 * Fucked by *Going Deeper with Convolutions*.
 * Searched for information about medical imagings.
