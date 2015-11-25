@@ -1,5 +1,8 @@
 # 2015
 
+# 11.25
+* Forgot many things about Backpropagation, my fault.
+
 # 11.24
 * Read paper.
 * Chat with classmates about research.
