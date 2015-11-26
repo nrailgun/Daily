@@ -6,6 +6,7 @@
 # 11.25
 * Forgot many things about Backpropagation, my fault.
 * Wrote a stupid article as English class homework.
+* [Semirecursive](https://www.zybuluo.com/nrailgun/note/226372)
 
 # 11.24
 * Read paper.
