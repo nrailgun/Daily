@@ -2,6 +2,7 @@
 
 # 11.26
 * 英语课
+* [First order logic syntax](https://www.zybuluo.com/nrailgun/note/224350)
 
 # 11.25
 * Forgot many things about Backpropagation, my fault.
