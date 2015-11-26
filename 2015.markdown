@@ -1,5 +1,8 @@
 # 2015
 
+# 11.26
+* 英语课
+
 # 11.25
 * Forgot many things about Backpropagation, my fault.
 * Wrote a stupid article as English class homework.
