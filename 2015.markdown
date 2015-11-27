@@ -1,5 +1,10 @@
 # 2015
 
+# 11.27
+* 数理逻辑：Models 和 Models size
+* 读论文。
+* 数理逻辑作业什么鬼，毫无头绪。
+
 # 11.26
 * 英语课
 * [First order logic syntax](https://www.zybuluo.com/nrailgun/note/224350)
