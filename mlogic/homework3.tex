@@ -1,0 +1,149 @@
+\documentclass{ctexart}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathabx}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+	backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	commentstyle=\color{mygreen},    % comment style
+	deletekeywords={...},            % if you want to delete keywords from the given language
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	frame=single,	                   % adds a frame around the code
+	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	keywordstyle=\color{blue},       % keyword style
+	language=Octave,                 % the language of the code
+	otherkeywords={*,...},           % if you want to add more keywords to the set
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+	stringstyle=\color{mymauve},     % string literal style
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\lstdefinestyle{customc}{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	frame=L,
+	xleftmargin=\parindent,
+	language=C,
+	showstringspaces=false,
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+}
+
+\lstdefinestyle{customasm}{
+	belowcaptionskip=1\baselineskip,
+	frame=L,
+	xleftmargin=\parindent,
+	language=[x86masm]Assembler,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\itshape\color{purple!40!black},
+}
+
+\lstset{escapechar=@,style=customc}
+
+\begin{document}
+
+\section*{}
+
+\textbf{8.3} The (positive) semicharacteristic function of a set $A$ is the function $c$ such
+that $c(a) = 1$ if $a$ is in $A$, and $c(a)$ is undefined otherwise. Show that a set $A$ is
+recursively enumerable if and only if its semicharacteristic function is recursive.
+
+Solution:
+
+If $c$ is recursive, and $A$ is the domain of recursive function $c$, then $A$ is semirecursive.
+
+\section*{}
+
+\textbf{8.10} Give an example of a recursive partial function f such that f
+cannot be extended to a recursive total function, or in other words, such that there is no
+recursive total function g such that g(x) = f (x) for all x in the domain of f.
+
+Let set $D_f$ denotes domain of partial function $f$. If $D_f$ is recursive
+then $g$ can extend $f$:
+$$
+g(x) = \begin{cases}
+	f(x) & x \in D_f \\
+	0 & x \not\in D_f
+\end{cases}
+$$
+
+If $D_f$ is not recursive, then $g$ cannot be recursive. Since $f$ is recursive,
+obviously $D_f$ is semirecursive, but it still can be non-recursive. Construct
+$$
+f(x) = 1, x \in D_f
+$$
+where $D_f(x) \leftrightarrow F(x, x) = 0$, $F$ is universal function. $F(x, x) = 0$ is not a
+recursive relation, thus $g(x)$ cannot be recursive.
+
+\section*{}
+
+\textbf{9.5} Prove that every formula $F$ has a formation sequence in which the only formulas
+that appear are subformulas of $F$, and the number of formulas that appear is no greater than
+the number of symbols in $F$.
+
+Solution:
+
+If $F$ is atomic, obviously $F$ is the only formula in its formation sequence,
+and it do be its own subformula. The number of formula $1$ is not greater than
+the number of symbols in $F$.
+
+If $F$ is not atomic:
+\begin{enumerate}
+	\item Base step
+	\begin{itemize}
+		\item $F = \lnot G$, $G$ and its subformulas are subformulas of $F$.
+		\item $F = (G \land H)$, $G$, $H$ and their subformulas are subformulas of $F$.
+		\item $F = (G \lor H)$, $G$, $H$ and their subformulas are subformulas of $F$.
+		\item $F = \forall G$, $G$ and its subformulas are subformulas of $F$.
+		\item $F = \exists G$, $G$ and its subformulas are subformulas of $F$.
+	\end{itemize}
+	
+	\item Induction step
+\end{enumerate}
+
+
+A formula $G$ in sequence is a subformula of later formula $\lnot G$, $(G \land H)$, $(G \lor H)$,
+$\exists x\; G$, or $\forall x\; G$.
+
+If $F$ is not atomic, then it is obtained by some earlier formulas by
+negation, conjunction, disjunction, or universal or existential quantification,
+which are subformulas of $F$ themselves.  
+Every non-atomic formula $G$ are obtained by connect or quantify earlier
+formulas, and these earlier formulas and subformulas of these earlier formulas
+are all subformulas of $G$. Because $F$ is the last formula is formation
+sequence, every earlier formula are subformula of it.
+
+Assuming there is only one symbol in every atomic formula. Every step (negation,
+conjunction, disjunction, universal, existential) we apply to a formula, we
+added at least one symbol, not to mention there could be more symbols in atomic
+formula. Thus, the number of formulas that appear is no greater than
+the number of symbols in $F$.
+
+\end{document}
