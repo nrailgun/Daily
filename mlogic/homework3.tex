@@ -70,7 +70,6 @@
 \begin{document}
 
 \section*{}
-
 \textbf{8.3} The (positive) semicharacteristic function of a set $A$ is the function $c$ such
 that $c(a) = 1$ if $a$ is in $A$, and $c(a)$ is undefined otherwise. Show that a set $A$ is
 recursively enumerable if and only if its semicharacteristic function is recursive.
@@ -80,7 +79,6 @@ Solution:
 If $c$ is recursive, and $A$ is the domain of recursive function $c$, then $A$ is semirecursive.
 
 \section*{}
-
 \textbf{8.10} Give an example of a recursive partial function f such that f
 cannot be extended to a recursive total function, or in other words, such that there is no
 recursive total function g such that g(x) = f (x) for all x in the domain of f.
@@ -103,47 +101,99 @@ where $D_f(x) \leftrightarrow F(x, x) = 0$, $F$ is universal function. $F(x, x) 
 recursive relation, thus $g(x)$ cannot be recursive.
 
 \section*{}
-
 \textbf{9.5} Prove that every formula $F$ has a formation sequence in which the only formulas
 that appear are subformulas of $F$, and the number of formulas that appear is no greater than
 the number of symbols in $F$.
 
 Solution:
 
-If $F$ is atomic, obviously $F$ is the only formula in its formation sequence,
-and it do be its own subformula. The number of formula $1$ is not greater than
-the number of symbols in $F$.
+A formula in formation sequence is constructed with earlier formulas by negation, connection, and
+quantification, and it and its subformulas become subformulas of later formula. Finally some
+formulas are used to construct last formula $F$, and every formula become subformula of $F$.
 
-If $F$ is not atomic:
-\begin{enumerate}
-	\item Base step
-	\begin{itemize}
-		\item $F = \lnot G$, $G$ and its subformulas are subformulas of $F$.
-		\item $F = (G \land H)$, $G$, $H$ and their subformulas are subformulas of $F$.
-		\item $F = (G \lor H)$, $G$, $H$ and their subformulas are subformulas of $F$.
-		\item $F = \forall G$, $G$ and its subformulas are subformulas of $F$.
-		\item $F = \exists G$, $G$ and its subformulas are subformulas of $F$.
-	\end{itemize}
+To show the number of formulas that appear is no greater than the number of symbols in $F$:
+\begin{itemize}
+	\item Base step: If $G$ in sequence is atomic, then the only formula in formation sequence is $F$ itself,
+	the number of formula is $1$, not more than than the number of symbols in $F$, which is not less
+	than $1$.
 	
-	\item Induction step
-\end{enumerate}
+	\item Induction step, negation case: $\lnot G$ add one symbol to formula, and one formula to formation
+	sequence. With the hypothesis holds for subformula $G$, the hypothesis holds still.
+	
+	\item Induction step, junction case: $(G \land H)$, $(G \lor H)$ add one symbol to formula, and one formula to formation
+	sequence. With the hypothesis holds for subformula $G$ and $H$, the hypothesis holds still.
+	
+	\item Induction step, quantification case: $\forall x\; G$, $\exists x\; G$ add one symbol to formula, and one formula to formation
+	sequence. With the hypothesis holds for subformula $G$, the hypothesis holds still.
+\end{itemize}
 
+\section*{}
+\textbf{10.6} Show that:
+\begin{itemize}
+\item (a) $\{C_1 , \dots , C_m \}$ is unsatisfiable if and only if $\lnot C_1 \lor \dots \lor \lnot C_m$ is valid.
+\item (b) $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\lnot C_1 \lor \dots \lor \lnot C_m \lor D$
+is valid.
+\item (c) $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\{C_1 , \dots , C_m, \lnot D\}$ is
+unsatisfiable.
+\item (d) $D$ is valid if and only if $\lnot D$ is unsatisfiable.
+\end{itemize}
 
-A formula $G$ in sequence is a subformula of later formula $\lnot G$, $(G \land H)$, $(G \lor H)$,
-$\exists x\; G$, or $\forall x\; G$.
+Solution:
 
-If $F$ is not atomic, then it is obtained by some earlier formulas by
-negation, conjunction, disjunction, or universal or existential quantification,
-which are subformulas of $F$ themselves.  
-Every non-atomic formula $G$ are obtained by connect or quantify earlier
-formulas, and these earlier formulas and subformulas of these earlier formulas
-are all subformulas of $G$. Because $F$ is the last formula is formation
-sequence, every earlier formula are subformula of it.
+(a) If there is no interpretation that makes every formula in $\{C_1 , \dots , C_m \}$ true, then at least one
+of $\{C_1 , \dots , C_m \}$ must be false, that's, at least one of $\{ \lnot C_1, \dots, \lnot C_m \}$ must
+be true. Thus, $\lnot C_1 \lor \dots \lor \lnot C_m$ must be true.
+If $\lnot C_1 \lor \dots \lor \lnot C_m$ is valid, then at least one of $\{ \lnot C_1, \dots, \lnot C_m \}$ must
+be true, that's, at least one of $\{C_1 , \dots , C_m \}$ must be false. Thus, $\{C_1 , \dots , C_m \}$ is unsatisfiable.
 
-Assuming there is only one symbol in every atomic formula. Every step (negation,
-conjunction, disjunction, universal, existential) we apply to a formula, we
-added at least one symbol, not to mention there could be more symbols in atomic
-formula. Thus, the number of formulas that appear is no greater than
-the number of symbols in $F$.
+(b)
+We have $\lnot C_1 \lor \dots \lor \lnot C_m \lor D = \lnot (C_1 \land \dots \land C_m) \lor D
+= (C_1 \land \dots \land C_m) \to D$.
+If $(C_1 \land \dots \land C_m) \to D$ is valid, then no interpretation makes $(C_1 \land \dots \land C_m)$ true
+and $D$ false, thus $D$ is a consequence of $\{C_1 , \dots , C_m \}$. Vice versa, if
+$(C_1 \land \dots \land C_m) \to D$ is not valid, then some interpretation makes $(C_1 \land \dots \land C_m)$ true
+and $D$ false, thus $D$ is not a consequence of $\{C_1 , \dots , C_m \}$.
+
+(c) We have $\{C_1 , \dots , C_m, \lnot D\} = C_1 \land \dots \land C_m \land \lnot D
+= \lnot (\lnot (C_1 \land \dots \land C_m) \lor D)
+= \lnot ((C_1 \land \dots \land C_m) \to D)
+$. If $\lnot ((C_1 \land \dots \land C_m) \to D)$ is unsatisfiable, then $((C_1 \land \dots \land C_m) \to D)$
+is valid, that's, $D$ is a consequence of $\{C_1 , \dots , C_m \}$.
+If $\lnot ((C_1 \land \dots \land C_m) \to D)$ is not unsatisfiable, then $((C_1 \land \dots \land C_m) \to D)$
+is not valid, that's, $D$ is not a consequence of $\{C_1 , \dots , C_m \}$.
+
+(d) If $\lnot D$ is unsatisfiable, then no interpretation makes $D$ false, thus $D$ is valid.
+If $\lnot D$ is not unsatisfiable, then some interpretation makes $D$ false, thus $D$ is not valid.
+
+\section*{}
+\textbf{10.8}
+Show that:
+\begin{itemize}
+\item (a) $(B \land C)$ implies $B$ and implies $C$.
+\item (b) $\lnot B$ implies $\lnot(B \land C)$, and $\lnot C$ implies $\lnot (B \land C)$.
+\item (c) $\forall x\; B(x)$ implies $B(t)$.
+\item (d) $\lnot B(t)$ implies $\lnot \forall x B(x)$.
+\end{itemize}
+
+Solution:
+
+(a) If $B$ is false, then $(B \land C)$ is false. The same for $C$.
+
+(b) If $\lnot B$, that's, $B$ is false, then $(B \land C)$ is false, and $\lnot(B \land C)$ is true.
+
+(c) If every element $m$ of the domain satisfy $B(x)$, then $t$ satisfy $B(x)$, whatever its denotion
+is.
+
+(d) Element $m$ denoted by $t$ doesn't satisfy $B(x)$, that's, not every element in domain satisfy $B(x)$.
+
+\section*{}
+\textbf{10.14}
+Show that the following pairs are equivalent:
+\begin{itemize}
+\item (a) $\forall x F(x) \land \forall yG(y)$ and $\forall u(F(u) \land G(u))$.
+\item (b) $\forall x F(x) \lor \forall yG(y)$ and $\forall u\forall v(F(u) \lor G(v))$.
+\item (c) $\exists x F(x) \land \exists yG(y)$ and $\exists u\exists v(F(u) \land G(v))$.
+\item (d) $\exists x F(x) \lor \exists yG(y)$ and $\exists u(F(u) \lor G(u))$.
+\end{itemize}
 
 \end{document}
