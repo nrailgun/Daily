@@ -1,5 +1,8 @@
 # 2015
 
+# 11.29
+* [SDM presentation](https://www.zybuluo.com/nrailgun/note/229914)
+
 # 11.27
 * 数理逻辑：Models 和 Models size
 * 读论文。
