@@ -1,5 +1,8 @@
 # 2015
 
+# 11.30
+* [快速 LINUX 服务器网络设置](https://www.zybuluo.com/nrailgun/note/230703)
+
 # 11.29
 * [SDM presentation](https://www.zybuluo.com/nrailgun/note/229914)
 
