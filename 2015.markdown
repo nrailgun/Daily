@@ -2,6 +2,7 @@
 
 # 11.30
 * [快速 LINUX 服务器网络设置](https://www.zybuluo.com/nrailgun/note/230703)
+* This fucking shity [ftp](https://www.zybuluo.com/nrailgun/note/230719) software fucked me whole night.
 
 # 11.29
 * [SDM presentation](https://www.zybuluo.com/nrailgun/note/229914)
