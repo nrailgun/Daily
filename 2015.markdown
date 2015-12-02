@@ -2,6 +2,7 @@
 
 # 12.02
 * Read paper *Unconstrained Facial Landmark Localization with Backbone-Branches Fully-Convolutional Networks*.
+* Read Experiment part of SDM paper.
 * Mathematical Logic HW3 bullshit.
 
 # 12.01
