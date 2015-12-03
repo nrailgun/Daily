@@ -1,8 +1,8 @@
 # 2015
 
 # 12.03
-* Read paper *Unconstrained Facial Landmark Localization with Backbone-Branches Fully-Convolutional Networks*.
 * English class.
+* Read paper *Unconstrained Facial Landmark Localization with Backbone-Branches Fully-Convolutional Networks*, I guess I got some points.
 
 # 12.02
 * Read paper *Unconstrained Facial Landmark Localization with Backbone-Branches Fully-Convolutional Networks*.
