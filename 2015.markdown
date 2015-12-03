@@ -1,9 +1,14 @@
 # 2015
 
+# 12.03
+* Read paper *Unconstrained Facial Landmark Localization with Backbone-Branches Fully-Convolutional Networks*.
+* English class.
+
 # 12.02
 * Read paper *Unconstrained Facial Landmark Localization with Backbone-Branches Fully-Convolutional Networks*.
 * Read Experiment part of SDM paper.
 * Mathematical Logic HW3 bullshit.
+* English class shity homework.
 
 # 12.01
 * [South Park: A Guide to Life](https://www.zybuluo.com/nrailgun/note/231466)
