@@ -1,6 +1,7 @@
 # 2015
 * [Unconstrained Facial Landmark Localization with Backbone-Branches Fully-Convolutional Networks 论文笔记](https://www.zybuluo.com/nrailgun/note/234328)
 * CNNVR [CNN note](http://cs231n.github.io/convolutional-networks/)
+* I was [wrong about some CNN details](https://www.zybuluo.com/nrailgun/note/234651).
 
 # 12.03
 * English class.
