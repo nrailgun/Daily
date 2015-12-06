@@ -2,6 +2,7 @@
 
 # 12.05
 * Caffe code converting lfw to lmdb.
+* Prepare PPT for monday class representation. I do hate it, but I make it looks good.
 
 # 12.04
 * [Unconstrained Facial Landmark Localization with Backbone-Branches Fully-Convolutional Networks 论文笔记](https://www.zybuluo.com/nrailgun/note/234328)
