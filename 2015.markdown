@@ -2,6 +2,8 @@
 
 # 12.06
 * Tried `SupervisedDescent` example.
+* BBFCN data layer.
+* Tested lmdb gen code, but leads to new bug?
 
 # 12.05
 * Caffe code converting lfw to lmdb.
