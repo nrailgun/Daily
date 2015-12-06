@@ -1,5 +1,8 @@
 # 2015
 
+# 12.06
+* Tried `SupervisedDescent` example.
+
 # 12.05
 * Caffe code converting lfw to lmdb.
 * Prepare PPT for monday class representation. I do hate it, but I make it looks good.
