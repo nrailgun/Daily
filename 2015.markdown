@@ -4,7 +4,8 @@
 * Made a representation, but unfortunately caught dropping class.
 * Rewrite a better lmdb generator, instead of generate ground truth in data layer.
 * Build BBFCN network.
-* Tried training bbfcn with Nv 780 Ti, miserablely slow. And WTF, IO error?
+* Tried training bbfcn with Nv 780 Ti, miserablely slow.
+* And WTF, IO error? (Solved.)
 
 # 12.06
 * Tried `SupervisedDescent` example.
