@@ -1,5 +1,8 @@
 # 2015
 
+# 12.07
+* Made a representation, but unfortunately caught dropping class.
+
 # 12.06
 * Tried `SupervisedDescent` example.
 * BBFCN data layer.
