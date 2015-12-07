@@ -2,6 +2,7 @@
 
 # 12.07
 * Made a representation, but unfortunately caught dropping class.
+* Rewrite a better lmdb generator, instead of generate ground truth in data layer.
 
 # 12.06
 * Tried `SupervisedDescent` example.
