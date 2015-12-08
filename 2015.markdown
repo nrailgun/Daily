@@ -3,6 +3,7 @@
 # 12.08
 * Fix mlogic hw3.
 * Mathematical logic class. But I was too sleepy, I shouldn't stay up too late.
+* Try fix coarse feature map problem, but it seems should be? OK... I should train it first.
 
 # 12.07
 * Made a representation, but unfortunately caught dropping class.
