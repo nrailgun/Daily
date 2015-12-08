@@ -84,7 +84,7 @@ If $A$ is semirecursive, then
 $$
 c(a) = b \leftrightarrow a \in A \land 1 = b
 $$
-$a \in A \land 1 = b$ is semirecursive (since both $a \in A$ and $\land 1 = b$ are). Function $c(a)$
+$a \in A \land 1 = b$ is semirecursive (since both $a \in A$ and $1 = b$ are). Function $c(a)$
 of semirecursive graph relation is recursive.
 
 \section*{}
@@ -118,24 +118,31 @@ the number of symbols in $F$.
 
 \textbf{Solution}:
 
-A formula in formation sequence is constructed with earlier formulas by negation, connection, and
-quantification, and it and its subformulas become subformulas of later formula. Finally some
-formulas are used to construct last formula $F$, and every formula become subformula of $F$.
+%A formula in formation sequence is constructed with earlier formulas by negation, connection, and
+%quantification, and it and its subformulas become subformulas of later formula. Finally some
+%formulas are used to construct last formula $F$, and every formula become subformula of $F$.
 
-To show the number of formulas that appear is no greater than the number of symbols in $F$:
+To show the number of formulas that appear is no greater than the number of symbols in $F$,
+the only formulas
+that appear are subformulas of $F$:
 \begin{itemize}
 	\item Base step: If $G$ in sequence is atomic, then the only formula in formation sequence is $F$ itself,
 	the number of formula is $1$, not more than than the number of symbols in $F$, which is not less
-	than $1$.
+	than $1$. The only formula in sequence is itself, which is the subformula of its own.
 	
 	\item Induction step, negation case: $\lnot G$ add one symbol to formula, and one formula to formation
-	sequence. With the hypothesis holds for subformula $G$, the hypothesis holds still.
+	sequence. With the hypothesis holds for subformula $G$, the hypothesis holds still. The only formula in
+	sequence is subformula of itself's, and $G$'s negation, which is the subformula of its own.
 	
 	\item Induction step, junction case: $(G \land H)$, $(G \lor H)$ add one symbol to formula, and one formula to formation
-	sequence. With the hypothesis holds for subformula $G$ and $H$, the hypothesis holds still.
+	sequence. With the hypothesis holds for subformula $G$ and $H$, the hypothesis holds still. The only formula in
+	sequence is subformula of $G$'s and $H$'s, and their junction, which is the subformula of its own.
 	
-	\item Induction step, quantification case: $\forall x\; G$, $\exists x\; G$ add one symbol to formula, and one formula to formation
+	\item Induction step, quantification case: $\forall x\; G$, $\exists x\; G$ add one symbol to formula,
+	and one formula to formation
 	sequence. With the hypothesis holds for subformula $G$, the hypothesis holds still.
+	The only formula in
+	sequence is subformula of $G$'s, and $G$'s quantification, which is the subformula of its own.
 \end{itemize}
 
 \section*{}
