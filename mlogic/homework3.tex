@@ -76,21 +76,23 @@
 that $c(a) = 1$ if $a$ is in $A$, and $c(a)$ is undefined otherwise. Show that a set $A$ is
 recursively enumerable if and only if its semicharacteristic function is recursive.
 
-Solution:
+\textbf{Solution}:
 
 If $c$ is recursive, and $A$ is the domain of recursive function $c$, then $A$ is semirecursive.
 
 If $A$ is semirecursive, then
 $$
-c(a) = b \leftrightarrow a \in A \And a = b
+c(a) = b \leftrightarrow a \in A \And 1 = b
 $$
-$a \in A \And a = b$ is semirecursive (since both $a \in A$ and $\And a = b$ are). Function $c(a)$
+$a \in A \And 1 = b$ is semirecursive (since both $a \in A$ and $\And 1 = b$ are). Function $c(a)$
 of semirecursive graph relation is recursive.
 
 \section*{}
 \textbf{8.10} Give an example of a recursive partial function f such that f
 cannot be extended to a recursive total function, or in other words, such that there is no
 recursive total function g such that g(x) = f (x) for all x in the domain of f.
+
+\textbf{Solution}:
 
 Let set $D_f$ denotes domain of partial function $f$. If $D_f$ is recursive
 then $g$ can extend $f$:
@@ -114,7 +116,7 @@ recursive relation, thus $g(x)$ cannot be recursive.
 that appear are subformulas of $F$, and the number of formulas that appear is no greater than
 the number of symbols in $F$.
 
-Solution:
+\textbf{Solution}:
 
 A formula in formation sequence is constructed with earlier formulas by negation, connection, and
 quantification, and it and its subformulas become subformulas of later formula. Finally some
@@ -139,23 +141,25 @@ To show the number of formulas that appear is no greater than the number of symb
 \section*{}
 \textbf{10.6} Show that:
 \begin{itemize}
-\item (a) $\{C_1 , \dots , C_m \}$ is unsatisfiable if and only if $\unsim C_1 \lor \dots \lor \unsim C_m$ is valid.
-\item (b) $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\unsim C_1 \lor \dots \lor \unsim C_m \lor D$
+\item[(a)] $\{C_1 , \dots , C_m \}$ is unsatisfiable if and only if $\unsim C_1 \lor \dots \lor \unsim C_m$ is valid.
+\item[(b)] $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\unsim C_1 \lor \dots \lor \unsim C_m \lor D$
 is valid.
-\item (c) $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\{C_1 , \dots , C_m, \unsim D\}$ is
+\item[(c)] $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\{C_1 , \dots , C_m, \unsim D\}$ is
 unsatisfiable.
-\item (d) $D$ is valid if and only if $\unsim D$ is unsatisfiable.
+\item[(d)] $D$ is valid if and only if $\unsim D$ is unsatisfiable.
 \end{itemize}
 
-Solution:
+\textbf{Solution}:
 
-(a) If there is no interpretation that makes every formula in $\{C_1 , \dots , C_m \}$ true, then at least one
+\begin{itemize}
+
+\item[(a)] If there is no interpretation that makes every formula in $\{C_1 , \dots , C_m \}$ true, then at least one
 of $\{C_1 , \dots , C_m \}$ must be false, that's, at least one of $\{ \unsim C_1, \dots, \unsim C_m \}$ must
 be true. Thus, $\unsim C_1 \lor \dots \lor \unsim C_m$ must be true.
 If $\unsim C_1 \lor \dots \lor \unsim C_m$ is valid, then at least one of $\{ \unsim C_1, \dots, \unsim C_m \}$ must
 be true, that's, at least one of $\{C_1 , \dots , C_m \}$ must be false. Thus, $\{C_1 , \dots , C_m \}$ is unsatisfiable.
 
-(b)
+\item[(b)]
 We have $\unsim C_1 \lor \dots \lor \unsim C_m \lor D = \unsim (C_1 \And \dots \And C_m) \lor D
 = (C_1 \And \dots \And C_m) \to D$.
 If $(C_1 \And \dots \And C_m) \to D$ is valid, then no interpretation makes $(C_1 \And \dots \And C_m)$ true
@@ -163,7 +167,7 @@ and $D$ false, thus $D$ is a consequence of $\{C_1 , \dots , C_m \}$. Vice versa
 $(C_1 \And \dots \And C_m) \to D$ is not valid, then some interpretation makes $(C_1 \And \dots \And C_m)$ true
 and $D$ false, thus $D$ is not a consequence of $\{C_1 , \dots , C_m \}$.
 
-(c) We have $\{C_1 , \dots , C_m, \unsim D\} = C_1 \And \dots \And C_m \And \unsim D
+\item[(c)] We have $\{C_1 , \dots , C_m, \unsim D\} = C_1 \And \dots \And C_m \And \unsim D
 = \unsim (\unsim (C_1 \And \dots \And C_m) \lor D)
 = \unsim ((C_1 \And \dots \And C_m) \to D)
 $. If $\unsim ((C_1 \And \dots \And C_m) \to D)$ is unsatisfiable, then $((C_1 \And \dots \And C_m) \to D)$
@@ -171,56 +175,64 @@ is valid, that's, $D$ is a consequence of $\{C_1 , \dots , C_m \}$.
 If $\unsim ((C_1 \And \dots \And C_m) \to D)$ is not unsatisfiable, then $((C_1 \And \dots \And C_m) \to D)$
 is not valid, that's, $D$ is not a consequence of $\{C_1 , \dots , C_m \}$.
 
-(d) If $\unsim D$ is unsatisfiable, then no interpretation makes $D$ false, thus $D$ is valid.
+\item[(d)] If $\unsim D$ is unsatisfiable, then no interpretation makes $D$ false, thus $D$ is valid.
 If $\unsim D$ is not unsatisfiable, then some interpretation makes $D$ false, thus $D$ is not valid.
+
+\end{itemize}
 
 \section*{}
 \textbf{10.8}
 Show that:
 \begin{itemize}
-\item (a) $(B \And C)$ implies $B$ and implies $C$.
-\item (b) $\unsim B$ implies $\unsim(B \And C)$, and $\unsim C$ implies $\unsim (B \And C)$.
-\item (c) $\forall x\; B(x)$ implies $B(t)$.
-\item (d) $\unsim B(t)$ implies $\unsim \forall x B(x)$.
+\item[(a)] $(B \And C)$ implies $B$ and implies $C$.
+\item[ (b)] $\unsim B$ implies $\unsim(B \And C)$, and $\unsim C$ implies $\unsim (B \And C)$.
+\item [(c)] $\forall x\; B(x)$ implies $B(t)$.
+\item [(d)] $\unsim B(t)$ implies $\unsim \forall x B(x)$.
 \end{itemize}
 
-Solution:
+\textbf{Solution}:
+\begin{itemize}
 
-(a) If $B$ is false, then $(B \And C)$ is false. The same for $C$.
+\item[(a)] If $B$ is false, then $(B \And C)$ is false. The same for $C$.
 
-(b) If $\unsim B$, that's, $B$ is false, then $(B \And C)$ is false, and $\unsim(B \And C)$ is true.
+\item[(b)] If $\unsim B$, that's, $B$ is false, then $(B \And C)$ is false, and $\unsim(B \And C)$ is true.
 
-(c) If every element $m$ of the domain satisfy $B(x)$, then $t$ satisfy $B(x)$, whatever its denotion
+\item[(c)] If every element $m$ of the domain satisfy $B(x)$, then $t$ satisfy $B(x)$, whatever its denotion
 is.
 
-(d) Element $m$ denoted by $t$ doesn't satisfy $B(x)$, that's, not every element in domain satisfy $B(x)$.
+\item[(d)] Element $m$ denoted by $t$ doesn't satisfy $B(x)$, that's, not every element in domain satisfy $B(x)$.
+
+\end{itemize}
 
 \section*{}
 \textbf{10.14}
 Show that the following pairs are equivalent:
 \begin{itemize}
-\item (a) $\forall x F(x) \And \forall y G(y)$ and $\forall u(F(u) \And G(u))$.
-\item (b) $\forall x F(x) \lor \forall y G(y)$ and $\forall u\forall v(F(u) \lor G(v))$.
-\item (c) $\exists x F(x) \And \exists y G(y)$ and $\exists u\exists v(F(u) \And G(v))$.
-\item (d) $\exists x F(x) \lor \exists y G(y)$ and $\exists u(F(u) \lor G(u))$.
+\item [(a)] $\forall x F(x) \And \forall y G(y)$ and $\forall u(F(u) \And G(u))$.
+\item [(b)] $\forall x F(x) \lor \forall y G(y)$ and $\forall u\forall v(F(u) \lor G(v))$.
+\item [(c)] $\exists x F(x) \And \exists y G(y)$ and $\exists u\exists v(F(u) \And G(v))$.
+\item [(d)] $\exists x F(x) \lor \exists y G(y)$ and $\exists u(F(u) \lor G(u))$.
 \end{itemize}
 
-Solution:
+\textbf{Solution}:
+\begin{itemize}
 
-(a) If for all element in domain $F$ holds, and for all element in domain $G$ holds, then for all element $u$
+\item[(a)] If for all element in domain $F$ holds, and for all element in domain $G$ holds, then for all element $u$
 in domain, $F(u)$ holds and $G(u)$ holds. If $F$ doesn't hold for all element,
 then for all element, $F$ and $G$ can't hold. The same if $G$ doesn't hold for all element.
 
-(b) If $\forall x\; F(x)$ holds, for whatever $v$, $F(u) \lor G(v)$ holds. The same to $\forall y\; G(y)$.
+\item[(b)] If $\forall x\; F(x)$ holds, for whatever $v$, $F(u) \lor G(v)$ holds. The same to $\forall y\; G(y)$.
 If neither $\forall x\; F(x)$ nor $\forall y\; G(y)$ holds, there must be $u$ and $v$ such that
 $\unsim F(u)$ and $\unsim G(v)$, that's, $\unsim (F(u) \lor G(v))$, which fail $\forall u\forall v(F(u) \lor G(v))$.
 
-(c) If there is $x$ such that $F$ holds and $y$ such that $G$ holds, then $F(x) \And G(y)$ holds, which means
+\item[(c)] If there is $x$ such that $F$ holds and $y$ such that $G$ holds, then $F(x) \And G(y)$ holds, which means
 $\exists u\exists v(F(u) \And G(v))$ holds. If there is no $x$ such $F$ holds, then $F(x) \And G(y)$ can't hold
 since $F(x)$ never holds, that's, $\exists u\exists v(F(u) \And G(v))$ doesn't hold. The same if $G(y)$ never holds.
 
-(d) If $F(x)$ holds for some $x$, $F(x) \lor G(y)$ holds, that's $\exists u(F(u) \lor G(u))$. The same if $G(y)$ holds
+\item[(d)] If $F(x)$ holds for some $x$, $F(x) \lor G(y)$ holds, that's $\exists u(F(u) \lor G(u))$. The same if $G(y)$ holds
 for some $y$. If neither $\exists x\; F(x)$ nor $\exists y\; G(y)$ holds, then there is no element make $F$ or $G$ true,
 that's, $F(u) \lor G(u)$ never holds. Thus, $\exists u(F(u) \lor G(u))$ is false.
+
+\end{itemize}
 
 \end{document}
