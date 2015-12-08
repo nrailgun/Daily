@@ -82,9 +82,9 @@ If $c$ is recursive, and $A$ is the domain of recursive function $c$, then $A$ i
 
 If $A$ is semirecursive, then
 $$
-c(a) = b \leftrightarrow a \in A \And 1 = b
+c(a) = b \leftrightarrow a \in A \land 1 = b
 $$
-$a \in A \And 1 = b$ is semirecursive (since both $a \in A$ and $\And 1 = b$ are). Function $c(a)$
+$a \in A \land 1 = b$ is semirecursive (since both $a \in A$ and $\land 1 = b$ are). Function $c(a)$
 of semirecursive graph relation is recursive.
 
 \section*{}
@@ -128,10 +128,10 @@ To show the number of formulas that appear is no greater than the number of symb
 	the number of formula is $1$, not more than than the number of symbols in $F$, which is not less
 	than $1$.
 	
-	\item Induction step, negation case: $\unsim G$ add one symbol to formula, and one formula to formation
+	\item Induction step, negation case: $\lnot G$ add one symbol to formula, and one formula to formation
 	sequence. With the hypothesis holds for subformula $G$, the hypothesis holds still.
 	
-	\item Induction step, junction case: $(G \And H)$, $(G \lor H)$ add one symbol to formula, and one formula to formation
+	\item Induction step, junction case: $(G \land H)$, $(G \lor H)$ add one symbol to formula, and one formula to formation
 	sequence. With the hypothesis holds for subformula $G$ and $H$, the hypothesis holds still.
 	
 	\item Induction step, quantification case: $\forall x\; G$, $\exists x\; G$ add one symbol to formula, and one formula to formation
@@ -141,42 +141,53 @@ To show the number of formulas that appear is no greater than the number of symb
 \section*{}
 \textbf{10.6} Show that:
 \begin{itemize}
-\item[(a)] $\{C_1 , \dots , C_m \}$ is unsatisfiable if and only if $\unsim C_1 \lor \dots \lor \unsim C_m$ is valid.
-\item[(b)] $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\unsim C_1 \lor \dots \lor \unsim C_m \lor D$
+\item[(a)] $\{C_1 , \dots , C_m \}$ is unsatisfiable if and only if $\lnot C_1 \lor \dots \lor \lnot C_m$ is valid.
+\item[(b)] $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\lnot C_1 \lor \dots \lor \lnot C_m \lor D$
 is valid.
-\item[(c)] $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\{C_1 , \dots , C_m, \unsim D\}$ is
+\item[(c)] $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\{C_1 , \dots , C_m, \lnot D\}$ is
 unsatisfiable.
-\item[(d)] $D$ is valid if and only if $\unsim D$ is unsatisfiable.
+\item[(d)] $D$ is valid if and only if $\lnot D$ is unsatisfiable.
 \end{itemize}
 
 \textbf{Solution}:
 
 \begin{itemize}
 
-\item[(a)] If there is no interpretation that makes every formula in $\{C_1 , \dots , C_m \}$ true, then at least one
-of $\{C_1 , \dots , C_m \}$ must be false, that's, at least one of $\{ \unsim C_1, \dots, \unsim C_m \}$ must
-be true. Thus, $\unsim C_1 \lor \dots \lor \unsim C_m$ must be true.
-If $\unsim C_1 \lor \dots \lor \unsim C_m$ is valid, then at least one of $\{ \unsim C_1, \dots, \unsim C_m \}$ must
-be true, that's, at least one of $\{C_1 , \dots , C_m \}$ must be false. Thus, $\{C_1 , \dots , C_m \}$ is unsatisfiable.
+\item[(a)] If there is no interpretation that makes every formula in $\{C_1 , \dots , C_m \}$ true, then
+for every interpretation $\mathcal M$,
+\begin{equation*}
+\begin{array}{l}
+\mathcal M \not\vDash \{C_1 , \dots , C_m \} \\
+\mbox{iff } \mathcal M \vDash \lnot \{ C_1, \dots, C_m \} \\
+\mbox{iff } \mathcal M \vDash \lnot C_1 \lor \dots \lor \lnot C_m
+\end{array}
+\end{equation*}
+That's, it's valid.
 
 \item[(b)]
-We have $\unsim C_1 \lor \dots \lor \unsim C_m \lor D = \unsim (C_1 \And \dots \And C_m) \lor D
-= (C_1 \And \dots \And C_m) \to D$.
-If $(C_1 \And \dots \And C_m) \to D$ is valid, then no interpretation makes $(C_1 \And \dots \And C_m)$ true
-and $D$ false, thus $D$ is a consequence of $\{C_1 , \dots , C_m \}$. Vice versa, if
-$(C_1 \And \dots \And C_m) \to D$ is not valid, then some interpretation makes $(C_1 \And \dots \And C_m)$ true
+We have
+$$\lnot C_1 \lor \dots \lor \lnot C_m \lor D = \lnot (C_1 \land \dots \land C_m) \lor D
+= (C_1 \land \dots \land C_m) \to D$$
+If $(C_1 \land \dots \land C_m) \to D$ is valid, then no interpretation makes $(C_1 \land \dots \land C_m)$ true
+and $D$ false, thus $D$ is a consequence of $\{C_1 , \dots , C_m \}$.
+
+Vice versa, if
+$(C_1 \land \dots \land C_m) \to D$ is not valid, then some interpretation makes $(C_1 \land \dots \land C_m)$ true
 and $D$ false, thus $D$ is not a consequence of $\{C_1 , \dots , C_m \}$.
 
-\item[(c)] We have $\{C_1 , \dots , C_m, \unsim D\} = C_1 \And \dots \And C_m \And \unsim D
-= \unsim (\unsim (C_1 \And \dots \And C_m) \lor D)
-= \unsim ((C_1 \And \dots \And C_m) \to D)
-$. If $\unsim ((C_1 \And \dots \And C_m) \to D)$ is unsatisfiable, then $((C_1 \And \dots \And C_m) \to D)$
+\item[(c)] We have
+$$\{C_1 , \dots , C_m, \lnot D\}
+= \lnot (\lnot (C_1 \land \dots \land C_m) \lor D)
+= \lnot ((C_1 \land \dots \land C_m) \to D)
+$$
+If $\lnot ((C_1 \land \dots \land C_m) \to D)$ is unsatisfiable, then $((C_1 \land \dots \land C_m) \to D)$
 is valid, that's, $D$ is a consequence of $\{C_1 , \dots , C_m \}$.
-If $\unsim ((C_1 \And \dots \And C_m) \to D)$ is not unsatisfiable, then $((C_1 \And \dots \And C_m) \to D)$
+
+If $\lnot ((C_1 \land \dots \land C_m) \to D)$ is not unsatisfiable, then $((C_1 \land \dots \land C_m) \to D)$
 is not valid, that's, $D$ is not a consequence of $\{C_1 , \dots , C_m \}$.
 
-\item[(d)] If $\unsim D$ is unsatisfiable, then no interpretation makes $D$ false, thus $D$ is valid.
-If $\unsim D$ is not unsatisfiable, then some interpretation makes $D$ false, thus $D$ is not valid.
+\item[(d)] If $\lnot D$ is unsatisfiable, then no interpretation makes $D$ false, thus $D$ is valid.
+If $\lnot D$ is not unsatisfiable, then some interpretation makes $D$ false, thus $D$ is not valid.
 
 \end{itemize}
 
@@ -184,23 +195,28 @@ If $\unsim D$ is not unsatisfiable, then some interpretation makes $D$ false, th
 \textbf{10.8}
 Show that:
 \begin{itemize}
-\item[(a)] $(B \And C)$ implies $B$ and implies $C$.
-\item[ (b)] $\unsim B$ implies $\unsim(B \And C)$, and $\unsim C$ implies $\unsim (B \And C)$.
+\item[(a)] $(B \land C)$ implies $B$ and implies $C$.
+\item[ (b)] $\lnot B$ implies $\lnot(B \land C)$, and $\lnot C$ implies $\lnot (B \land C)$.
 \item [(c)] $\forall x\; B(x)$ implies $B(t)$.
-\item [(d)] $\unsim B(t)$ implies $\unsim \forall x B(x)$.
+\item [(d)] $\lnot B(t)$ implies $\lnot \forall x B(x)$.
 \end{itemize}
 
 \textbf{Solution}:
 \begin{itemize}
 
-\item[(a)] If $B$ is false, then $(B \And C)$ is false. The same for $C$.
+\item[(a)] $\mathcal M \vDash (B \land C)$ iff $\mathcal M \vDash B$ and $\mathcal M \vDash C$. That's,
+$(B \land C) \vDash B$ and $(B \land C) \vDash C$.
 
-\item[(b)] If $\unsim B$, that's, $B$ is false, then $(B \And C)$ is false, and $\unsim(B \And C)$ is true.
+\item[(b)] $\mathcal M \vDash \lnot B$ iff $\mathcal M \not\vDash B$,
+iff $\mathcal M \not\vDash (B \land C)$,
+iff $\mathcal M \vDash \lnot (B \land C)$.
 
-\item[(c)] If every element $m$ of the domain satisfy $B(x)$, then $t$ satisfy $B(x)$, whatever its denotion
-is.
+\item[(c)]
+$\mathcal M \vDash \forall x\; B(x)$ iff $\mathcal M \vDash_{l[x \to a]} B(a)$, for all $a \in |\mathcal M|$.
+For $t^{\mathcal M} \in |M|$, $\mathcal M \vDash B(t^{\mathcal M})$.
 
-\item[(d)] Element $m$ denoted by $t$ doesn't satisfy $B(x)$, that's, not every element in domain satisfy $B(x)$.
+\item[(d)] According to (c), if $\lnot B(t)$, then $\forall x\; B(x)$ doesn't hold.
+Element $m$ denoted by $t$ doesn't satisfy $B(x)$, that's, not every element in domain satisfy $B(x)$.
 
 \end{itemize}
 
@@ -208,9 +224,9 @@ is.
 \textbf{10.14}
 Show that the following pairs are equivalent:
 \begin{itemize}
-\item [(a)] $\forall x F(x) \And \forall y G(y)$ and $\forall u(F(u) \And G(u))$.
+\item [(a)] $\forall x F(x) \land \forall y G(y)$ and $\forall u(F(u) \land G(u))$.
 \item [(b)] $\forall x F(x) \lor \forall y G(y)$ and $\forall u\forall v(F(u) \lor G(v))$.
-\item [(c)] $\exists x F(x) \And \exists y G(y)$ and $\exists u\exists v(F(u) \And G(v))$.
+\item [(c)] $\exists x F(x) \land \exists y G(y)$ and $\exists u\exists v(F(u) \land G(v))$.
 \item [(d)] $\exists x F(x) \lor \exists y G(y)$ and $\exists u(F(u) \lor G(u))$.
 \end{itemize}
 
@@ -223,11 +239,11 @@ then for all element, $F$ and $G$ can't hold. The same if $G$ doesn't hold for a
 
 \item[(b)] If $\forall x\; F(x)$ holds, for whatever $v$, $F(u) \lor G(v)$ holds. The same to $\forall y\; G(y)$.
 If neither $\forall x\; F(x)$ nor $\forall y\; G(y)$ holds, there must be $u$ and $v$ such that
-$\unsim F(u)$ and $\unsim G(v)$, that's, $\unsim (F(u) \lor G(v))$, which fail $\forall u\forall v(F(u) \lor G(v))$.
+$\lnot F(u)$ and $\lnot G(v)$, that's, $\lnot (F(u) \lor G(v))$, which fail $\forall u\forall v(F(u) \lor G(v))$.
 
-\item[(c)] If there is $x$ such that $F$ holds and $y$ such that $G$ holds, then $F(x) \And G(y)$ holds, which means
-$\exists u\exists v(F(u) \And G(v))$ holds. If there is no $x$ such $F$ holds, then $F(x) \And G(y)$ can't hold
-since $F(x)$ never holds, that's, $\exists u\exists v(F(u) \And G(v))$ doesn't hold. The same if $G(y)$ never holds.
+\item[(c)] If there is $x$ such that $F$ holds and $y$ such that $G$ holds, then $F(x) \land G(y)$ holds, which means
+$\exists u\exists v(F(u) \land G(v))$ holds. If there is no $x$ such $F$ holds, then $F(x) \land G(y)$ can't hold
+since $F(x)$ never holds, that's, $\exists u\exists v(F(u) \land G(v))$ doesn't hold. The same if $G(y)$ never holds.
 
 \item[(d)] If $F(x)$ holds for some $x$, $F(x) \lor G(y)$ holds, that's $\exists u(F(u) \lor G(u))$. The same if $G(y)$ holds
 for some $y$. If neither $\exists x\; F(x)$ nor $\exists y\; G(y)$ holds, then there is no element make $F$ or $G$ true,
