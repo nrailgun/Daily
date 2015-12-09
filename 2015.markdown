@@ -1,5 +1,11 @@
 # 2015
 
+# 12.09
+* Attend class.
+* Install Ubuntu on server, but failed to install WinSrv 2012.
+* Attended a meeting.
+* Write code.
+
 # 12.08
 * Fix mlogic hw3.
 * Mathematical logic class. But I was too sleepy, I shouldn't stay up too late.
