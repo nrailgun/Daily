@@ -3,6 +3,7 @@
 # 12.10
 * English class.
 * Overslept.
+* My network produces completely empty response, what's wrong?
 
 # 12.09
 * Attend class.
