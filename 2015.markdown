@@ -1,5 +1,9 @@
 # 2015
 
+# 12.10
+* English class.
+* Overslept.
+
 # 12.09
 * Attend class.
 * Install Ubuntu on server, but failed to install WinSrv 2012.
