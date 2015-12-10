@@ -4,6 +4,7 @@
 * English class.
 * Overslept.
 * My network produces completely empty response, what's wrong?
+* Find something wrong with training data. Experience: Check training data carefully (both in data washing and data layer).
 
 # 12.09
 * Attend class.
