@@ -2,6 +2,7 @@
 
 # 12.11
 * Attended class.
+* No bug at all. The weired problem is caused by dataset.
 
 # 12.10
 * English class.
