@@ -1,8 +1,11 @@
 # 2015
 
+# 12.12
+* If I detect le only with 10 samples, it works OK. But what if 10000 samples? What if 5 keypoints?
+
 # 12.11
 * Attended class.
-* No bug at all. The weired problem is caused by dataset.
+* No bug at all. The weired problem is caused by dataset. But feature map losses responses suddenly. So weired.
 
 # 12.10
 * English class.
