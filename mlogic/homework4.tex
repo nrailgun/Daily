@@ -140,6 +140,34 @@ exactly n elements.
 \end{itemize}
 
 \subsubsection*{Solution:}
+\begin{itemize}
+
+\item[(a)]
+Define $B_n$ as
+\begin{gather*}
+B_n = \forall x_1\; \exists x_2\; \dots, \exists x_n\;
+\lnot(x_1 \equiv x_2) \land \dots \land \lnot(x_1 \equiv x_n) \land \\
+\lnot(x_2 \equiv x_3) \land \dots \land \lnot(x_2 \equiv x_n)
+\land \dots \land \lnot(x_{n-1} \equiv x_n)
+\end{gather*}
+
+\item[(b)]
+Define $F_n(x)$ as
+$$
+F_n(x) = \exists x_1\; \exists x_2\; \dots \exists x_n\; (x \equiv x_1) \land (x \equiv x_2)
+\land \dots \land (x \equiv x_n)
+$$
+Note that $x_i, i \in [1, n]$ \textit{don't} have be $\ne x$.
+
+\item[(c)]
+Define $D_n$ indicating having at most $n$ equivalence classes
+$$
+D_n = \forall x_1\; \dots \forall x_{n} \lnot \left[ \exists x\;
+\lnot (x_1 \equiv x) \lor \lnot (x_2 \equiv x) \lor \dots \lor \lnot(x_n \equiv x)
+\right]
+$$
+
+\end{itemize}
 
 \section*{}
 \textbf{14.8}
