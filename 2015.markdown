@@ -1,5 +1,8 @@
 # 2015
 
+# 12.13
+* [关于神经网络的新思考](https://www.zybuluo.com/nrailgun/note/234651)
+
 # 12.12
 * If I detect le only with 10 samples, it works OK. But what if 10000 samples? What if 5 keypoints? What if not using training set as test set?
 * [BBFCN implementation note](https://www.zybuluo.com/nrailgun/note/240916)
