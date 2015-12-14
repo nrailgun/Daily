@@ -1,5 +1,9 @@
 # 2015
 
+# 12.14
+* Attend class.
+* Seems a trouble to install Windows on R710.
+
 # 12.13
 * [关于神经网络的新思考](https://www.zybuluo.com/nrailgun/note/234651)
 * [Often used LaTeX symbols](https://www.zybuluo.com/nrailgun/note/241563)
