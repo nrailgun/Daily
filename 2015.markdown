@@ -3,6 +3,8 @@
 # 12.14
 * Attend class.
 * Seems a trouble to install Windows on R710.
+* [Models and Proofs](https://www.zybuluo.com/nrailgun/note/241097#proofs)
+* Mathematical Logic HW4
 
 # 12.13
 * [关于神经网络的新思考](https://www.zybuluo.com/nrailgun/note/234651)
