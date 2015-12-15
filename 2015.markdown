@@ -1,5 +1,8 @@
 # 2015
 
+# 12.15
+* Attend class, read paper *Facial Landmark Localization - A Literature Survey*.
+
 # 12.14
 * Attend class.
 * Seems a trouble to install Windows on R710.
