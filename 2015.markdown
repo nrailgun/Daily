@@ -4,6 +4,7 @@
 * Attend class, read paper *Facial Landmark Localization - A Literature Survey*.
 * Checked all the malfunctional computers in lab.
 * Laboratory misc businesses.
+* [Dynamic Logic](https://www.zybuluo.com/nrailgun/note/227986)
 
 # 12.14
 * Attend class.
