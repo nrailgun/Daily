@@ -2,6 +2,7 @@
 
 # 12.15
 * Attend class, read paper *Facial Landmark Localization - A Literature Survey*.
+* Checked all the malfunctional computers in lab.
 
 # 12.14
 * Attend class.
