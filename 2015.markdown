@@ -1,5 +1,9 @@
 # 2015
 
+# 12.16
+* Attend class: WTF! What a shock!
+* Dynamic Logic.
+
 # 12.15
 * Attend class, read paper *Facial Landmark Localization - A Literature Survey*.
 * Checked all the malfunctional computers in lab.
