@@ -1,8 +1,13 @@
 # 2015
 
+# 12.18
+* Attend class
+* Fuck with MIR.
+
 # 12.17
 * English class is boring.
 * [Seems changing $\beta$ in BBFCN helps](https://www.zybuluo.com/nrailgun/note/240916#%E8%B0%83%E6%95%B4-ground-truth).
+* Fuck with MIR.
 
 # 12.16
 * Attend class: WTF! What a shock!
