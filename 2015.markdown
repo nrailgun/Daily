@@ -1,5 +1,8 @@
 # 2015
 
+# 12.19
+* Check ASE homeworks.
+
 # 12.18
 * Attend class
 * Fuck with MIR.
