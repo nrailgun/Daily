@@ -1,5 +1,8 @@
 # 2015
 
+# 12.20
+* Doing ASE exam.
+
 # 12.19
 * Check ASE homeworks.
 
