@@ -1,5 +1,9 @@
 # 2015
 
+# 12.23
+* MMDS & MIR exam.
+* Review ASE.
+
 # 12.22
 * Review MMDS.
 
