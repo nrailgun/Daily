@@ -224,6 +224,21 @@ on adding (R12).
 \AxiomC{$\Gamma \cup \{ A \} \Rightarrow \Delta$}
 \BinaryInfC{$\Gamma \cup \{ (A \lor \lnot A)\} \Rightarrow \Delta$}
 \end{prooftree}
+Thus, if adding (R12) makes sequence derivable, so does adding (R11).
+
+Let $B = (A \lor \lnot A)$, then
+\begin{prooftree}
+\AxiomC{*}
+\UnaryInfC{$A \Rightarrow \lnot A \}$}
+\UnaryInfC{$\Rightarrow \{ (A \lor \lnot A) \}$}
+\UnaryInfC{$\Gamma \Rightarrow \{ (A \lor \lnot A) \} \cup \Delta$}
+\UnaryInfC{$\Gamma \Rightarrow \{ B \} \cup \Delta$}
+
+\AxiomC{$\Gamma \cup \{ (A \lor \lnot A) \} \Rightarrow \Delta$}
+\UnaryInfC{$\Gamma \cup \{ B \} \Rightarrow \Delta$}
+
+\BinaryInfC{$\Gamma \Rightarrow \Delta$}
+\end{prooftree}
 Thus, if adding (R11) makes sequence derivable, so does adding (R12).
 	
 \end{document}
