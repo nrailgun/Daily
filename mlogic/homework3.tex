@@ -1,0 +1,261 @@
+\documentclass{ctexart}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathabx}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+	backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	commentstyle=\color{mygreen},    % comment style
+	deletekeywords={...},            % if you want to delete keywords from the given language
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	frame=single,	                   % adds a frame around the code
+	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	keywordstyle=\color{blue},       % keyword style
+	language=Octave,                 % the language of the code
+	otherkeywords={*,...},           % if you want to add more keywords to the set
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+	stringstyle=\color{mymauve},     % string literal style
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\lstdefinestyle{customc}{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	frame=L,
+	xleftmargin=\parindent,
+	language=C,
+	showstringspaces=false,
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+}
+
+\lstdefinestyle{customasm}{
+	belowcaptionskip=1\baselineskip,
+	frame=L,
+	xleftmargin=\parindent,
+	language=[x86masm]Assembler,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\itshape\color{purple!40!black},
+}
+
+\lstset{escapechar=@,style=customc}
+
+\newcommand{\unsim}{\mathord{\sim}}
+
+\begin{document}
+
+\section*{}
+\textbf{8.3} The (positive) semicharacteristic function of a set $A$ is the function $c$ such
+that $c(a) = 1$ if $a$ is in $A$, and $c(a)$ is undefined otherwise. Show that a set $A$ is
+recursively enumerable if and only if its semicharacteristic function is recursive.
+
+\textbf{Solution}:
+
+If $c$ is recursive, and $A$ is the domain of recursive function $c$, then $A$ is semirecursive.
+
+If $A$ is semirecursive, then
+$$
+c(a) = b \leftrightarrow a \in A \land 1 = b
+$$
+$a \in A \land 1 = b$ is semirecursive (since both $a \in A$ and $1 = b$ are). Function $c(a)$
+of semirecursive graph relation is recursive.
+
+\section*{}
+\textbf{8.10} Give an example of a recursive partial function f such that f
+cannot be extended to a recursive total function, or in other words, such that there is no
+recursive total function g such that g(x) = f (x) for all x in the domain of f.
+
+\textbf{Solution}:
+
+Let set $D_f$ denotes domain of partial function $f$. If $D_f$ is recursive
+then $g$ can extend $f$:
+$$
+g(x) = \begin{cases}
+	f(x) & x \in D_f \\
+	0 & x \not\in D_f
+\end{cases}
+$$
+
+If $D_f$ is not recursive, then $g$ cannot be recursive. Since $f$ is recursive,
+obviously $D_f$ is semirecursive, but it still can be non-recursive. Construct
+$$
+f(x) = 1, x \in D_f
+$$
+where $D_f(x) \leftrightarrow F(x, x) = 0$, $F$ is universal function. $F(x, x) = 0$ is not a
+recursive relation, thus $g(x)$ cannot be recursive.
+
+\section*{}
+\textbf{9.5} Prove that every formula $F$ has a formation sequence in which the only formulas
+that appear are subformulas of $F$, and the number of formulas that appear is no greater than
+the number of symbols in $F$.
+
+\textbf{Solution}:
+
+%A formula in formation sequence is constructed with earlier formulas by negation, connection, and
+%quantification, and it and its subformulas become subformulas of later formula. Finally some
+%formulas are used to construct last formula $F$, and every formula become subformula of $F$.
+
+To show the number of formulas that appear is no greater than the number of symbols in $F$,
+the only formulas
+that appear are subformulas of $F$:
+\begin{itemize}
+	\item Base step: If $G$ in sequence is atomic, then the only formula in formation sequence is $F$ itself,
+	the number of formula is $1$, not more than than the number of symbols in $F$, which is not less
+	than $1$. The only formula in sequence is itself, which is the subformula of its own.
+	
+	\item Induction step, negation case: $\lnot G$ add one symbol to formula, and one formula to formation
+	sequence. With the hypothesis holds for subformula $G$, the hypothesis holds still. The only formula in
+	sequence is subformula of itself's, and $G$'s negation, which is the subformula of its own.
+	
+	\item Induction step, junction case: $(G \land H)$, $(G \lor H)$ add one symbol to formula, and one formula to formation
+	sequence. With the hypothesis holds for subformula $G$ and $H$, the hypothesis holds still. The only formula in
+	sequence is subformula of $G$'s and $H$'s, and their junction, which is the subformula of its own.
+	
+	\item Induction step, quantification case: $\forall x\; G$, $\exists x\; G$ add one symbol to formula,
+	and one formula to formation
+	sequence. With the hypothesis holds for subformula $G$, the hypothesis holds still.
+	The only formula in
+	sequence is subformula of $G$'s, and $G$'s quantification, which is the subformula of its own.
+\end{itemize}
+
+\section*{}
+\textbf{10.6} Show that:
+\begin{itemize}
+\item[(a)] $\{C_1 , \dots , C_m \}$ is unsatisfiable if and only if $\lnot C_1 \lor \dots \lor \lnot C_m$ is valid.
+\item[(b)] $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\lnot C_1 \lor \dots \lor \lnot C_m \lor D$
+is valid.
+\item[(c)] $D$ is a consequence of $\{C_1 , \dots , C_m \}$ if and only if $\{C_1 , \dots , C_m, \lnot D\}$ is
+unsatisfiable.
+\item[(d)] $D$ is valid if and only if $\lnot D$ is unsatisfiable.
+\end{itemize}
+
+\textbf{Solution}:
+
+\begin{itemize}
+
+\item[(a)] If there is no interpretation that makes every formula in $\{C_1 , \dots , C_m \}$ true, then
+for every interpretation $\mathcal M$,
+\begin{equation*}
+\begin{array}{l}
+\mathcal M \not\vDash \{C_1 , \dots , C_m \} \\
+\mbox{iff } \mathcal M \vDash \lnot \{ C_1, \dots, C_m \} \\
+\mbox{iff } \mathcal M \vDash \lnot C_1 \lor \dots \lor \lnot C_m
+\end{array}
+\end{equation*}
+That's, it's valid.
+
+\item[(b)]
+We have
+$$\lnot C_1 \lor \dots \lor \lnot C_m \lor D = \lnot (C_1 \land \dots \land C_m) \lor D
+= (C_1 \land \dots \land C_m) \to D$$
+If $(C_1 \land \dots \land C_m) \to D$ is valid, then no interpretation makes $(C_1 \land \dots \land C_m)$ true
+and $D$ false, thus $D$ is a consequence of $\{C_1 , \dots , C_m \}$.
+
+Vice versa, if
+$(C_1 \land \dots \land C_m) \to D$ is not valid, then some interpretation makes $(C_1 \land \dots \land C_m)$ true
+and $D$ false, thus $D$ is not a consequence of $\{C_1 , \dots , C_m \}$.
+
+\item[(c)] We have
+$$\{C_1 , \dots , C_m, \lnot D\}
+= \lnot (\lnot (C_1 \land \dots \land C_m) \lor D)
+= \lnot ((C_1 \land \dots \land C_m) \to D)
+$$
+If $\lnot ((C_1 \land \dots \land C_m) \to D)$ is unsatisfiable, then $((C_1 \land \dots \land C_m) \to D)$
+is valid, that's, $D$ is a consequence of $\{C_1 , \dots , C_m \}$.
+
+If $\lnot ((C_1 \land \dots \land C_m) \to D)$ is not unsatisfiable, then $((C_1 \land \dots \land C_m) \to D)$
+is not valid, that's, $D$ is not a consequence of $\{C_1 , \dots , C_m \}$.
+
+\item[(d)] If $\lnot D$ is unsatisfiable, then no interpretation makes $D$ false, thus $D$ is valid.
+If $\lnot D$ is not unsatisfiable, then some interpretation makes $D$ false, thus $D$ is not valid.
+
+\end{itemize}
+
+\section*{}
+\textbf{10.8}
+Show that:
+\begin{itemize}
+\item[(a)] $(B \land C)$ implies $B$ and implies $C$.
+\item[ (b)] $\lnot B$ implies $\lnot(B \land C)$, and $\lnot C$ implies $\lnot (B \land C)$.
+\item [(c)] $\forall x\; B(x)$ implies $B(t)$.
+\item [(d)] $\lnot B(t)$ implies $\lnot \forall x B(x)$.
+\end{itemize}
+
+\textbf{Solution}:
+\begin{itemize}
+
+\item[(a)] $\mathcal M \vDash (B \land C)$ iff $\mathcal M \vDash B$ and $\mathcal M \vDash C$. That's,
+$(B \land C) \vDash B$ and $(B \land C) \vDash C$.
+
+\item[(b)] $\mathcal M \vDash \lnot B$ iff $\mathcal M \not\vDash B$,
+iff $\mathcal M \not\vDash (B \land C)$,
+iff $\mathcal M \vDash \lnot (B \land C)$.
+
+\item[(c)]
+$\mathcal M \vDash \forall x\; B(x)$ iff $\mathcal M \vDash_{l[x \to a]} B(a)$, for all $a \in |\mathcal M|$.
+For $t^{\mathcal M} \in |M|$, $\mathcal M \vDash B(t^{\mathcal M})$.
+
+\item[(d)] According to (c), if $\lnot B(t)$, then $\forall x\; B(x)$ doesn't hold.
+Element $m$ denoted by $t$ doesn't satisfy $B(x)$, that's, not every element in domain satisfy $B(x)$.
+
+\end{itemize}
+
+\section*{}
+\textbf{10.14}
+Show that the following pairs are equivalent:
+\begin{itemize}
+\item [(a)] $\forall x F(x) \land \forall y G(y)$ and $\forall u(F(u) \land G(u))$.
+\item [(b)] $\forall x F(x) \lor \forall y G(y)$ and $\forall u\forall v(F(u) \lor G(v))$.
+\item [(c)] $\exists x F(x) \land \exists y G(y)$ and $\exists u\exists v(F(u) \land G(v))$.
+\item [(d)] $\exists x F(x) \lor \exists y G(y)$ and $\exists u(F(u) \lor G(u))$.
+\end{itemize}
+
+\textbf{Solution}:
+\begin{itemize}
+
+\item[(a)] If for all element in domain $F$ holds, and for all element in domain $G$ holds, then for all element $u$
+in domain, $F(u)$ holds and $G(u)$ holds. If $F$ doesn't hold for all element,
+then for all element, $F$ and $G$ can't hold. The same if $G$ doesn't hold for all element.
+
+\item[(b)] If $\forall x\; F(x)$ holds, for whatever $v$, $F(u) \lor G(v)$ holds. The same to $\forall y\; G(y)$.
+If neither $\forall x\; F(x)$ nor $\forall y\; G(y)$ holds, there must be $u$ and $v$ such that
+$\lnot F(u)$ and $\lnot G(v)$, that's, $\lnot (F(u) \lor G(v))$, which fail $\forall u\forall v(F(u) \lor G(v))$.
+
+\item[(c)] If there is $x$ such that $F$ holds and $y$ such that $G$ holds, then $F(x) \land G(y)$ holds, which means
+$\exists u\exists v(F(u) \land G(v))$ holds. If there is no $x$ such $F$ holds, then $F(x) \land G(y)$ can't hold
+since $F(x)$ never holds, that's, $\exists u\exists v(F(u) \land G(v))$ doesn't hold. The same if $G(y)$ never holds.
+
+\item[(d)] If $F(x)$ holds for some $x$, $F(x) \lor G(y)$ holds, that's $\exists u(F(u) \lor G(u))$. The same if $G(y)$ holds
+for some $y$. If neither $\exists x\; F(x)$ nor $\exists y\; G(y)$ holds, then there is no element make $F$ or $G$ true,
+that's, $F(u) \lor G(u)$ never holds. Thus, $\exists u(F(u) \lor G(u))$ is false.
+
+\end{itemize}
+
+\end{document}
