@@ -1,5 +1,8 @@
 # 2015
 
+# 12.30
+* Have no idea what the fucking nonsense is the mathematical logic chapter 16 talking about.
+
 # 12.29
 * 上课，读傻逼政治老师写的狗屁不通，毫无逻辑的扯淡废话。
 * 翻译杂谈《为何机器学习方法不流行于诊断学》。
