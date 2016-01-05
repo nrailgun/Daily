@@ -1,0 +1,127 @@
+\documentclass{ctexart}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathabx}
+\usepackage{listings}
+\usepackage{bussproofs}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+
+\usepackage{color}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+	backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	commentstyle=\color{mygreen},    % comment style
+	deletekeywords={...},            % if you want to delete keywords from the given language
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	frame=single,	                   % adds a frame around the code
+	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	keywordstyle=\color{blue},       % keyword style
+	language=Octave,                 % the language of the code
+	otherkeywords={*,...},           % if you want to add more keywords to the set
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+	stringstyle=\color{mymauve},     % string literal style
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\lstdefinestyle{customc}{
+	belowcaptionskip=1\baselineskip,
+	breaklines=true,
+	frame=L,
+	xleftmargin=\parindent,
+	language=C,
+	showstringspaces=false,
+	basicstyle=\footnotesize\ttfamily,
+	keywordstyle=\bfseries\color{green!40!black},
+	commentstyle=\itshape\color{purple!40!black},
+	identifierstyle=\color{blue},
+	stringstyle=\color{orange},
+}
+
+\lstdefinestyle{customasm}{
+	belowcaptionskip=1\baselineskip,
+	frame=L,
+	xleftmargin=\parindent,
+	language=[x86masm]Assembler,
+	basicstyle=\footnotesize\ttfamily,
+	commentstyle=\itshape\color{purple!40!black},
+}
+
+\lstset{escapechar=@,style=customc}
+
+\begin{document}
+
+\section*{}
+\textbf{15.5} Suppose $A_1, A_2, A_3, \dots$ are sentences such that no $A_n$ is provable from the
+conjunction of the $A_m$ for $m < n$. Let $T$ be the theory consisting of all sentences
+provable from the $A_i$ . Show that $T$ is not finitely axiomatizable, or in other
+words, that there are not some other, finitely many, sentences $B_1 , B_2 , \dots , B_m$
+such that $T$ is the set of consequences of the $B_j$ .
+
+\subsubsection*{Solution:}
+
+\section*{}
+\textbf{15.7} A sentence $D$ is finitely valid if every finite interpretation is a model of $D$.
+Outline an argument \textit{assuming Church’s thesis} for the conclusion that the
+set of sentences that are not finitely valid is semirecursive. (It follows from
+Trakhtenbrot’s theorem, as in the problems at the end of chapter 11, that the
+set of such sentences is not recursive.)
+
+\subsubsection*{Solution:}
+
+\section*{}
+\textbf{15.10} Let $T$ be an axiomatizable theory in the language of arithmetic. Let $f$ be a
+one-place total or partial function $f$ of natural numbers, and suppose there is
+a formula $\phi(x, y)$ such that for any $a$ and $b$, $\phi(a, b)$ is a theorem of $T$ if and
+only if $f (a) = b$. Show that $f$ is a recursive total or partial function.
+
+\subsubsection*{Solution:}
+
+\section*{}
+\textbf{16.1} Show that the class of arithmetical relations is closed under substitution of
+recursive total functions. In other words, if $P$ is an arithmetical set and $f$ a
+recursive total function, and if $Q(x) \leftrightarrow P( f (x))$, then $Q$ is an arithmetical set,
+and similarly for $n$-place relations and functions.
+
+\subsubsection*{Solution:}
+
+\section*{}
+\textbf{16.12} Continuing the preceding problems, prove the associative and distributive and
+commutative laws for multiplication:
+\begin{itemize}
+	\item[(e)] $x \cdot (y + z) = x \cdot y + x \cdot z$
+	\item[(f)] $x \cdot (y \cdot z) = (x \cdot y) \cdot z$
+	\item[(g)] $x \cdot y = y \cdot x$
+\end{itemize}
+
+\subsubsection*{Solution:}
+
+\section*{}
+\textbf{16.14} Consider a nonstandard interpretation of the language ${0, ', <}$ in which the
+domain is the set of natural numbers, but the denotation of $<$ is taken to be the
+relation $<_1$ of Problem 16.13(a). Show that by giving suitable denotations to
+$0$ and $'$, axioms (Q1)–(Q2) and (Q7)–(Q10) of $Q$ can be made true, while the
+sentence $\forall x\; (x = 0 \lor \exists y\; x = y')$ is made false.
+
+\subsubsection*{Solution:}
+
+\end{document}
