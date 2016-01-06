@@ -1,5 +1,9 @@
 # 2016
 
+# 01.06
+* 复习算法分析与设计。
+* 写数理逻辑作业。
+
 # 01.05
 * Mathematical logic hw5. Indeed, it's sooo hard.
 
