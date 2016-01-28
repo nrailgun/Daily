@@ -1,5 +1,8 @@
 # 2016
 
+# 01.28
+* [Cuda By Example: note](https://www.zybuluo.com/nrailgun/note/278789)
+
 # 01.20
 * 《CUDA 并行程序设计》
 
