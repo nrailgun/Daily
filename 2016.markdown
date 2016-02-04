@@ -1,5 +1,9 @@
 # 2016
 
+# 02.04
+* 实验室网站首页突然变成空白，原因排查中。
+* [Cuda By Example: note](https://www.zybuluo.com/nrailgun/note/278789)
+
 # 01.28
 * [Cuda By Example: note](https://www.zybuluo.com/nrailgun/note/278789)
 
