@@ -1,5 +1,9 @@
 # 2016
 
+# 02.23
+* 多媒体技术，全程吹水。
+* Paper: PAMI glass removal.
+
 # 02.22
 * Returned to lab.
 * Paper: PAMI glass removal.
