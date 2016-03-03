@@ -1,5 +1,8 @@
 # 2016
 
+# 03.03
+* CNNVR: Think more about Backpropagation, INSPIRED.
+
 # 03.02
 * [MLE and MAP](https://www.zybuluo.com/nrailgun/note/299217)
 * 静下心，继续读论文。
