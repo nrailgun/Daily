@@ -1,34 +1,35 @@
 import numpy as np
 
 
-def affine_forward(x, w, b):
+def affine_forward(X, W, b):
   """
   Computes the forward pass for an affine (fully-connected) layer.
 
-  The input x has shape (N, d_1, ..., d_k) and contains a minibatch of N
-  examples, where each example x[i] has shape (d_1, ..., d_k). We will
+  The input X has shape (N, d_1, ..., d_k) and contains a minibatch of N
+  examples, where each example X[i] has shape (d_1, ..., d_k). We will
   reshape each input into a vector of dimension D = d_1 * ... * d_k, and
   then transform it to an output vector of dimension M.
 
   Inputs:
-  - x: A numpy array containing input data, of shape (N, d_1, ..., d_k)
-  - w: A numpy array of weights, of shape (D, M)
+  - X: A numpy array containing input data, of shape (N, d_1, ..., d_k)
+  - W: A numpy array of weights, of shape (D, M)
   - b: A numpy array of biases, of shape (M,)
   
   Returns a tuple of:
   - out: output, of shape (N, M)
-  - cache: (x, w, b)
+  - cache: (X, W, b)
   """
   out = None
   #############################################################################
   # TODO: Implement the affine forward pass. Store the result in out. You     #
   # will need to reshape the input into rows.                                 #
   #############################################################################
-  pass
+  N = X.shape[0]
+  out = np.dot(X.reshape(N, -1), W) + b
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
-  cache = (x, w, b)
+  cache = (X, W, b)
   return out, cache
 
 
@@ -39,20 +40,28 @@ def affine_backward(dout, cache):
   Inputs:
   - dout: Upstream derivative, of shape (N, M)
   - cache: Tuple of:
-    - x: Input data, of shape (N, d_1, ... d_k)
-    - w: Weights, of shape (D, M)
+    - X: Input data, of shape (N, d_1, ... d_k)
+    - W: Weights, of shape (D, M)
 
   Returns a tuple of:
-  - dx: Gradient with respect to x, of shape (N, d1, ..., d_k)
-  - dw: Gradient with respect to w, of shape (D, M)
+  - dx: Gradient with respect to X, of shape (N, d1, ..., d_k)
+  - dw: Gradient with respect to W, of shape (D, M)
   - db: Gradient with respect to b, of shape (M,)
   """
-  x, w, b = cache
+  X, W, b = cache
   dx, dw, db = None, None, None
   #############################################################################
   # TODO: Implement the affine backward pass.                                 #
   #############################################################################
-  pass
+  #print X.shape, dout.shape, W.shape
+  N = X.shape[0]
+  Xr = X.reshape(N, -1)
+
+  dx = np.dot(dout, W.T)
+  dx = dx.reshape(X.shape)
+  dw = np.dot(Xr.T, dout)
+  db = np.sum(dout, axis=0)
+
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -74,7 +83,7 @@ def relu_forward(x):
   #############################################################################
   # TODO: Implement the ReLU forward pass.                                    #
   #############################################################################
-  pass
+  out = np.maximum(x, 0)
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -97,7 +106,7 @@ def relu_backward(dout, cache):
   #############################################################################
   # TODO: Implement the ReLU backward pass.                                   #
   #############################################################################
-  pass
+  dx = (cache > 0) * dout
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
