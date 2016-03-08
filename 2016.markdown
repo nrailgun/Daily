@@ -2,6 +2,7 @@
 
 # 03.08
 * CNNVR
+* [Avoid using Sigmoid](https://www.zybuluo.com/mdeditor#306574)
 
 # 03.03
 * CNNVR: Think more about Backpropagation, INSPIRED.
