@@ -1,5 +1,8 @@
 # 2016
 
+# 03.08
+* CNNVR
+
 # 03.03
 * CNNVR: Think more about Backpropagation, INSPIRED.
 
