@@ -197,7 +197,17 @@ class FullyConnectedNet(object):
     # beta2, etc. Scale parameters should be initialized to one and shift      #
     # parameters should be initialized to zero.                                #
     ############################################################################
-    pass
+    prevw = input_dim
+    dimext = np.hstack([hidden_dims, [num_classes]])
+    for i, d in enumerate(dimext):
+      wkey = 'W%d' % i
+      bkey = 'b%d' % i
+      W = np.random.normal(scale=weight_scale, size=(prevw, d))
+      b = np.zeros(d)
+      self.params[wkey] = W
+      self.params[bkey] = b
+      prevw = d
+
     ############################################################################
     #                             END OF YOUR CODE                             #
     ############################################################################
@@ -255,7 +265,33 @@ class FullyConnectedNet(object):
     # self.bn_params[1] to the forward pass for the second batch normalization #
     # layer, etc.                                                              #
     ############################################################################
-    pass
+    Xtmp = X
+    N = X.shape[0]
+    X = X.reshape(N, -1)
+
+    os = []
+    _as = []
+    o_caches = []
+    a_caches = []
+    for i in xrange(self.num_layers):
+      wkey = 'W%d' % i
+      bkey = 'b%d' % i
+      W = self.params[wkey]
+      b = self.params[bkey]
+
+      o, o_cache = affine_forward(X, W, b)
+      os.append(o)
+      o_caches.append(o_cache)
+
+      if i == self.num_layers - 1:
+        break
+      a, a_cache = relu_forward(o)
+      _as.append(a)
+      a_caches.append(a_cache)
+      X = a
+
+    scores = o
+  
     ############################################################################
     #                             END OF YOUR CODE                             #
     ############################################################################
@@ -278,7 +314,26 @@ class FullyConnectedNet(object):
     # automated tests, make sure that your L2 regularization includes a factor #
     # of 0.5 to simplify the expression for the gradient.                      #
     ############################################################################
-    pass
+    loss, do = softmax_loss(o, y)
+    for i in xrange(self.num_layers):
+      wkey = 'W%d' % i
+      W = self.params[wkey]
+      loss += .5 * np.sum(np.power(W, 2)) * self.reg
+
+    for i in reversed(xrange(self.num_layers)):
+      wkey = 'W%d' % i
+      bkey = 'b%d' % i
+      W = self.params[wkey]
+      o_cache = o_caches[i]
+      da, dW, db = affine_backward(do, o_cache)
+      dW += W * self.reg
+      grads[wkey] = dW
+      grads[bkey] = db
+
+      if i == 0:
+        break
+      a_cache = a_caches[i - 1]
+      do = relu_backward(da, a_cache)
     ############################################################################
     #                             END OF YOUR CODE                             #
     ############################################################################
