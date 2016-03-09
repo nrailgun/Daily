@@ -1,5 +1,8 @@
 # 2016
 
+# 03.09
+* 协助检查。
+
 # 03.08
 * CNNVR
 * [Avoid using Sigmoid](https://www.zybuluo.com/mdeditor#306574)
