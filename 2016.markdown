@@ -1,5 +1,8 @@
 # 2016
 
+# 03.10
+* [Parameter Optimization Skills](https://www.zybuluo.com/mdeditor#308706)
+
 # 03.09
 * 协助检查。
 
