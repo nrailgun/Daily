@@ -176,8 +176,9 @@ def batchnorm_forward(x, gamma, beta, bn_param):
     #############################################################################
     sample_mean = x.mean(axis=0)
     sample_var = x.var(axis=0)
-    out = (x - sample_mean) / np.sqrt(sample_var)
-    out = gamma * out + beta
+    o = (x - sample_mean) / np.sqrt(sample_var + eps)
+    out = gamma * o + beta
+    cache = (x, o, sample_mean, sample_var, gamma, beta, eps)
 
     running_mean = momentum * running_mean + (1 - momentum) * sample_mean
     running_var = momentum * running_var + (1 - momentum) * sample_var
@@ -191,8 +192,8 @@ def batchnorm_forward(x, gamma, beta, bn_param):
     # and shift the normalized data using gamma and beta. Store the result in   #
     # the out variable.                                                         #
     #############################################################################
-    out = (x - running_mean) / np.sqrt(running_var)
-    out = gamma * out + beta
+    o = (x - running_mean) / np.sqrt(running_var + eps)
+    out = gamma * o + beta
     #############################################################################
     #                             END OF YOUR CODE                              #
     #############################################################################
@@ -228,7 +229,17 @@ def batchnorm_backward(dout, cache):
   # TODO: Implement the backward pass for batch normalization. Store the      #
   # results in the dx, dgamma, and dbeta variables.                           #
   #############################################################################
-  pass
+  (x, hatx, mean, var, gamma, beta, eps) = cache
+  N, D = x.shape
+
+  dhatx = dout * gamma
+  dmean = np.sum(dhatx * -1 / np.sqrt(var + eps), axis=0)
+  dvar = np.sum(dhatx * (x - mean) * -.5 * np.power(var + eps, -1.5), axis=0)
+  dx = dhatx / np.sqrt(var + eps) + dvar * 2 * (x - mean) / N + dmean / N
+
+  dgamma = np.sum(dout * hatx, axis=0)
+  dbeta = np.sum(dout, axis=0)
+
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
