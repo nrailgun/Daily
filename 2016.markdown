@@ -1,5 +1,8 @@
 # 2016
 
+# 03.22
+* Batch normalization
+
 # 03.21
 * [Check the new server](https://www.zybuluo.com/nrailgun/note/319782)
 * Dropout.
