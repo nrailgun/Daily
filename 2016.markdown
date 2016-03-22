@@ -2,6 +2,7 @@
 
 # 03.22
 * Batch normalization
+* [Matrix and Gradients](https://www.zybuluo.com/nrailgun/note/321672)
 
 # 03.21
 * [Check the new server](https://www.zybuluo.com/nrailgun/note/319782)
