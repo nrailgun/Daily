@@ -207,7 +207,7 @@ class FullyConnectedNet(object):
       self.params[wkey] = W
       self.params[bkey] = b
 
-      if i < self.num_layers - 1:
+      if self.use_batchnorm and i < self.num_layers - 1:
         gmkey = 'gamma%d' % i
         btkey = 'beta%d' % i
         gm = np.ones(d)
@@ -359,11 +359,11 @@ class FullyConnectedNet(object):
       a_cache = a_caches[i - 1]
       dn = relu_backward(da, a_cache)
 
-      gmkey = 'gamma%d' % (i - 1)
-      btkey = 'beta%d' % (i - 1)
-      gm = self.params[gmkey]
-      bt = self.params[btkey]
       if self.use_batchnorm:
+        gmkey = 'gamma%d' % (i - 1)
+        btkey = 'beta%d' % (i - 1)
+        gm = self.params[gmkey]
+        bt = self.params[btkey]
         n_cache = n_caches[i - 1]
         do, dgamma, dbeta = batchnorm_backward(dn, n_cache)
         grads[gmkey] = dgamma
