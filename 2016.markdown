@@ -2,6 +2,8 @@
 
 # 03.24
 * [进度笔记](https://www.zybuluo.com/mdeditor#)
+* Batch normalization
+* [Read simple PHP tutorial roughly](http://www.tutorialspoint.com/php/php_syntax_overview.htm)
 
 # 03.22
 * Batch normalization
