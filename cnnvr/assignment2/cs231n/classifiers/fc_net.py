@@ -206,6 +206,14 @@ class FullyConnectedNet(object):
       b = np.zeros(d)
       self.params[wkey] = W
       self.params[bkey] = b
+
+      if i < self.num_layers - 1:
+        gmkey = 'gamma%d' % i
+        btkey = 'beta%d' % i
+        gm = np.ones(d)
+        bt = np.zeros(d)
+        self.params[gmkey] = gm
+        self.params[btkey] = bt
       prevw = d
 
     ############################################################################
@@ -250,7 +258,8 @@ class FullyConnectedNet(object):
       self.dropout_param['mode'] = mode   
     if self.use_batchnorm:
       for bn_param in self.bn_params:
-        bn_param[mode] = mode
+        bn_param['mode'] = mode
+    # ? bn_param[mode], A MISTAKE ?
 
     scores = None
     ############################################################################
@@ -270,8 +279,10 @@ class FullyConnectedNet(object):
     X = X.reshape(N, -1)
 
     os = []
+    ns = []
     _as = []
     o_caches = []
+    n_caches = []
     a_caches = []
     for i in xrange(self.num_layers):
       wkey = 'W%d' % i
@@ -282,10 +293,21 @@ class FullyConnectedNet(object):
       o, o_cache = affine_forward(X, W, b)
       os.append(o)
       o_caches.append(o_cache)
-
       if i == self.num_layers - 1:
         break
-      a, a_cache = relu_forward(o)
+
+      if self.use_batchnorm:
+        gmkey = 'gamma%d' % i
+        btkey = 'beta%d' % i
+        gm = self.params[gmkey]
+        bt = self.params[btkey]
+        n, n_cache = batchnorm_forward(o, gm, bt, self.bn_params[i])
+        ns.append(n)
+        n_caches.append(n_cache)
+      else:
+        n, n_cache = o, o_cache
+
+      a, a_cache = relu_forward(n)
       _as.append(a)
       a_caches.append(a_cache)
       X = a
@@ -324,6 +346,8 @@ class FullyConnectedNet(object):
       wkey = 'W%d' % i
       bkey = 'b%d' % i
       W = self.params[wkey]
+      b = self.params[bkey]
+
       o_cache = o_caches[i]
       da, dW, db = affine_backward(do, o_cache)
       dW += W * self.reg
@@ -333,7 +357,19 @@ class FullyConnectedNet(object):
       if i == 0:
         break
       a_cache = a_caches[i - 1]
-      do = relu_backward(da, a_cache)
+      dn = relu_backward(da, a_cache)
+
+      gmkey = 'gamma%d' % (i - 1)
+      btkey = 'beta%d' % (i - 1)
+      gm = self.params[gmkey]
+      bt = self.params[btkey]
+      if self.use_batchnorm:
+        n_cache = n_caches[i - 1]
+        do, dgamma, dbeta = batchnorm_backward(dn, n_cache)
+        grads[gmkey] = dgamma
+        grads[btkey] = dbeta
+      else:
+        do = dn
     ############################################################################
     #                             END OF YOUR CODE                             #
     ############################################################################
