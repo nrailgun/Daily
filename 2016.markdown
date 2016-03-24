@@ -1,5 +1,8 @@
 # 2016
 
+# 03.24
+* [进度笔记](https://www.zybuluo.com/mdeditor#)
+
 # 03.22
 * Batch normalization
 * [Matrix and Gradients](https://www.zybuluo.com/nrailgun/note/321672)
