@@ -1,5 +1,8 @@
 # 2016
 
+# 03.25
+* [Found a problem when training with svm loss](https://www.zybuluo.com/nrailgun/note/325347)
+
 # 03.24
 * [进度笔记](https://www.zybuluo.com/mdeditor#)
 * Batch normalization
