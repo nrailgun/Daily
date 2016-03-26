@@ -1,5 +1,9 @@
 # 2016
 
+# 03.26
+* Backup lab web site data.
+* 单纯形
+
 # 03.25
 * [Found a problem when training with svm loss](https://www.zybuluo.com/nrailgun/note/325347)
 
