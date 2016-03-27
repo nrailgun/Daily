@@ -1,5 +1,8 @@
 # 2016
 
+# 03.27
+* [OpenCV, more skills](https://www.zybuluo.com/nrailgun/note/173782)
+
 # 03.26
 * Backup lab web site data.
 * 单纯形
