@@ -2,6 +2,7 @@
 
 # 03.27
 * [OpenCV, more skills](https://www.zybuluo.com/nrailgun/note/173782)
+* Code `grm` and try training it.
 
 # 03.26
 * Backup lab web site data.
