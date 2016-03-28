@@ -1,5 +1,9 @@
 # 2016
 
+# 03.28
+* Comparing predication with original data, not bad!
+* Fix little bugs.
+
 # 03.27
 * [OpenCV, more skills](https://www.zybuluo.com/nrailgun/note/173782)
 * Code `grm` and try training it.
