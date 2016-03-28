@@ -3,6 +3,7 @@
 # 03.28
 * Comparing predication with original data, not bad!
 * Fix little bugs.
+* 尝试更大的分块。
 
 # 03.27
 * [OpenCV, more skills](https://www.zybuluo.com/nrailgun/note/173782)
