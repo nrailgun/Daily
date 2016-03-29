@@ -1,5 +1,8 @@
 # 2016
 
+# 03.29
+* 中间分块 work。
+
 # 03.28
 * Comparing predication with original data, not bad!
 * Fix little bugs.
