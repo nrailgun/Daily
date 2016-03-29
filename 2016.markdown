@@ -2,6 +2,7 @@
 
 # 03.29
 * 中间分块 work。
+* Train multiple networks together.
 
 # 03.28
 * Comparing predication with original data, not bad!
