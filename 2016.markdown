@@ -1,5 +1,8 @@
 # 2016
 
+# 03.30
+* 结果混合，边缘突兀。
+
 # 03.29
 * 中间分块 work。
 * Train multiple networks together.
