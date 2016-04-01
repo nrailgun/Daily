@@ -2,6 +2,7 @@
 
 # 04.01
 * Deal with misc businesses.
+* 改变网络结构，尝试。
 
 # 03.30
 * 结果混合，边缘突兀。
