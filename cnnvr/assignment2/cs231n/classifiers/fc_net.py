@@ -281,9 +281,11 @@ class FullyConnectedNet(object):
     os = []
     ns = []
     _as = []
+    ds = []
     o_caches = []
     n_caches = []
     a_caches = []
+    d_caches = []
     for i in xrange(self.num_layers):
       wkey = 'W%d' % i
       bkey = 'b%d' % i
@@ -310,7 +312,15 @@ class FullyConnectedNet(object):
       a, a_cache = relu_forward(n)
       _as.append(a)
       a_caches.append(a_cache)
-      X = a
+
+      if self.use_dropout:
+        d, d_cache = dropout_forward(a, self.dropout_param)
+        ds.append(d)
+        d_caches.append(d_cache)
+      else:
+        d, d_cache = a, a_cache
+
+      X = d
 
     scores = o
   
@@ -349,13 +359,20 @@ class FullyConnectedNet(object):
       b = self.params[bkey]
 
       o_cache = o_caches[i]
-      da, dW, db = affine_backward(do, o_cache)
+      dd, dW, db = affine_backward(do, o_cache)
       dW += W * self.reg
       grads[wkey] = dW
       grads[bkey] = db
 
       if i == 0:
         break
+
+      if self.use_dropout:
+        d_cache = d_caches[i - 1]
+        da = dropout_backward(dd, d_cache)
+      else:
+        da = dd
+
       a_cache = a_caches[i - 1]
       dn = relu_backward(da, a_cache)
 
