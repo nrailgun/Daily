@@ -1,5 +1,8 @@
 # 2016
 
+# 04.03
+* CNNVR: Conv layer, so fucking stupid.
+
 # 04.02
 * CNNVR: Implement dropout.
 
