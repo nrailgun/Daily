@@ -2,6 +2,7 @@
 
 # 04.03
 * CNNVR: Conv layer, so fucking stupid.
+* 分布式系统作业。
 
 # 04.02
 * CNNVR: Implement dropout.
