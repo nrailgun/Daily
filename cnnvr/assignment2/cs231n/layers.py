@@ -1,5 +1,5 @@
 import numpy as np
-
+from scipy.signal import convolve2d
 
 def affine_forward(X, W, b):
   """
@@ -353,6 +353,14 @@ def dropout_backward(dout, cache):
   return dx
 
 
+# FIXME
+def _nr_conv(x, k, stride, pad):
+  h, w = x.shape
+  hh, ww = k.shape
+  oh = 1 + (h + 2 * pad - hh) / stride
+  ow = 1 + (w + 2 * pad - ww) / stride
+
+
 def conv_forward_naive(x, w, b, conv_param):
   """
   A naive implementation of the forward pass for a convolutional layer.
@@ -381,7 +389,24 @@ def conv_forward_naive(x, w, b, conv_param):
   # TODO: Implement the convolutional forward pass.                           #
   # Hint: you can use the function np.pad for padding.                        #
   #############################################################################
-  pass
+  N, C, H, W = x.shape
+  F, C, HH, WW = w.shape
+  stride = conv_param['stride']
+  pad = conv_param['pad']
+
+  OH = 1 + (H + 2 * pad - HH) / stride
+  OW = 1 + (W + 2 * pad - WW) / stride
+  out = np.zeros((N, F, OH, OW))
+  
+  for i in xrange(N):
+    xi = x[i]
+    for j in xrange(F):
+      wj = w[j]
+      tmp = np.zeros((OH, OW))
+      for k in xrange(C):
+        #tmp += convolve2d(xi[k], wj[k], mode='same')
+        tmp += _nr_conv(xi[k], wj[k], stride, pad)
+      out[i, j] = tmp;
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -432,7 +457,22 @@ def max_pool_forward_naive(x, pool_param):
   #############################################################################
   # TODO: Implement the max pooling forward pass                              #
   #############################################################################
-  pass
+  N, C, H, W = x.shape
+  pool_height = pool_param['pool_height']
+  pool_width = pool_param['pool_width']
+  stride = pool_param['stride']
+  oh = (H - pool_height) / stride + 1
+  ow = (W - pool_width) / stride + 1
+
+  out = np.zeros((N, C, oh, ow))
+
+  for n in xrange(N):
+    for c in xrange(C):
+      for i in xrange(oh):
+        for j in xrange(ow):
+          out[n, c, i, j] = np.max(x[n, c,
+            i * stride : i * stride + pool_height,
+            j * stride : j * stride + pool_width])
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
