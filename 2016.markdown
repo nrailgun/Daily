@@ -1,5 +1,56 @@
 # 2016
 
+# 04.04
+* [CNNVR: Convolutional networks note](https://cs231n.github.io/convolutional-networks/)
+
+# 04.03
+* CNNVR: Conv layer, so fucking stupid.
+* 分布式系统作业。
+
+# 04.02
+* CNNVR: Implement dropout.
+
+# 04.01
+* Deal with misc businesses.
+* 改变网络结构，尝试。
+* CNNVR: Understanding and Visualizing Convolutional Neural Networks
+
+# 03.30
+* 结果混合，边缘突兀。
+
+# 03.29
+* 中间分块 work。
+* Train multiple networks together.
+* 眉毛混合边缘难以辨认。
+* 观察 underfit 的输出。
+* 模块混合。
+
+# 03.28
+* Comparing predication with original data, not bad!
+* Fix little bugs.
+* 尝试更大的分块。
+* 尝试中间分块。
+
+# 03.27
+* [OpenCV, more skills](https://www.zybuluo.com/nrailgun/note/173782)
+* Code `grm` and try training it.
+
+# 03.26
+* Backup lab web site data.
+* 单纯形
+
+# 03.25
+* [Found a problem when training with svm loss](https://www.zybuluo.com/nrailgun/note/325347)
+
+# 03.24
+* [进度笔记](https://www.zybuluo.com/mdeditor#)
+* Batch normalization
+* [Read simple PHP tutorial roughly](http://www.tutorialspoint.com/php/php_syntax_overview.htm)
+
+# 03.22
+* Batch normalization
+* [Matrix and Gradients](https://www.zybuluo.com/nrailgun/note/321672)
+
 # 03.21
 * [Check the new server](https://www.zybuluo.com/nrailgun/note/319782)
 * Dropout.
