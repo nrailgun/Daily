@@ -5,6 +5,7 @@
 
 # 04.04
 * [CNNVR: Convolutional networks note](https://cs231n.github.io/convolutional-networks/)
+* CNNVR: Visualizing what ConvNets learn
 
 # 04.03
 * CNNVR: Conv layer, so fucking stupid.
