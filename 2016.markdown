@@ -1,5 +1,9 @@
 # 2016
 
+# 04.06
+* Try new network structure.
+* Deconvolutional network
+
 # 04.05
 * Deconvolutional network
 
