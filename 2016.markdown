@@ -1,5 +1,8 @@
 # 2016
 
+# 04.06
+* Read Dokuwiki document
+
 # 04.05
 * Deconvolutional network
 
