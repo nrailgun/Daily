@@ -2,6 +2,7 @@
 
 # 04.07
 * CNNVR network visualization note
+* [Caffe Solver Tricks](https://www.zybuluo.com/nrailgun/note/337325)
 
 # 04.06
 * Try new network structure.
