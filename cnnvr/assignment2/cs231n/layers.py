@@ -360,6 +360,17 @@ def _nr_conv(x, k, stride, pad):
   oh = 1 + (h + 2 * pad - hh) / stride
   ow = 1 + (w + 2 * pad - ww) / stride
 
+  o = np.zeros((oh, ow))
+  x = np.pad(x, ((pad, pad), (pad, pad)), mode='constant', constant_values=0)
+  #k = np.flipud(np.fliplr(k))
+
+  for i in xrange(oh):
+    for j in xrange(ow):
+      _x = x[i * stride : i * stride + hh, j * stride : j * stride + ww]
+      _o = convolve2d(_x, k, mode='valid')
+      o[i, j] = _o
+
+  return o
 
 def conv_forward_naive(x, w, b, conv_param):
   """
@@ -399,14 +410,13 @@ def conv_forward_naive(x, w, b, conv_param):
   out = np.zeros((N, F, OH, OW))
   
   for i in xrange(N):
-    xi = x[i]
     for j in xrange(F):
-      wj = w[j]
-      tmp = np.zeros((OH, OW))
       for k in xrange(C):
-        #tmp += convolve2d(xi[k], wj[k], mode='same')
-        tmp += _nr_conv(xi[k], wj[k], stride, pad)
-      out[i, j] = tmp;
+        xik = x[i, k]
+        wjk = w[j, k]
+        rv = _nr_conv(xik, wjk, stride, pad)
+        assert(rv.shape == out[i, j].shape)
+        out[i, j] += rv
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
