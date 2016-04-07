@@ -1,5 +1,8 @@
 # 2016
 
+# 04.07
+* CNNVR network visualization note
+
 # 04.06
 * Try new network structure.
 * Deconvolutional network
