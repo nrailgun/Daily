@@ -53,7 +53,6 @@ def affine_backward(dout, cache):
   #############################################################################
   # TODO: Implement the affine backward pass.                                 #
   #############################################################################
-  #print X.shape, dout.shape, W.shape
   N = X.shape[0]
   Xr = X.reshape(N, -1)
 
@@ -367,7 +366,10 @@ def _nr_conv(x, k, stride, pad):
   for i in xrange(oh):
     for j in xrange(ow):
       _x = x[i * stride : i * stride + hh, j * stride : j * stride + ww]
-      _o = convolve2d(_x, k, mode='valid')
+
+      _o = np.sum(_x * k)
+      #_o = convolve2d(_x, np.flipud(np.fliplr(k)), mode='valid')
+
       o[i, j] = _o
 
   return o
@@ -411,12 +413,13 @@ def conv_forward_naive(x, w, b, conv_param):
   
   for i in xrange(N):
     for j in xrange(F):
+      bj = b[j]
       for k in xrange(C):
         xik = x[i, k]
         wjk = w[j, k]
         rv = _nr_conv(xik, wjk, stride, pad)
-        assert(rv.shape == out[i, j].shape)
         out[i, j] += rv
+      out[i, j] += bj
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
