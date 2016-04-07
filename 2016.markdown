@@ -1,6 +1,13 @@
 # 2016
 
+# 04.07
+* CNNVR network visualization note
+* [Caffe Solver Tricks](https://www.zybuluo.com/nrailgun/note/337325)
+* Caffe `ConvolutionLayer` and `DeconvolutionLayer` code.
+
 # 04.06
+* Try new network structure.
+* Deconvolutional network
 * Read Dokuwiki document
 
 # 04.05
