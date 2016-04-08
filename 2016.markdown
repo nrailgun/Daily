@@ -1,5 +1,9 @@
 # 2016
 
+# 04.08
+* Try removing `weight_decay`.
+* CNNVR: naive pooling backward and naive conv forward.
+
 # 04.07
 * CNNVR network visualization note
 * [Caffe Solver Tricks](https://www.zybuluo.com/nrailgun/note/337325)
