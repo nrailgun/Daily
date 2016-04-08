@@ -3,6 +3,7 @@
 # 04.08
 * Try removing `weight_decay`.
 * CNNVR: naive pooling backward and naive conv forward.
+* [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820)
 
 # 04.07
 * CNNVR network visualization note
