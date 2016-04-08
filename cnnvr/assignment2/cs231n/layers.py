@@ -361,17 +361,12 @@ def _nr_conv(x, k, stride, pad):
 
   o = np.zeros((oh, ow))
   x = np.pad(x, ((pad, pad), (pad, pad)), mode='constant', constant_values=0)
-  #k = np.flipud(np.fliplr(k))
 
   for i in xrange(oh):
     for j in xrange(ow):
       _x = x[i * stride : i * stride + hh, j * stride : j * stride + ww]
-
       _o = np.sum(_x * k)
-      #_o = convolve2d(_x, np.flipud(np.fliplr(k)), mode='valid')
-
       o[i, j] = _o
-
   return o
 
 def conv_forward_naive(x, w, b, conv_param):
@@ -427,6 +422,10 @@ def conv_forward_naive(x, w, b, conv_param):
   return out, cache
 
 
+def _nr_conv_backward(x, kern, stride, pad):
+  pass
+
+
 def conv_backward_naive(dout, cache):
   """
   A naive implementation of the backward pass for a convolutional layer.
@@ -444,7 +443,21 @@ def conv_backward_naive(dout, cache):
   #############################################################################
   # TODO: Implement the convolutional backward pass.                          #
   #############################################################################
-  pass
+
+  # x, w, b, conv_param = cache
+  # stride = pool_param['stride']
+  # pad = conv_param['pad']
+
+  # N, C, H, W = x.shape
+  # F, C, HH, WW = w.shape
+
+  # dx = np.zeros_like(x)
+  # for i in xrange(N):
+  #   for j in xrange(C):
+  #     xij = x[i, j]
+  #     for k in xrange(F):
+  #       wkj = w[k, j]
+
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -513,27 +526,21 @@ def max_pool_backward_naive(dout, cache):
   pool_height = pool_param['pool_height']
   pool_width = pool_param['pool_width']
   stride = pool_param['stride']
+
   oh = (H - pool_height) / stride + 1
   ow = (W - pool_width) / stride + 1
+  dx = np.zeros_like(x)
 
-  dx = np.zeros((N, C, H, W))
-  #for n in xrange(N):
-  #  for c in xrange(C):
-  #    for i in xrange(oh):
-  #      for j in xrange(ow):
-  #        xncij = x[n, c,
-  #          i * stride : i * stride + pool_height,
-  #          j * stride : j * stride + pool_width]
-  #        dx[n, c,
-  #          i * stride : i * stride + pool_height,
-  #          j * stride : j * stride + pool_width] = (xncij == np.max(xncij))
-  #for n in xrange(N):
-  #  for c in xrange(C):
-  #    for i in xrange(H):
-  #      for j in xrange(W):
-  #        if dx[n, c, i, j]:
-  #          dx[n, c, i, j] = dout[n, c, i / stride, j / stride]
-
+  for n in xrange(N):
+    for c in xrange(C):
+      for i in xrange(oh):
+        for j in xrange(ow):
+          _x = x[n, c, 
+            i * stride : i * stride + pool_height,
+            j * stride : j * stride + pool_width]
+          _idx = np.argmax(_x)
+          _i, _j = np.unravel_index(_idx, _x.shape)
+          dx[n, c, i * stride + _i, j * stride + _j] += dout[n, c, i, j]
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
