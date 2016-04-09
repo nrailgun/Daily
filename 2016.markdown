@@ -3,6 +3,7 @@
 # 04.09
 * 删除了浏览器的历史记录之后 Google 打不开了？这太神奇了。
 * Keep going with `grm`.
+* Update vim configs and plugins.
 
 # 04.08
 * Try removing `weight_decay`.
