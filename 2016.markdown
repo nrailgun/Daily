@@ -4,6 +4,7 @@
 * 删除了浏览器的历史记录之后 Google 打不开了？这太神奇了。
 * Keep going with `grm`.
 * Update vim configs and plugins.
+* [Adding layers to Caffe](https://www.zybuluo.com/nrailgun/note/339589)
 
 # 04.08
 * Try removing `weight_decay`.
