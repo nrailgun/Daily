@@ -1,5 +1,9 @@
 # 2016
 
+# 04.11
+* 上课
+* Generate sine noise.
+
 # 04.10
 * Keep working on `grm`.
 * Encoding produced noises in training data, WTF.
