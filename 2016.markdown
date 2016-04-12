@@ -1,5 +1,9 @@
 # 2016
 
+# 04.12
+* Must stop playing that stupid video game.
+* Check lab property list.
+
 # 04.11
 * 上课
 * Generate sine noise.
