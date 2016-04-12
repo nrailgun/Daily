@@ -3,6 +3,7 @@
 # 04.12
 * Must stop playing that stupid video game.
 * Check lab property list.
+* Keep working on `grm`.
 
 # 04.11
 * 上课
