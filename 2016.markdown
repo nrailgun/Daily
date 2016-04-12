@@ -5,6 +5,7 @@
 * Check lab property list.
 * Keep working on `grm`.
 * BP for convnet.
+* [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820#e-globally-trainable-systems)
 
 # 04.11
 * 上课
