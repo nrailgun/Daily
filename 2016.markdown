@@ -4,6 +4,7 @@
 * Must stop playing that stupid video game.
 * Check lab property list.
 * Keep working on `grm`.
+* BP for convnet.
 
 # 04.11
 * 上课
