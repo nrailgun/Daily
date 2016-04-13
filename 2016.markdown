@@ -1,5 +1,9 @@
 # 2016
 
+# 04.13
+* Check lab dev list.
+* [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820)
+
 # 04.12
 * Must stop playing that stupid video game.
 * Check lab property list.
