@@ -3,6 +3,7 @@
 # 04.14
 * Check lab dev list.
 * [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820)
+* Keep working on `grm`, try network on another problem.
 
 # 04.13
 * Check lab dev list.
