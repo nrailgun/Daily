@@ -2,6 +2,7 @@
 
 # 04.16
 * Slightly modify `grm` code for reuse.
+* Train network, it works.
 
 # 04.15
 * Check lab dev list.
