@@ -2,6 +2,7 @@
 
 # 04.17
 * What the hell have I done last night, the `grm` training process seems messed up by me. I have to check git out for reason.
+* [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820)
 
 # 04.16
 * Slightly modify `grm` code for reuse.
