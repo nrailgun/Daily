@@ -1,5 +1,8 @@
 # 2016
 
+# 04.17
+* What the hell have I done last night, the `grm` training process seems messed up by me. I have to check git out for reason.
+
 # 04.16
 * Slightly modify `grm` code for reuse.
 * Train network, it works.
