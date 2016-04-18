@@ -2,6 +2,7 @@
 
 # 04.18
 * Keep working on `grm`.
+* Implement LeNet with `Caffe`, just for practicing.
 
 # 04.17
 * What the hell have I done last night, the `grm` training process seems messed up by me. I have to check git out for reason.
