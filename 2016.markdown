@@ -1,5 +1,9 @@
 # 2016
 
+# 04.20
+* Introduce my work to ZYP. Hope it wouldn't harm.
+* Generate noise.
+
 # 04.18
 * Keep working on `grm`.
 * Implement LeNet with `Caffe`, just for practicing.
