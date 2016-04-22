@@ -1,11 +1,15 @@
 # 2016
 
+# 04.22
+* Keep working on `wrm`.
+
 # 04.21
 * Keep working on `wrm`.
 
 # 04.20
 * Introduce my work to ZYP. Hope it wouldn't harm.
 * Generate noise.
+* [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820)
 
 # 04.18
 * Keep working on `grm`.
