@@ -3,6 +3,7 @@
 # 04.22
 * Keep working on `wrm`.
 * [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820)
+* Glanced through [Image denoising: Can plain Neural Networks compete with BM3D?](https://www.zybuluo.com/nrailgun/note/354681).
 
 # 04.21
 * Keep working on `wrm`.
