@@ -1,5 +1,9 @@
 # 2016
 
+# 04.23
+* Talked with Ding, inspired.
+* Prepare for presentation.
+
 # 04.22
 * Keep working on `wrm`.
 * [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820)
