@@ -1,6 +1,9 @@
 # 2016
 
-# 04.25
+# 04.26
+* Keep working on `wrm`.
+
+# 04.24
 * Prepare for presentation.
 
 # 04.23
