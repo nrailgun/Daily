@@ -2,6 +2,7 @@
 
 # 04.29
 * Keep working on `wrm`.
+* [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820)
 
 # 04.28
 * Keep working on `wrm`.
