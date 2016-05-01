@@ -1,5 +1,8 @@
 # 2016
 
+# 05.01
+* 浏览器主页被傻逼金山公司劫持了，修理中。
+
 # 04.29
 * Keep working on `wrm`.
 * [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820)
