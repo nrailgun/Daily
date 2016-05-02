@@ -1,7 +1,12 @@
 # 2016
 
+# 05.02
+* Keep working on `wrm`.
+* I hate guessing what the fucking function is.
+
 # 05.01
 * 浏览器主页被傻逼金山公司劫持了，修理中。
+* Keep working on `wrm`.
 
 # 04.29
 * Keep working on `wrm`.
