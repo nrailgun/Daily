@@ -3,6 +3,7 @@
 # 05.03
 * Keep working on `wrm`.
 * Replace background, suck ass.
+* [Gradient-Based Learning Applied to Document Recognition](https://www.zybuluo.com/nrailgun/note/338820)
 
 # 05.02
 * Keep working on `wrm`.
