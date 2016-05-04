@@ -1,5 +1,9 @@
 # 2016
 
+# 05.04
+* Keep working on `wrm`.
+* I found a BUG!
+
 # 05.03
 * Keep working on `wrm`.
 * Replace background, suck ass.
