@@ -3,6 +3,7 @@
 # 05.05
 * Keep working on `wrm`.
 * Hope adding the new approach will work.
+* [Veterbi algorithm](https://www.zybuluo.com/nrailgun/note/368038)
 
 # 05.04
 * Keep working on `wrm`.
