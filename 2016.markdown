@@ -1,5 +1,8 @@
 # 2016
 
+# 05.06
+* So hard to train it...
+
 # 05.05
 * Keep working on `wrm`.
 * Hope adding the new approach will work.
