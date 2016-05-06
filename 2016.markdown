@@ -3,6 +3,7 @@
 # 05.06
 * So hard to train it...
 * [Veterbi algorithm](https://www.zybuluo.com/nrailgun/note/368038)
+* [Optimizing Conv in Caffe](https://www.zybuluo.com/nrailgun/note/369072)
 
 # 05.05
 * Keep working on `wrm`.
