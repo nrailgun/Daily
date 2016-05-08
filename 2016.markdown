@@ -3,6 +3,7 @@
 # 05.08
 * Keep working on `wrm`.
 * Visualize weights and see what happened.
+* [Veterbi algorithm](https://www.zybuluo.com/nrailgun/note/368038)
 
 # 05.06
 * So hard to train it...
