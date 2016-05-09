@@ -1,5 +1,9 @@
 # 2016
 
+# 05.09
+* Keep working on `wrm`.
+* Help mate install ubuntu and caffe.
+
 # 05.08
 * Keep working on `wrm`.
 * Visualize weights and see what happened.
