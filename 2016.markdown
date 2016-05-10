@@ -1,5 +1,8 @@
 # 2016
 
+# 05.10
+* Keep working on `wrm`.
+
 # 05.09
 * Keep working on `wrm`.
 * Help mate installing ubuntu and caffe.
