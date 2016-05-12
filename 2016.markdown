@@ -1,5 +1,9 @@
 # 2016
 
+# 05.12
+* Keep working on `wrm`.
+* It's too slow! I must work harder!
+
 # 05.11
 * Keep working on `wrm`.
 
