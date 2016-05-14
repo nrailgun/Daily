@@ -1,5 +1,9 @@
 # 2016
 
+# 05.14
+* Keep working on `wrm`.
+* [Deep feature learning with relative distance comparison for person re-identification](https://www.zybuluo.com/nrailgun/note/371725)
+
 # 05.13
 * Keep working on `wrm`.
 
