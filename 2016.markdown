@@ -1,5 +1,8 @@
 # 2016
 
+# 05.19
+* [Add and delete new user to Ubuntu](https://www.zybuluo.com/nrailgun/note/230703)
+
 # 05.18
 * Keep working on `wrm`.
 * [A Few Useful Things to Know about Machine Learning](https://www.zybuluo.com/nrailgun/note/381088)
