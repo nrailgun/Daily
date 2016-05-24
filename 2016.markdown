@@ -1,5 +1,9 @@
 # 2016
 
+# 05.24
+* Label face tool.
+* FP detection.
+
 # 05.23
 * Keep working on `wrm`.
 
