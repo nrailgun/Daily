@@ -1,5 +1,9 @@
 # 2016
 
+# 05.26
+* Keep working on `fp`.
+* Label data, it's stupid.
+
 # 05.25
 * Label data, it's stupid.
 
