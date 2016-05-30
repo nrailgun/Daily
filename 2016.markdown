@@ -1,5 +1,9 @@
 # 2016
 
+# 05.30
+* `fp` done? Hope so.
+* I hate using other's broken code.
+
 # 05.29
 * Keep working on `fp`.
 
