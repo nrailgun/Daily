@@ -3,6 +3,7 @@
 # 05.30
 * `fp` done? Hope so.
 * I hate using other's broken code.
+* [A Few Useful Things to Know about Machine Learning](https://www.zybuluo.com/nrailgun/note/381088)
 
 # 05.29
 * Keep working on `fp`.
