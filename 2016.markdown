@@ -1,5 +1,9 @@
 # 2016
 
+# 05.31
+* Keep working on `wrm`.
+* Modify the stupid code.
+
 # 05.30
 * `fp` done? Hope so.
 * I hate using other's broken code.
