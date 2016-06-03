@@ -1,5 +1,9 @@
 # 2016
 
+# 06.03
+* Keep working on `wrm`.
+* 我真的不记得几何数学是怎么回事了。
+
 # 06.02
 * Keep working on `wrm`.
 
