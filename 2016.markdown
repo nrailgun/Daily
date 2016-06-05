@@ -1,5 +1,9 @@
 # 2016
 
+# 06.05
+* It worked! But still some improvements needed to be made.
+* Keep working on `wrm`.
+
 # 06.04
 * Keep working on `wrm`.
 * Let's hope it work.
