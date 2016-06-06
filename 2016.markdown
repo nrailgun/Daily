@@ -1,5 +1,8 @@
 # 2016
 
+# 06.06
+* Help my brother find a way to send `ctrl-s` to a window.
+
 # 06.05
 * It worked! But still some improvements needed to be made.
 * Keep working on `wrm`.
