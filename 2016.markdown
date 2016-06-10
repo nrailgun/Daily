@@ -1,5 +1,11 @@
 # 2016
 
+# 06.10
+* I have to write a shity paper survey as my homework. I hate it.
+
+# 06.09
+* Keep working on `fp`.
+
 # 06.06
 * Help my brother find a way to send `ctrl-s` to a window.
 
