@@ -71,9 +71,51 @@ Yuchi Huang 提出 Component based Deformable Model（CDM），用于寻找人�
 \label{fig:cascaded_cnn}
 \end{figure}
 
+网络检查 5 个关键点：Left Eye（LE），Right Eye（RE），Noise tip（N），Left Mouth corner（LM），Right Mouth corner（RM）。
+图 \ref{fig:cascaded_cnn} 是大致的网络结构。第一级联有 3 个卷积神经网络，各自覆盖一定的脸部区域，并产生数个关键点坐标，
+结构如图\ref{fig:cascaded_cnn-f1} 所示。
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{pics/cascaded_cnn-f1}
+	\caption[]{Network in Cascaded CNN}
+	\label{fig:cascaded_cnn-f1}
+\end{figure}
+
 在第一级联中，卷积神经网络在整个面部区域提取了高阶特征。在整个面部区域，许多的上下文信息都被用来参与寻找关键点。另外，
 由于 5 个关键点同时被网络所预测，可以一定程度上保持面部关键点之间的空间约束。因此，网络得以避免二义性和数据损坏导致的
 局部最优。在 2 级和 3 级级联中，网络逐步微调输出结果，以期达到更好的预测结果准确性。
+
+作者提出了网络设计的三个关键点：
+
+\begin{description}
+	\item [网络的深度] 预测关键点位置属于高级任务，深度网络帮助提取全局的高级特征，而底层的网络层因为 receptive field
+	较小，提取的是局部的低级特征。其次，高阶特征经常是非线性的，增加更多的层可以增加更多的非线性，使之更加有效的表示
+	输入与输出的关系。
+	\item [ReLU 的使用] 通常卷积神经元之后的激活函数只有一个，Sigmoid，$\tanh$，或者 ReLU （Absolute value Rectification）。
+	而这个 Cascaded CNN 使用了 $\max(\tanh(x), 0)$ 的独特形式。这一形式大大提升了网络的性能。作者在实验中证明其非常有效。
+	在我的实验中，发现其实去掉 $\tanh$ 也能表现很好，主导作用可能来自于 ReLU。
+	\item [局部的权重共享] 通常卷积神经网络使用全局共享权值 \cite{lff-conv}。因为特定的空间特征，如果可以被滤波器在
+	某个区域捕捉，那么在其他区域也可以被捕捉，其次避免了梯度扩散的问题，减少参数数量也可以加速神经网络训练。但是，
+	全局权重共享对于人脸关键点检测这种有着特定空间分布的问题可能并不适用，眼睛和嘴巴拥有类似的低级特征（边缘相似），
+	但是在高级语义级别，他们是完全不同的。所以对于那些有着不同语义的区域，局部的权重共享可能更好。
+
+	局部权重共享的卷积神经网络的卷积层可以表示为
+	$$
+	y_{i, j}^{(t)} = \tanh \left(
+	\sum_{r=0}^{m-1} \sum_{k=0}^{s-1} \sum_{l=0}^{s-1} x_{i+k, j+l}^{(r)} \centerdot
+	w_{k, l}^{(r, u, v, t)} + b^{(u, v, t)}
+	\right)
+	$$
+	其中，$s$ 是卷积核的边长，$n$ 是卷积核的数量，$p$ 和 $q$ 是权重共享参数，$m$ 是上一层的卷积核的数目，$x$ 是输入，
+	$y$ 是输出。
+\end{description}
+
+网络使用归一化的 MSE 作为损失函数：
+$$
+\mathrm{err} = \frac { \sqrt{ (x - x')^2 + (y - y')^2 } } {l}
+$$
+其中，$x$、$y$、$x'$ 和 $y'$ 分别是预测坐标和 Ground truth 坐标，$l$ 是人脸检测器给出的脸部宽度，作归一化。
 
 这个网络结构使用于关键点不多的情况，随着关键点增多，网络收敛会越来越困难，也越来越不准确。
 
@@ -88,13 +130,31 @@ Yuchi Huang 提出 Component based Deformable Model（CDM），用于寻找人�
 
 \subsection{Supervised Descent Mothod}
 
-\cite{sdm}
+Xuehan Xiong 提出 Supervised Descent Method（SDM）来定位人脸关键点 \cite{sdm}。
+SDM 使用 SIFT 提取初始关键点坐标，在训练中，SDM 尝试最小化 SIFT 计算的关键点和手工标记关键点的差
+距（$\Delta \rm{x}$）。但是 SDM 并不学习任何形状或者外观模型，而是学习下降方向和缩放因子。
+
+\section{性能衡量}
+
+通常衡量人脸关键点预测的性能指标有两个：
+
+\begin{itemize}
+	\item 与 Ground truth 定位的差距（经常是欧氏距离）
+	\item 面向任务目标的特定指标
+\end{itemize}
+
+最直接的评估人脸关键点定位性能的指标就是和手工标记的坐标进行比较，性能好坏取决于计算结果的准确性。
+准确性可以通过 normalized root mean square error 或者 normalized mean square error 来衡量。眼距通常
+用来作为归一化的准绳，通过将坐标除以眼距来做归一化可以避免摄像头距离或者缩放导致的差异。
 
 \section{结语}
 
 本文主要讨论了关键点识别问题及其遇到的困难，和几种较为著名的方法，重点介绍了 Cascaded CNN 和 SDM 方法。人脸关键点
-的工作是计算机视觉中非常重要的问题，因此研究这个问题很有意义。这篇文章大部分来自我读的 Paper 和实验的笔记，今天写出来
-分享，谢谢老师。
+的工作是计算机视觉中非常重要的问题，因此研究这个问题很有意义。不过还是很容易发现，目前人脸关键点定位问题中，
+卷积神经网络的占到了极强的主导地位，不仅效果拔群，而且简单易懂。虽然实际应用中，卷积神经网络的训练与调整是一个
+非常依赖经验的黑科技，但是这不能阻止他的脚步。
+
+这篇文章大部分来自我读的 Paper 和实验的笔记，今天写出来分享，谢谢老师。
 
 \pagebreak
 \bibliography{fp-survey.bib}
