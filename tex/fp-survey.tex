@@ -131,8 +131,63 @@ $$
 \subsection{Supervised Descent Mothod}
 
 Xuehan Xiong 提出 Supervised Descent Method（SDM）来定位人脸关键点 \cite{sdm}。
-SDM 使用 SIFT 提取初始关键点坐标，在训练中，SDM 尝试最小化 SIFT 计算的关键点和手工标记关键点的差
-距（$\Delta \rm{x}$）。但是 SDM 并不学习任何形状或者外观模型，而是学习下降方向和缩放因子。
+许多计算机视觉问题，都是通过非线性优化方法来解决。许多人认为 2 阶下降方法是较为健壮，快速，和可靠
+的方法（尽管目前流行的深度学习方法使用的是更加简单的随机梯度下降方法）。
+
+虽然牛顿方法是一个比我奶奶还要年长的算法，但是这不妨碍他作为一个 2 阶导数存在时候可用的优秀算法。
+牛顿方法假定平滑函数 $f(x)$ 可以被 quadratic function 逼近，如果 Hessian 矩阵是正定的，那么最小值
+可以通过求解线性方程组得到。牛顿方法创造了一个升级参数的序列：
+$$
+x_{k+1} = x_k - H^{-1}(x_k) J_f(x_k)
+$$
+其中 $ H(x_k)$ 和 $J_f(x_k)$ 是 Hessian 矩阵和 Jacobian 矩阵。牛顿方法收敛很快，而且可以很好接近最优解。
+但是牛顿方法也存在一些不足，首先函数未必可导（比如 SIFT），数值逼近不切实际；其次 Hessian 矩阵可能非常巨大；
+再次，它不一定是正定的。
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{pics/sdm-example}
+\caption{SDM 方法}
+\label{fig:sdm-example}
+\end{figure}
+
+图 \ref{fig:sdm-example} 阐述了 SDM 方法的思想。（a）图表示将牛顿方法应用与 Nonlinear Least Squares 问题，
+$f(x)$ 是非线性函数，而 $y$ 是已知矢量。（b）图阐述了 SDM 方法背后的思想。训练数据包括了在不同 $y^i$
+（人脸）采样的函数集合 $\left\{ f(x, y^i) \right\}$，最优解 $\left\{ x^i_* \right\}$ 已知。通过训练数据，
+SDM 学习一系列的参数升级方向，这些参数升级方向将使得误差逐步下降。
+
+给定图 $d \in \mathcal{R}^{m\times 1}$，$d(x) \in \mathcal{R}^{p \times 1}$ 索引图像中的 $p$ 个关键点，$h$ 是非线性特征
+提取函数（例如，SIFT），并且假定已知已知关键点坐标为 $x_*$。关键点问题可以抽象为极小化函数：
+$$
+f(x_0 + \Delta x) = \| h(d(x_0 + \Delta x)) - \Phi_* \|_2^2
+$$
+其中 $\Phi_* = h(d(x_*))$。在训练集中，$\Delta x$ 和 $\Phi_*$ 是已知的。
+
+假定 $h$ 二阶可导（事实上不是），那么可以展开目标函数为：
+$$
+f(x_0 + \Delta x) \approx f(x_0) + J_f(x_0)^T \Delta x + \frac 1 2 \Delta x^T H(x_0) \Delta x
+$$
+可以得到升级为
+$$
+\Delta x_k = -H^{-1} J_f = -2 H^{-1} J_h^T(\phi_{k-1} - \phi_*)
+$$
+
+由于 $h$ 事实上不可导，SDM 采用了这样的方法：
+$$
+x_k = x_{k-1} + R_{k-1} \phi_{k-1} + b_{k-1}
+$$
+$R_k$ 和 $b_k$ 就是参数升级方向，也是学习的目标，通过求解
+$$
+\arg\min_{R_k, b_k} \sum_{d^i} \sum_{x_k^i} \| \Delta x_*^{ki} - R_k \phi_k^i - b_k \|^2
+$$
+得到，而 $R_0$ 和 $b_0$ 通过求解
+$$
+\arg\min_{R_0, b_0} \sum_{d^i} \sum_{x_0^i} \| \Delta x_*^{i} - R_0 \phi_0^i - b_0 \|^2
+$$
+得到。
+
+对比于卷积神经网络，SDM 方法的准确性还不能比拟，但是 SDM 方法收敛速度非常快，计算资源消耗少，
+这是卷积神经网络没有的优点。
 
 \section{性能衡量}
 
