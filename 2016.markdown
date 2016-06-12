@@ -1,5 +1,8 @@
 # 2016
 
+# 06.12
+* [MXNet: A Flexible and Efficient Machine Learning Library for Heterogeneous Distributed Systems](https://www.zybuluo.com/nrailgun/note/405667)
+
 # 06.10
 * I have to write a shity paper survey as my homework. I hate it.
 
