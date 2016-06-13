@@ -13,6 +13,10 @@
 \begin{document}
 
 \maketitle
+\tableofcontents
+\pagebreak
+
+\section{综述}
 
 人脸关键点检测（\textbf{Facial landmark localization}）在许多相关的人脸相关问题(包括生物特征识别、情绪理解和人脸识别)中扮演了重要角
 色，而这些问题都是是计算机视觉中的重要任务。人脸关键点检测问题事实上是非常具有挑战性的，因为这个问题涉及了空间尺度、人像姿势、表
@@ -184,7 +188,7 @@ $$
 $$
 \arg\min_{R_0, b_0} \sum_{d^i} \sum_{x_0^i} \| \Delta x_*^{i} - R_0 \phi_0^i - b_0 \|^2
 $$
-得到。
+得到。由于这个式子属于线性最小二乘问题，可以通过闭式解法快速求解。通常 3～5 轮迭代目标函数可以得到收敛。
 
 对比于卷积神经网络，SDM 方法的准确性还不能比拟，但是 SDM 方法收敛速度非常快，计算资源消耗少，
 这是卷积神经网络没有的优点。
@@ -207,7 +211,7 @@ $$
 \subsection{Caffe}
 
 最早是贾扬清在 ImageNet 比赛中的代码，最后在 BSD 许可证下发布，在开源社区极受欢迎，曾经是 Github
-的 Deep Learning 板块热度最高的项目。
+的 Machiine Learning 板块热度最高的项目。
 
 使用 C++ 开发，性能高效，但是使用确实不太方便，图层必须使用
 C++ 自行定义，而且必须熟悉 GPU 编程，定义网络使用 Protobuf，数据管理涉及文件系统，内存数据库，
@@ -215,12 +219,13 @@ Protobuf，有时候让人手忙脚乱。无论如何，Caffe 仍然是最受欢
 
 \subsection{Theano}
 
-一个来自于纽约大学的项目，接口完全使用 Python。缺点是集成度不高，很多常用功能必须自行实现，并不太
+一个来自于纽约大学的项目，接口完全使用 Python。缺点是集成度不够高，一些常用功能必须自行实现，文档也并不太
 友好。
 
 \subsection{MXNet}
 
-目前开源社区的明星！Deep learning 版块的热度第一，击败了 Caffe，我们有道理相信 MXNet 是 Deep learning 框架
+目前开源社区的明星！甚至拿下过 Machine learning 版块的热度第一，击败了 Caffe。
+我们有道理相信 MXNet 是 Deep learning 框架
 的明日之星。设计简洁，性能高效，虽然目前还有很多不完善的地方，相信一定会越来越好。
 
 \subsection{Tensorflow}
