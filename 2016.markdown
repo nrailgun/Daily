@@ -1,5 +1,11 @@
 # 2016
 
+# 06.14
+* Preparing PPT.
+
+# 06.13
+* Preparing PPT.
+
 # 06.12
 * [MXNet: A Flexible and Efficient Machine Learning Library for Heterogeneous Distributed Systems](https://www.zybuluo.com/nrailgun/note/405667)
 
