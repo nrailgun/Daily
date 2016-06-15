@@ -130,14 +130,27 @@ $S$ 最大化 $w_S$ 除以尚未被选取项集覆盖的项的数目的值，构
 给定一个项集的集合 $\scri$，现在考虑 $z$ $\pi$ 在模型中都未知的情况。这种情况下我们可以使用强 EM 算法来做参数估计。
 强 EM 算法在我们的问题中，仅仅是递推算法顶部的一个层。假定如同式 \ref{3.4} 定义，
 有 $m$ 个事务 $X^{(1)}, X^{(2)}, \dots, X^{(m)} $ 和支持项集的集合
-$\tau^{(1)}, \tau^{(2)}, \dots, \tau^{(m)} $，那么强 EM 边如图 \ref{fig:algo2} 所示。初始化 $\pi$ 的一个简单选择是是用数据集中项集的支持。
+$\tau^{(1)}, \tau^{(2)}, \dots, \tau^{(m)} $，那么强 EM 边如算法 \ref{algo2} 所示。初始化 $\pi$ 的一个简单选择是是用数据集中项集的支持。
 
-\begin{figure}
-\centering
-\includegraphics[width=0.9\linewidth]{pics/algo2}
-\caption{Hard Expectation Maximization}
-\label{fig:algo2}
-\end{figure}
+\begin{algorithm}[H]
+	\KwData{Set of itemsets $\scri$ and initial estimates $\pi^{(0)}$}
+	initialize $k \leftarrow 0$ \;
+	
+	$k \leftarrow k + 1$ \;
+	E-step: $\forall X^{(j)}$ solve formula \ref{3.3} using algorithm 1 to obtain $z_S^{(j)} \forall S \in \tau_j$\;
+	
+	M-step: $\pi_S^{(k)} \leftarrow \frac 1 m \sum_{j=1}^m z_S^{(j)} \forall S \in \scri$
+	
+	\While {$ \| \pi^{(k-1)} - \pi^{(k)} \| \ge \epsilon $} {
+		$k \leftarrow k + 1$ \;
+		E-step: $\forall X^{(j)}$ solve formula \ref{3.3} using algorithm 1 to obtain $z_S^{(j)} \forall S \in \tau_j$\;
+		
+		M-step: $\pi_S^{(k)} \leftarrow \frac 1 m \sum_{j=1}^m z_S^{(j)} \forall S \in \scri$
+	}
+	return $\scri$, $\pi^{(k-1)}$\;
+	\label{algo2}
+	\caption{Hard Expectation Maximization}
+\end{algorithm}
 
 \subsection{推导新项集}
 
@@ -168,7 +181,7 @@ Apriori 算法来从单例递归地提供可能的项集，不过这可能计算
 
 \subsection{挖掘有趣项集}
 
-完整的有趣项集挖掘算法如图 \ref{fig:algo5} 所示。注意参数优化步骤（算法2）不需要每一次迭代都执行。
+完整的有趣项集挖掘算法如算法 5 所示。注意参数优化步骤（算法2）不需要每一次迭代都执行。
 事实上如果在优化参数之前，多提供若干个候选项集将使得算法更加高效。我们根据有趣度对项集进行排序，
 形式化的定义有趣度如下：
 
@@ -178,12 +191,18 @@ $$
 $$
 值域为从 0（非常无趣） 到 1（非常有趣） 之间。
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.9\linewidth]{pics/algo5}
+\begin{algorithm}[H]
+	\KwData{Database transactions}
+	initialize $\scri$ with singletons and $\pi$ with their supports \;
+	build EIM-tree from transaction database \;
+	\While {not converged} {
+		add itemsets to $\scri$, $\pi$ using algorithm 3 \;
+		optimize parameter for $\scri$ , $\pi$ for algorithm 2 \;
+	}
+	return $\scri$, $\pi$ \;
+	\label{algo5}
 	\caption{Interesting itemset Miner (IIM)}
-	\label{fig:algo5}
-\end{figure}
+\end{algorithm}
 
 \section{实验}
 Jaroslav Fowkes 在真实事务数据集进行了测试。他们用 IIM 在 ICDM 数据集 \cite{DeBie} 上进行了 $1000$ 次迭代，并和
