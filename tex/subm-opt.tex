@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{graphicx}
+\usepackage[]{algorithm2e}
 
 \bibliographystyle{plain}
 
@@ -91,7 +92,37 @@ $$
 z_S \in \{0, 1\} \ \forall S \in \scri
 $$
 
-这是一个加权集覆盖问题 
+这是一个加权集覆盖问题 \cite{weighted-set-cover}，其中权重 $w_S \in \mathbb{R} $ 由下式给出
+$$
+w_S := \ln\left( \frac{\pi_S}{1 - \pi_S} \right)
+$$
+这是一个 NP 难问题，直接求解在实践中是不符合实际的。有一点非常重要，必须要注意到，加权集覆盖问题
+是给定次模（\textit{Submodular}）约束极大化线性函数的特例，我们可以将之公式化 \cite{young}。给出
+支持事务的有趣项集的集合 $\tau$
+\begin{equation}
+\label{3.4}
+\tau := \left\{ S \in \scri \mid S \subset X \right\}
+\end{equation}
+对于每个 $S \in \tau$ 一个实数权重 $w_S$，和一个非递减次模函数（\textit{submodular function}）
+$f: 2^\tau \to \mathbb{R}$，目标是为了找到一个最大总权重的 $C \subset \tau$，使得 $f(C) = f(\tau)$，
+并且最大化 $\sum_{S \in C} w_S$。我们简单定义 $f(C)$ 为$C$ 中项的数目，即 $f(C) := | \bigcup_{S \in C} S |$。
+注意到，根据构造，$f(\tau) = | X | $。
+
+因此，我们得已使用次模函数贪心近似算法近似求解问题 \ref{3.3}。贪心算法通过反复选取项集 $S$，使得
+$S$ 最大化 $w_S$ 除以尚未被选取项集覆盖的项的数目的值，构造一个 $C$。
+
+\begin{algorithm}[H]
+	\KwData{Transaction $X$, set of itemsets $\tau$ , weights $w$}
+	initialize $C \leftarrow \emptyset$ \;
+	\While {$f(C) \neq |X| $} {
+		Choose $S \in \tau$ maximizing $\frac{w_S}{ f(C \cup {S}) - f(C) }$ \;
+		$C \leftarrow C \cup {S}$ \;
+	}
+\caption{Greedy Weighted Set Covers}
+\end{algorithm}
+
+已经有人证明，该类问题上，贪心算法可以达到 $\ln |X| + 1$ 近似率 \cite{chivatal}，并且，Feige 的不可近似性定义已经证明
+这就是最优的可能近似了 \cite{feige}。
 
 \pagebreak
 \bibliography{subm-opt.bib}
