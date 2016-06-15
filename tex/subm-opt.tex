@@ -10,8 +10,11 @@
 \title{数据挖掘中的组合优化 —— 次模函数解决频繁项集挖掘}
 \author{吴俊宇 15212880}
 
+\newcommand{\scri}[0]{\mathcal{I}}
+
 \begin{document}
 
+\date{}
 \maketitle
 \tableofcontents
 \pagebreak
@@ -34,7 +37,61 @@
 
 \section{有趣频繁项集挖掘}
 
-本节形式化“识别一个有趣频繁项集集合是否对研究事务数据库有效”的问题。$\mathcal{I}$
+本节形式化“识别一个有趣频繁项集集合是否对研究事务数据库有效”的问题。
+首先定义一些前置的概念和注记。数据项 $i$ 是论域 $U = \{1, 2, \dots, n\}$ 的元素，事务 $X$ 是 $U$ 的子集，
+项集 $S$ 是项 $i$ 的集合。有趣项集的集合 $\mathcal I$ 是我们的目标，是 $U$ 的的幂集的子集。另外，
+我们称项集 $S$ \textit{支持}事务 $X$ 如果 $S \subset X$。
+
+\subsection{Generative Model}
+
+我们提出一个简单的模型从有趣项集来产生事务数据库。模型的参数是一个有趣项集的集合 $\scri$ 和每个有趣项集
+$S \in \scri$ 对应的伯努利概率 $\pi_S$。分别地对于数据库中每个事务 $X$，
+\begin{enumerate}
+	\item 对于每个 $S \in \scri$，独立决定是否在事务中包含 $S$
+	$$
+	z_S \sim \mathrm{Bernoulli}(\pi_S)
+	$$
+	\item 将事务设置为上一步选中的项集中的项的集合
+	$$
+	X = \bigcup \left\{ i \in S | S \in \scri, z_S = 1 \right\}
+	$$
+\end{enumerate}
+注意模型允许一个项从多个项集中产生多次。
+
+\subsection{Inference}
+
+给定项集集合 $\scri$，让 $z$ 和 $\pi$ 成为每个项集 $S$ 的 $z_S$ 和 $\pi_S$ 的向量（数组），
+其中项集 $S \in \scri$。
+假定 $z$ 和 $\pi$ 是完全确定的，因为 $z_S$ 服从伯努利分布，显然从 Generative Model 可以得到产生事务 $X$ 的概率为
+\begin{equation}
+\label{3.1}
+p(X, z \mid \pi) = \prod_{S \in \scri} \pi_S^{z_S} (1 - \pi_S)^{1 - z_S}
+\text{ if } X = \bigcup_{z_S = 1} S \text{, otherwise } 0
+\end{equation}
+假定隐变量  $\pi$ 已知，那么可以是用极大似然估计 MLE 从事务 $X$ 递推得到 $z$。从式子 \ref{3.1} 显然可以
+得到，极大似然的解便是极大后验分布 $p(z \mid X, \pi)$
+
+\begin{equation}
+\label{3.2}
+\max_z \prod_{S \in \scri} \pi_S^{z_S} (1 - \pi_S)^{1 - z_S}
+\end{equation}
+$$
+s.t. X = \bigcup \left\{ i \in S | S \in \scri, z_S = 1 \right\}
+$$
+
+取对数并重写式 \ref{3.2}，我们得到更加标准的形式
+\begin{equation}
+\label{3.3}
+\max_z \sum_{S \in \scri} z_S \ln \left( \frac{\pi_S}{1 - \pi_S} \right) + \ln \left(1 - \pi_S \right)
+\end{equation}
+$$
+s.t. \sum_{S \mid i \in S} z_S \geq 1 \ \forall i \in X
+$$
+$$
+z_S \in \{0, 1\} \ \forall S \in \scri
+$$
+
+这是一个加权集覆盖问题 
 
 \pagebreak
 \bibliography{subm-opt.bib}
