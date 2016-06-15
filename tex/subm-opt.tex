@@ -8,7 +8,7 @@
 
 \bibliographystyle{plain}
 
-\title{数据挖掘中的组合优化 —— 次模函数解决频繁项集挖掘}
+\title{数据挖掘中的组合优化 —— 利用次模函数挖掘有趣项集}
 \author{吴俊宇 15212880}
 
 \newcommand{\scri}[0]{\mathcal{I}}
@@ -36,7 +36,7 @@
 文章提出，挖掘“有趣”项集，也就是在一个简单但是自然的事务概率模型中最有效的项集。有趣项集可以
 通过结构化 EM 方法推导 \cite{em-book}。本文旨在介绍 Jaroslav Fowkes 提出的算法，结合组合优化方法，解决数据挖掘问题。
 
-\section{有趣频繁项集挖掘}
+\section{有趣项集挖掘}
 
 本节形式化“识别一个有趣频繁项集集合是否对研究事务数据库有效”的问题。
 首先定义一些前置的概念和注记。数据项 $i$ 是论域 $U = \{1, 2, \dots, n\}$ 的元素，事务 $X$ 是 $U$ 的子集，
@@ -212,7 +212,7 @@ FPGrowth 进行了比较。图 \ref{fig:tab1} 比较了有趣项集和频繁项�
 \begin{figure}
 \centering
 \includegraphics[width=0.7\linewidth]{pics/tab1}
-\caption{The top ten itemsets of size $\ge 2$ as found by IIM and FPGrowth.}
+\caption{IIM 和 FPGrowth 找到的大小为 2 的 Top 10 项集}
 \label{fig:tab1}
 \end{figure}
 
