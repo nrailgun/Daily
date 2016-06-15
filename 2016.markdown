@@ -1,5 +1,8 @@
 # 2016
 
+# 06.15
+* Combinatorial Optimization Homework. Actually I don't get it at all.
+
 # 06.14
 * Preparing PPT.
 
