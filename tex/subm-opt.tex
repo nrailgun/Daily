@@ -63,7 +63,7 @@ $S \in \scri$ 对应的伯努利概率 $\pi_S$。分别地对于数据库中每�
 
 给定项集集合 $\scri$，让 $z$ 和 $\pi$ 成为每个项集 $S$ 的 $z_S$ 和 $\pi_S$ 的向量（数组），
 其中项集 $S \in \scri$。
-假定 $z$ 和 $\pi$ 是完全确定的，因为 $z_S$ 服从伯努利分布，显然从 Generative Model 可以得到产生事务 $X$ 的概率为
+假定 $z$ 和 $\pi$ 是完全确定的，因为 $z_S$ 服从伯努利分布，显然从产生模型可以得到产生事务 $X$ 的概率为
 \begin{equation}
 \label{3.1}
 p(X, z \mid \pi) = \prod_{S \in \scri} \pi_S^{z_S} (1 - \pi_S)^{1 - z_S}
@@ -140,6 +140,66 @@ $\tau^{(1)}, \tau^{(2)}, \dots, \tau^{(m)} $，那么强 EM 边如图 \ref{fig:a
 \end{figure}
 
 \subsection{推导新项集}
+
+使用结构化 EM 算法 \cite{friedman} 来推导新项集。我们添加候选项集 $S'$ 到 $\scri$ 中，如果添加之后式 \ref{3.3}
+中在各个事务上最优值的平均值 $\overline{p}$ 得到改善，那么就将这个候选集添加到 $\scri$ 中。
+给定 $X^{(1)}, X^{(2)}, \dots, X^{(m)}$，项集的集合 $\scri$ 和对应的概率，结构化 EM 算法的迭代如图 \ref{fig:algo3} 所示。
+实际使用中，我们存储被算法 3 否决的候选集，并且在运行算法后半部分之前，检查每一个潜在候选集是否存在，以提高
+计算效率。
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{pics/algo3}
+	\caption{Structural EM (one iteration)}
+	\label{fig:algo3}
+\end{figure}
+
+\subsection{产生候选项集}
+结构化 EM 算法需要一个方法来产生新的用来添加到有趣项集集合 $\scri$ 中的候选项集 $S'$。一个可能的方案是是用
+Apriori 算法来从单例递归地提供可能的项集，不过这可能计算效率不太好。因此，我们采用了图 \ref{fig:algo4} 的算法，
+递归地将 $\scri$ 中的有趣项集与 Hightest support first 进行组合。
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{pics/algo4}
+	\caption{Support-weightedItemset Combination}
+	\label{fig:algo4}
+\end{figure}
+
+\subsection{挖掘有趣项集}
+
+完整的有趣项集挖掘算法如图 \ref{fig:algo5} 所示。注意参数优化步骤（算法2）不需要每一次迭代都执行。
+事实上如果在优化参数之前，多提供若干个候选项集将使得算法更加高效。我们根据有趣度对项集进行排序，
+形式化的定义有趣度如下：
+
+在算法 5 中提取的项集 $S \in \scri$ 的有趣度定义如下
+$$
+\mathrm{int}(S) = \frac { \sum_{j=1}^{m} z_S^{(j)} }{ supp(S) }
+$$
+值域为从 0（非常无趣） 到 1（非常有趣） 之间。
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{pics/algo5}
+	\caption{Interesting itemset Miner (IIM)}
+	\label{fig:algo5}
+\end{figure}
+
+\section{实验}
+Jaroslav Fowkes 在真实事务数据集进行了测试。他们用 IIM 在 ICDM 数据集 \cite{DeBie} 上进行了 $1000$ 次迭代，并和
+FPGrowth 进行了比较。图 \ref{fig:tab1} 比较了有趣项集和频繁项集。我们可以清楚地看到，有趣项集告诉了我们更多的
+信息。
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{pics/tab1}
+\caption{The top ten itemsets of size $\ge 2$ as found by IIM and FPGrowth.}
+\label{fig:tab1}
+\end{figure}
+
+\section{结论}
+文中提出了一种与传统频繁项集不同的方法，提取“有趣”项集。有趣项集提供了更多的信息，
+避免了频繁项集中无相关和繁琐无意义的问题。
 
 \pagebreak
 \bibliography{subm-opt.bib}
