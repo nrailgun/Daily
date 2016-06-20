@@ -18,3 +18,4 @@ xv6
 *.pre
 
 output
+tex/pics
