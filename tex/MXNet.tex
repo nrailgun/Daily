@@ -181,6 +181,43 @@ $$
 	\caption{Asynchronized multi-node gradient descent}
 \end{algorithm}
 
+但是算法同时导致了数据不一致的问题，由于节点计算速度不一致，部分节点可能在较旧的参数上进行计算，导致得到错误的
+计算结果。
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\linewidth]{pics/delay}
+\caption{异步计算导致数据不一致}
+\label{fig:delay}
+\end{figure}
+
+幸运的是，虽然听起来不可思议，但是异步计算存在理论上的收敛 \cite{scaling}。证明过程比较繁杂，不做细述。
+不过就算如此，MXNet 社区不太建议使用该方法，虽然可能提高计算速度，但是网络的难以预测性和不稳定性进一步增加，
+可能使得网络排错很困难。
+
+\subsection{多级别同步}
+
+单个计算机可能包括多个计算节点（CPU 和多个 GPU）。考虑到不同节点之间通信速度存在巨大差异，比如 GPU 和 CPU 通信
+开销可能小于机器之间的网络通信开销，MXNet 的同步模型是 2 级的，在机器内和机器间使用了不同的同步模型和模型参数。
+大体结构如图 \ref{fig:lv2sync} 所示。
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\linewidth]{pics/lv2sync}
+\caption{2 级同步机制}
+\label{fig:lv2sync}
+\end{figure}
+
+\section{代码例子}
+
+本文附带了一个代码例子，是我学习时候练习所留下的代码。由于涉及一些利益关系，所以训练数据只能用几个简单
+的图片进行代替，作为简单示例。
+
+\section{结语}
+
+分布式计算一直是一个长盛不衰的话题，时至今日分布式计算任然蓬勃发展。MXNet 是分布式计算在近年炙手可热
+的深度学习领域的一个重要尝试。分布式计算在今日，与大数据与深度学习结合，发挥重要作用。
+
 \pagebreak
 \bibliography{MXNet.bib}
 
