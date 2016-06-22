@@ -2,7 +2,7 @@
 
 # 06.22
 * [Quotes in Shell programming](https://www.zybuluo.com/nrailgun/note/414567)
-* [Array in Shell programming](https://www.zybuluo.com/nrailgun/note/414567)
+* [Array in Shell programming](https://www.zybuluo.com/nrailgun/note/415117)
 
 # 06.20
 * Wrote a report for DS.
