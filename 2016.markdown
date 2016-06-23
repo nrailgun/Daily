@@ -1,5 +1,8 @@
 # 2016
 
+# 06.23
+* Upgraded `fp`. Hope it works with `wrm`.
+
 # 06.22
 * [Quotes in Shell programming](https://www.zybuluo.com/nrailgun/note/414567)
 * [Array in Shell programming](https://www.zybuluo.com/nrailgun/note/415117)
