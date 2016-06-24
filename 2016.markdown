@@ -1,5 +1,8 @@
 # 2016
 
+# 06.24
+* Working on `fp`.
+
 # 06.23
 * Upgraded `fp`. Hope it works with `wrm`.
 
