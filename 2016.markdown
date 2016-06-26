@@ -2,7 +2,7 @@
 
 # 06.26
 * Working on `wrm`.
-* Partly worked, but not as good as expected. I need a plan.
+* Partly worked, but not as good as expected. I need a new plan.
 
 # 06.25
 * Working on `wrm`.
