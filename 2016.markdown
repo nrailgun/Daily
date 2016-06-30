@@ -1,5 +1,11 @@
 # 2016
 
+# 06.30
+* Keep working on `wrm`.
+
+# 06.29
+* Keep working on `wrm`.
+
 # 06.26
 * Working on `wrm`.
 * Partly worked, but not as good as expected. I need a new plan.
