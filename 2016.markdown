@@ -1,5 +1,8 @@
 # 2016
 
+# 07.03
+* Keep working on `rec`.
+
 # 07.02
 * Keep working on `wrm`.
 
