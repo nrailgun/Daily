@@ -1,5 +1,8 @@
 # 2016
 
+# 07.07
+* Keep working on `rec`.
+
 # 07.05
 * Keep working on `rec`.
 
