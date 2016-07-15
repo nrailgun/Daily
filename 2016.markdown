@@ -1,5 +1,11 @@
 # 2016
 
+# 07.15
+* Maybe `WRM` is OK enough, all we need is more data. Still, I want to give it more tries.
+* I should focus on `rec`.
+* [Comrpression Artifacts Reduction by a Deep CNN](https://www.zybuluo.com/nrailgun/note/437874)
+* [SRCNN](https://www.zybuluo.com/nrailgun/note/437873)
+
 # 07.07
 * Keep working on `rec`.
 
