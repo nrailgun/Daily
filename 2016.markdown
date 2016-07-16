@@ -1,5 +1,9 @@
 # 2016
 
+# 07.16
+* `WRM` `REC` doesn't work well for `GRM`.
+* [Image inpainting](https://www.zybuluo.com/nrailgun/note/438178)
+
 # 07.15
 * Maybe `WRM` is OK enough, all we need is more data. Still, I want to give it more tries.
 * I should focus on `rec`.
