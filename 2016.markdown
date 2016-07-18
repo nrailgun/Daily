@@ -1,5 +1,8 @@
 # 2016
 
+# 07.18
+* Read [Why are deep neural networks hard to train?](http://neuralnetworksanddeeplearning.com/chap5.html)
+
 # 07.16
 * `WRM` `REC` doesn't work well for `GRM`.
 * [Image inpainting](https://www.zybuluo.com/nrailgun/note/438178)
