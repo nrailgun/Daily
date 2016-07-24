@@ -1,5 +1,8 @@
 # 2016
 
+# 07.24
+* [Affine transformation with center offset](https://www.zybuluo.com/nrailgun/note/445955)
+
 # 07.18
 * Read [Why are deep neural networks hard to train?](http://neuralnetworksanddeeplearning.com/chap5.html)
 
