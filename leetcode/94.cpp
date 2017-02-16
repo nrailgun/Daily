@@ -17,22 +17,20 @@ public:
         s.push(root);
         while (!s.empty()) {
             TreeNode *n = s.top();
-            s.pop();
-            
-            if (!n)
+            if (!n) {
+                s.pop();
                 continue;
-            
-            if (!n->left && !n->right) {
+            }
+
+            if (!n->left) {
                 v.push_back(n->val);
-            } else {
+                s.pop();
                 s.push(n->right);
-                s.push(n);
+            } else {
                 s.push(n->left);
                 n->left = 0;
-                n->right = 0;
             }
         }
-        
         return v;
     }
 };
