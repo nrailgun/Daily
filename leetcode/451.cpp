@@ -6,6 +6,8 @@ public:
     : counts(c) {
     }
 
+    // 特别注意这两个条件不能反过来写！如果先 counts[i] > counts[j] return true，
+    // 那么 counts[i] > counts[j] 且 i > j，那么 (i, j) 和 (j, i) 都 return true，算法爆炸。
     bool operator()(char i, char j) const {
         if (counts[i] == counts[j])
             return i < j;
