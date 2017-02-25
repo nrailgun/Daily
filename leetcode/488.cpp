@@ -1,4 +1,5 @@
 // Naive BFS works but exceeds memory limitation.
+// TODO: 虽然这个题目通过剪枝已经解出，但是还需要优化，标记。
 
 class Qtype {
 public:
