@@ -17,7 +17,7 @@ public:
     }
 };
 
-// O(1) 空间。找到中点，翻转，顺序比较。我真是太机智了。
+// O(1) 空间。找到中点，翻转，顺序比较。我真是太机智了，机智地复用了 next 指针。
 // 小心置空指针，免得 leetcode release 出错。
 class Solution {
 public:
