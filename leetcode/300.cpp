@@ -20,7 +20,7 @@ public:
     }
 };
 
-// O(n logn)。
+// 经典问题 LIS（Longest Increasing Subsequence） 的复杂度为 O(n logn)。
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
