@@ -67,3 +67,30 @@ public:
 };
 
 // 另外一种方法是，i 从 0 到 n，检查 i 为中点最大能建立多大的 palindrome。理论上 O(n^2) 复杂度，然而实际运行快很多。
+class Solution {
+public:
+  int maxl, maxi, maxj;
+  
+  string longestPalindrome(const string &s) {
+    maxl = 0;
+    for (int i = 0; i < s.size() - 1; i++) {
+      longestPalindrome(s, i, i);
+      longestPalindrome(s, i, i + 1);
+    }
+    return s.substr(maxi, maxj - maxi + 1);
+  }
+
+  void longestPalindrome(const string &s, int i, int j) {
+    while (i >= 0 && j < s.size() && s[i] == s[j]) {
+      i--;
+      j++;
+    }
+    
+    int l = (--j) - (++i) + 1;
+    if (l > maxl) {
+      maxl = l;
+      maxi = i;
+      maxj = j;
+    }
+  }
+};
