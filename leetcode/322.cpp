@@ -18,3 +18,24 @@ public:
         return rv == INT_MAX ? -1 : rv;
     }
 };
+
+// 新思路，感谢大神的背包 9 讲。
+// Beats 99.7%.
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int n) {
+        int m = coins.size();
+        if (!m)
+            return -1;
+        
+        vector<int> dp(n + 1, INT_MAX);
+        dp[0] = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = coins[i]; j <= n; j++) {
+                if (dp[j - coins[i]] != INT_MAX)
+                    dp[j] = min(dp[j], dp[j - coins[i]] + 1);
+            }
+        }
+        return dp[n] == INT_MAX ? -1 : dp[n];
+    }
+};
