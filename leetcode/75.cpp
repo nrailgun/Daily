@@ -16,3 +16,28 @@ public:
         }
     }
 };
+
+// 3 way partition
+
+class Solution {
+public:
+	void sortColors(vector<int>& colors) {
+		int n = colors.size() - 1;
+		int i = 0, j = 0;
+
+		while (j <= n) {
+			if (colors[j] == 0) {
+				swap(colors[i], colors[j]);
+				i++;
+				j++;
+			}
+			else if (colors[j] == 1) {
+				j++;
+			}
+			else { // == 3
+				swap(colors[j], colors[n]);
+				n--;
+			}
+		}
+	}
+};
