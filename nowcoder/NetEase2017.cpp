@@ -65,30 +65,6 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstddef>
-#include <cassert>
-#include <cstring>
-
-#include <set>
-#include <map>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <list>
-#include <unordered_map>
-#include <unordered_set>
-#include <algorithm>
-#include <functional>
-#include <numeric>
-#include <stack>
-#include <queue>
-#include <cfloat>
-
-using namespace std;
-
-
 template <typename Pred>
 int bubble_sort(string g, const Pred &pred) {
 	int n = g.size();
@@ -125,29 +101,6 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstddef>
-#include <cassert>
-#include <cstring>
- 
-#include <set>
-#include <map>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <list>
-#include <unordered_map>
-#include <unordered_set>
-#include <algorithm>
-#include <functional>
-#include <numeric>
-#include <stack>
-#include <queue>
-#include <cfloat>
- 
-using namespace std;
- 
 int distance(int x1, int y1, int x2, int y2) {
     return abs(x1 - x2) + abs(y1 - y2);
 }
@@ -195,29 +148,6 @@ int main(int argc, char* argv[])
 #endif
     return 0;
 }
-
-#include <cstdio>
-#include <cstdlib>
-#include <cstddef>
-#include <cassert>
-#include <cstring>
- 
-#include <set>
-#include <map>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <list>
-#include <unordered_map>
-#include <unordered_set>
-#include <algorithm>
-#include <functional>
-#include <numeric>
-#include <stack>
-#include <queue>
-#include <cfloat>
- 
-using namespace std;
  
 int main(int argc, char* argv[])
 {
@@ -258,29 +188,6 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstddef>
-#include <cassert>
-#include <cstring>
- 
-#include <set>
-#include <map>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <list>
-#include <unordered_map>
-#include <unordered_set>
-#include <algorithm>
-#include <functional>
-#include <numeric>
-#include <stack>
-#include <queue>
-#include <cfloat>
- 
-using namespace std;
- 
 int solve(vector<vector<int>> &caps, int egi, vector<bool> &tasks) {
     if (egi == caps.size())
         return 1;
@@ -322,4 +229,107 @@ int main(int argc, char* argv[])
     system("pause");
 #endif
     return 0;
+}
+
+int main(int argc, char* argv[])
+{
+#ifdef TEST
+	freopen("Text.txt", "r", stdin);
+#endif
+
+	unordered_set<double> us;
+	int w, x, y, z;
+	cin >> w >> x >> y >> z;
+
+	for (int p = w; p <= x; p++) {
+		for (int q = y; q <= z; q++) {
+			double v = (double) p / q;
+			us.insert(v);
+		}
+	}
+	cout << us.size() << endl;
+
+#ifdef TEST
+	freopen("CON", "r", stdin);
+	system("pause");
+#endif
+	return 0;
+}
+
+int main(int argc, char* argv[])
+{
+#ifdef TEST
+	freopen("Text.txt", "r", stdin);
+#endif
+	int n;
+	cin >> n;
+
+	vector<vector<bool>> b(n, vector<bool>(n, false));
+	for (int i = 0; i < n; i++) {
+		string s;
+		cin >> s;
+		for (int j = 0; j < n; j++) {
+			if (s[j] == 'W')
+				b[i][j] = true;
+		}
+	}
+
+	int maxc = 0;
+	for (int i = 0; i < n; i++) {
+		int j = 0; // row
+		
+		while (j < n) {
+			int k = j;
+			while (k + 1 < n && b[k][i] == b[k + 1][i]) {
+				k++;
+			}
+			maxc = max(maxc, k - j + 1);
+			j = k + 1;
+		}
+	}
+	cout << maxc << endl;
+
+#ifdef TEST
+	freopen("CON", "r", stdin);
+	system("pause");
+#endif
+	return 0;
+}
+
+int main(int argc, char* argv[])
+{
+#ifdef TEST
+	freopen("Text.txt", "r", stdin);
+#endif
+
+	int n, m;
+	cin >> n >> m;
+
+	set<string> remembered;
+	for (int i = 0; i < n; i++) {
+		string s;
+		cin >> s;
+		remembered.insert(s);
+	}
+	
+	unordered_set<string> dict;
+	for (int i = 0; i < m; i++) {
+		string s;
+		cin >> s;
+		dict.insert(s);
+	}
+	
+	int score = 0;
+	for (auto it = remembered.begin(); it != remembered.end(); it++) {
+		if (dict.end() != dict.find(*it)) {
+			score += it->size() * it->size();
+		}
+	}
+	cout << score << endl;
+
+#ifdef TEST
+	freopen("CON", "r", stdin);
+	system("pause");
+#endif
+	return 0;
 }
