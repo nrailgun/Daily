@@ -52,12 +52,12 @@
 \datedsubsection{\textbf{基于属性的Linux内核访问控制模块}}{2015年3月 -- 2015年5月}
 \role{C, Linux}{本科毕业设计}
 \begin{onehalfspacing}
-打卡签到制度存在漏签代签现象，该项目通过摄像头，基于深度学习，检测识别人脸并签到。
+在内核中实现一个通过主体属性和客体属性，结合控制策略，进行访问控制的模块。
 \begin{itemize}
-  \item 对C++框架 Caffe 进行2次开发；
-  \item 人脸/关键点检测模块；
-  \item 人脸识别模块的网络结构设计，代码开发与模型训练，网络调优；
-  \item 在2w+人干扰库和20人识别库中准确识别身份，在LFW 达到了 99.0+\% 正确率。
+  \item 编写内核 LSM 模块；
+  \item 细粒度的访问控制；
+  \item 消除了复杂场景下群组爆炸问题；
+  \item 内核态代码编写难度大，代码量巨大，缺乏文档，无法使用工具库，Debug 非常困难。
 \end{itemize}
 \end{onehalfspacing}
 
