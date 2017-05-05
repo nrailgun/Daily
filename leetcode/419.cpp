@@ -1,23 +1,14 @@
 class Solution {
 public:
-    int countBattleships(vector<vector<char>>& board) {
-        int i, j, up, left;
-        int cnt = 0;
+    int countBattleships(vector<vector<char>>& b) {
+        int c = 0;
         
-        for (i = 0; i < board.size(); i++) {
-            up = i - 1;
-            for (j = 0; j < board[i].size(); j++) {
-                left = j - 1;
-                if (board[i][j] == '.')
-                    continue;
-                    
-                if (up >= 0 && board[up][j] == 'X')
-                    continue;
-                if (left >= 0 && board[i][left] == 'X')
-                    continue;
-                cnt++;
+        for (int i = 0; i < b.size(); i++) {
+            for (int j = 0; j < b[i].size(); j++) {
+                if (b[i][j] == 'X' && (i == 0 || b[i-1][j] == '.') && (j == 0 || b[i][j - 1] == '.'))
+                    c++;
             }
         }
-        return cnt;
+        return c;
     }
 };
