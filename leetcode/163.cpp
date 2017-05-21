@@ -1,4 +1,3 @@
-// WA
 class Solution {
 public:
     string make_s(int v1, int v2) {
@@ -23,13 +22,15 @@ public:
         }
         
         for (int i = 1; i < n; i++) {
-            int v1 = nums[i-1];
-            int v2 = nums[i];
+            long v1 = nums[i-1];
+            long v2 = nums[i];
             
-            if (v2 - v1 <= 1)
+            // If v1 and v2 are int variable, then `v2 - v1` exceeds INT_MAX.
+            // Anyhow, still `v2 - 1` might underflow INT_MIN.
+            if (v2 - 1 <= v1)
                 continue;
-            v1 = max(lower, v1 + 1);
-            v2 = min(upper, v2 - 1);
+            v1 = max<long>(lower, v1 + 1);
+            v2 = min<long>(upper, v2 - 1);
             
             char buf[BUFSIZ];
             if (v1 > v2)
