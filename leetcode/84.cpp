@@ -77,3 +77,72 @@ public:
 		return solve(t, 0, int(heights.size()) - 1);
 	}
 };
+
+// 实现避免内存溢出。
+class SegmentTree {
+public:
+	vector<int> a, st;
+	int n, h, max_size;
+
+	SegmentTree(const vector<int> &_a) : a(_a) {
+		n = a.size();
+		if (n == 0)
+			return;
+		h = ceil(log2(n));
+		max_size = 2 * pow(2, h);
+		st.resize(max_size, -1);
+		build_segment_tree(0, n - 1, 0);
+	}
+
+	int min_idx(int i1, int i2) const {
+		if (i1 == -1)
+			return i2;
+		if (i2 == -1)
+			return i1;
+		return a[i1] < a[i2] ? i1 : i2;
+	}
+
+	// Don't forget to set `st[si]` at `s == e`.
+	int build_segment_tree(int s, int e, int si) {
+		if (s == e)
+			return st[si] = s;
+		int mid = s + (e - s) / 2;
+		st[si] = min_idx(
+			build_segment_tree(s, mid, 2 * si + 1),
+			build_segment_tree(mid + 1, e, 2 * si + 2));
+		return st[si];
+	}
+
+	int range_min(int qs, int qe, int ss, int se, int si) const {
+		if (qs <= ss && se <= qe)
+			return st[si];
+		if (qe < ss || se < qs)
+			return -1;
+		int mid = ss + (se - ss) / 2;
+		int i1 = range_min(qs, qe, ss, mid, 2 * si + 1);
+		int i2 = range_min(qs, qe, mid + 1, se, 2 * si + 2);
+		return min_idx(i1, i2);
+	}
+
+	int range_min(int qs, int qe) const {
+		return range_min(qs, qe, 0, n - 1, 0);
+	}
+};
+
+class Solution {
+public:
+	int solve(const SegmentTree &t, int l, int r) {
+		if (l == r)
+			return t.a[l];
+		if (l > r)
+			return 0;
+		int mini = t.range_min(l, r);
+		int a = t.a[mini] * (r - l + 1);
+		return max(a, max(solve(t, l, mini - 1), solve(t, mini + 1, r)));
+	}
+
+	int largestRectangleArea(vector<int>& heights) {
+		SegmentTree t(heights);
+		return solve(t, 0, int(heights.size()) - 1);
+	}
+};
