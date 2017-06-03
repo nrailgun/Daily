@@ -22,3 +22,29 @@ public:
         return ml;
     }
 };
+
+// Double pointer.
+class Solution {
+public:
+	int lengthOfLongestSubstring(string s) {
+		int sbeg = 0, send = 0;
+		int l = 0, head = 0;
+		vector<int> counts(256, 0);
+		bool dup = false;
+
+		while (send < s.size()) {
+			while (send < s.size() && counts[s[send++]]++ == 0) {
+				if (send - sbeg > l) {
+					l = send - sbeg;
+					head = sbeg;
+				}
+			}
+			if (send == s.size())
+				break;
+
+			while (counts[s[sbeg++]]-- == 1) {
+			}
+		}
+		return l;
+	}
+};
