@@ -29,32 +29,50 @@ public:
 	}
 };
 
+// 从两端向中间收敛是双指针法，两个指针从头部开始走也是双指针法。不要理解狭隘了。
+
 class Solution {
 public:
 	string minWindow(string s, string t) {
+		vector<int> thist(256, 0);
+		for (int i = 0; i < t.size(); i++) {
+			thist[t[i]]++;
+		}
+
+		int count = t.size();
 		int sbeg = 0, send = 0;
 		int l = INT_MAX, head = 0;
-
-		int count = 0;
-		vector<int> thist(128, 0);
-		for (char c : t)
-			thist[c]++;
-
 		while (send < s.size()) {
-			if (thist[s[send]]-- > 0)
-				count++;
-			send++;
-
-			while (count == t.size()) {
+			if (thist[s[send++]]-- > 0) {
+				count--;
+			}
+			while (count == 0) {
 				if (send - sbeg < l) {
 					l = send - sbeg;
 					head = sbeg;
 				}
-				if (thist[s[sbeg]]++ == 0)
-					count--;
-				sbeg++;
+				if (thist[s[sbeg++]]++ == 0) {
+					count++;
+				}
 			}
 		}
 		return l == INT_MAX ? "" : s.substr(head, l);
 	}
 };
+
+// Substring 类问题的模板：
+int find_substr(string s) {
+	int sbeg = 0, send = 0;
+	int l = INT_MAX, head = 0;
+
+	while (send < s.size()) {
+		send++;
+		// Make constraint invalid
+
+		while (true /* Constraint satisfied */) {
+			// Increase sbeg to make constraint invalid
+			sbeg++;
+		}
+	}
+	return l;
+}
