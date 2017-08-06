@@ -1,3 +1,6 @@
+// 思路1：起点出发，BFS寻找。
+// 思路2：终点（起点）出发，计算每个点的距离。
+
 typedef enum { UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3 } Direction;
 
 const int ROW_INC[4] = { -1, +1, -0, +0 };
