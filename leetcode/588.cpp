@@ -57,6 +57,7 @@ public:
       vs = vector<string>({ pt->name() });
     } else {
       const auto &entries = pt->entries();
+      vs.reserve(entries.size());
       for (auto it = entries.begin(); it != entries.end(); it++) {
         vs.push_back(it->first);
       }
@@ -93,6 +94,7 @@ private:
   vector<string> splitPath(const string &path) const {
     vector<string> tokens;
     const char *s, *e;
+    tokens.reserve(16);
     s = path.c_str() + 1;
     while (*s != 0 && (e = strchr(s, '/'))) {
       if (e != s)
