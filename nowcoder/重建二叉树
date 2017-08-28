@@ -1,0 +1,29 @@
+class Solution {
+public:
+  typedef vector<int>::const_iterator Iterator;
+
+  TreeNode *Solve(
+    const vector<int> &pre, const vector<int> &in,
+    Iterator prei, Iterator prej, Iterator ini, Iterator inj
+    ) {
+    if (prei == prej)
+      return NULL;
+
+    int rval = *prei;
+    Iterator ink = ini;
+    while (*ink != rval)
+      ink++;
+
+    int ll = ink - ini;
+    int rl = inj - ink - 1;
+
+    TreeNode *n = new TreeNode(rval);
+    n->left = Solve(pre, in, prei + 1, prei + 1 + ll, ini, ink);
+    n->right = Solve(pre, in, prei + 1 + ll, prej, ink + 1, inj);
+    return n;
+  }
+
+  TreeNode* reConstructBinaryTree(const vector<int> &pre, const vector<int> &in) {
+    return Solve(pre, in, pre.begin(), pre.end(), in.begin(), in.end());
+  }
+};
