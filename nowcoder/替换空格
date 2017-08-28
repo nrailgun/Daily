@@ -1,0 +1,26 @@
+class Solution {
+public:
+	void replaceSpace(char *s, int l) {
+        int nsp = 0;
+        int i;
+        for (int i = 0; i < l; i++) {
+            if (isspace(s[i]))
+                nsp++;
+	    }
+        
+      	char *_s = new char [l + 2 * nsp + 1];
+        int j;
+        for (i = 0, j = 0; i < l; i++) {
+            if (!isspace(s[i])) {
+                _s[j++] = s[i];
+            } else {
+                _s[j++] = '%';
+                _s[j++] = '2';
+                _s[j++] = '0';
+            }
+        }
+        _s[j++] = 0;
+        strcpy(s, _s);
+        delete [] _s;
+	}
+};
