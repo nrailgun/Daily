@@ -1,0 +1,28 @@
+class Solution {
+public:
+  vector<int> GetLeastNumbers_Solution(const vector<int> &input, int k) {
+    priority_queue<int, vector<int>, less<int>> pq;
+    vector<int> v;
+
+    // 本体本身很容易，但是此处是难点。`k == 0` 和 `k > n` 本身是比较脑残的边界条件，
+    // 鉴于大陆笔试题出题人经常性是智障，务必注意此等陷阱。
+    if (k == 0 || k > input.size())
+      return v;
+
+    for (int i = 0; i < input.size(); i++) {
+      if (pq.size() < k) {
+        pq.push(input[i]);
+      }
+      else if (input[i] < pq.top()) {
+        pq.pop();
+        pq.push(input[i]);
+      }
+    }
+
+    while (!pq.empty()) {
+      v.push_back(pq.top());
+      pq.pop();
+    }
+    return v;
+  }
+};
