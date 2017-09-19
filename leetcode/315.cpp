@@ -1,76 +1,82 @@
 // Merge sort 变种，然后稍微加一点编程技巧。
 
-class NP {
+class Entry {
 public:
-	int idx, v, np;
-	
-	NP() : idx(0), v(0), np(0) {
-	}
+  int idx, e, cnt;
 
-	bool operator<(const NP &rhs) const {
-		return idx < rhs.idx;
-	}
+  Entry() : idx(0), e(0), cnt(0) {
+  }
+
+  bool operator<(const Entry &rhs) const {
+    return idx < rhs.idx;
+  }
 };
 
 class Solution {
 public:
-	vector<int> countSmaller(vector<int>& nums) {
-		int n = nums.size();
-		vector<NP> nps(n);
-		for (int i = 0; i < n; i++) {
-			nps[i].idx = i;
-			nps[i].v = nums[i];
-			nps[i].np = 0;
-		}
+  vector<int> countSmaller(const vector<int> &nums) {
+    int n = nums.size();
+    vector<int> rv(n);
+    vector<Entry> ents(n);
+    vector<Entry> holder(n);
 
-		merge_sort(nps, 0, nps.size());
-		//for (auto j : nps) {
-		//	cout << j.idx << ' ' << j.v << ' ' << j.np << endl;
-		//}
-		sort(nps.begin(), nps.end());
-		vector<int> rv(n);
-		for (int i = 0; i < n; i++) {
-			rv[i] = nps[i].np;
-		}
-		return rv;
-	}
+    if (n == 0)
+      return rv;
 
-	void merge_sort(vector<NP> &v, const int begin, const int len) {
-		if (len <= 1)
-			return;
-		int i = begin;
-		int j = begin + len / 2;
-		merge_sort(v, i, len / 2);
-		merge_sort(v, j, (len + 1) / 2);
+    for (int i = 0; i < n; i++) {
+      ents[i].idx = i;
+      ents[i].e = nums[i];
+    }
+    merge_count(ents, 0, n - 1, holder);
+    sort(ents.begin(), ents.end());
+    for (int i = 0; i < n; i++) {
+      rv[i] = ents[i].cnt;
+    }
+    return rv;
+  }
 
-		int npincre = 0;
-		int ib = i + len / 2;
-		int jb = j + (len + 1) / 2;
-		vector<NP> tmpv(len);
-		int tmpi = 0;
-		while (i < ib || j < jb) {
-			if (i >= ib) {
-				tmpv[tmpi++] = v[j++];
-			}
-			else if (j >= jb) {
-				tmpv[tmpi] = v[i++];
-				tmpv[tmpi++].np += npincre;
-			}
-			else {
-				if (v[i].v <= v[j].v) {
-					tmpv[tmpi] = v[i++];
-					tmpv[tmpi].np += npincre;
-				}
-				else {
-					tmpv[tmpi] = v[j++];
-					npincre++;
-				}
-				tmpi++;
-			}
-		}
+  void merge_count(vector<Entry> &ents, int lb, int ub, vector<Entry> &holder) {
+    if (ub <= lb)
+      return;
 
-		for (i = 0; i < len; i++) {
-			v[begin + i] = tmpv[i];
-		}
-	}
+    int mid;
+    int i, j, k, incre;
+
+    mid = (lb + ub) / 2;
+    merge_count(ents, lb, mid, holder);
+    merge_count(ents, mid + 1, ub, holder);
+
+    i = lb;
+    j = mid + 1;
+    k = lb;
+    incre = 0;
+    while (i <= mid && j <= ub) {
+      if (ents[i].e <= ents[j].e) {
+        holder[k] = ents[i];
+        holder[k].cnt += incre;
+        //printf("< holder[%d].cnt = %d, incre + %d\n", k, holder[k].cnt, incre);
+        i++;
+        k++;
+      }
+      else { // if (ents[i].e > ents[j].e) {
+        holder[k] = ents[j];
+        incre++;
+        //printf("> holder[%d].cnt = %d, incre + %d\n", k, holder[k].cnt, incre);
+        j++;
+        k++;
+      }
+    }
+    while (i <= mid) {
+      holder[k] = ents[i];
+      holder[k].cnt += incre;
+      i++;
+      k++;
+    }
+    while (j <= ub) {
+      holder[k] = ents[j];
+      j++;
+      k++;
+    }
+    copy(holder.begin() + lb, holder.begin() + ub + 1, ents.begin() + lb);
+  }
 };
