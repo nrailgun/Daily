@@ -18,7 +18,7 @@
   \email{1332868391@qq.com} \textperiodcentered\ 
   \phone{13580501302} \textperiodcentered }
  
-\section{\faGraduationCap\  教育背景}
+\section{\faGraduationCap\ 教育背景}
 \datedsubsection{\textbf{中山大学}, 广州}{2015 -- 至今}
 \textit{在读硕士研究生}\ 计算机科学与技术, 预计 2018 年 6 月毕业
 \datedsubsection{\textbf{中山大学}, 广州}{2011 -- 2015}
@@ -26,20 +26,32 @@
 
 \section{\faUsers\ 实习/项目经历}
 
-\datedsubsection{\textbf{基于深度学习的人脸识别签到系统}}{2016年9月 -- 至今}
-\role{C++, Caffe}{实验室项目}
+\datedsubsection{\textbf{基于量化的模型压缩和计算加速}}{2017年7月 -- 至今}
+\role{算法工程师}{百度研究院实习}
+基于乘积量化等方法，压缩文本相似度模型的计算结果，以及加速矩阵-向量乘法运算。
 \begin{onehalfspacing}
-打卡签到制度存在漏签代签现象，该项目通过摄像头，基于深度学习，检测识别人脸并签到。
 \begin{itemize}
-  \item 对C++框架 Caffe 进行2次开发；
-  \item 人脸/关键点检测模块；
-  \item 人脸识别模块的网络结构设计，代码开发与模型训练，网络调优；
-  \item 在2w+人干扰库和20人识别库中准确识别身份，在LFW 达到了 99.0+\% 正确率。
+  \item 基于乘积量化，缓存并量化矩阵和子向量聚类中心的计算结果，加速矩阵-向量乘法运算。在正确率损失0.05\%的代价下，加速计算15\%。
+  \item 利用AVX寄存器减少写操作，优化向量求和，进一步加速矩阵-向量乘法运算70\%。
+  \item 在神经网络计算框架Lego中实现了该算法，并应用于全联接网络层和GRU网络层。
 \end{itemize}
 \end{onehalfspacing}
 
-\datedsubsection{\textbf{阿里巴巴集团}}{2014年7月 -- 2014年9月}
-\role{Ruby / Python Web 开发}{实习}
+\datedsubsection{\textbf{基于深度学习的人脸识别签到系统}}{2016年9月 -- 至今}
+\role{C++ 开发}{实验室项目}
+\begin{onehalfspacing}
+通过摄像头捕捉人脸，识别人脸，自动签到；负责开发模型。
+\begin{itemize}
+  \item 对C++框架 Caffe 进行2次开发；
+  \item 人脸识别模块的网络结构设计，代码开发与模型训练，网络调优；
+  \item 在2w+人干扰库和20人识别库中准确识别身份，在LFW 达到了 99.0+\% 正确率；
+  \item 通过调整模型参数和模型结构，使得模型的显存开销降低了约40\%；
+  \item 通过超分辨率预训练的方式，使得模型在16x16的低分辨率人脸获得了4\%的正确率提升。
+\end{itemize}
+\end{onehalfspacing}
+
+\datedsubsection{\textbf{Python / Ruby Web 开发}}{2014年7月 -- 2014年9月}
+\role{开发工程师}{阿里巴巴集团实习}
 对代码托管网站 GITLAB 和 ReviewBoard 进行 2 次开发，定制拓展。
 \begin{onehalfspacing}
 \begin{itemize}
@@ -49,24 +61,6 @@
   \item 兼顾历史遗留，将 GITLAB 项目信息同步到 ReviewBoard；
   \item 修复Bug：查询项目列表信息丢失，错误的阿里旺旺信息弹出。
 \end{itemize}
-\end{onehalfspacing}
-
-\datedsubsection{\textbf{基于属性的Linux内核访问控制模块}}{2015年3月 -- 2015年5月}
-\role{C, Linux}{本科毕业设计}
-\begin{onehalfspacing}
-在内核中实现一个通过主体属性和客体属性，结合控制策略，进行访问控制的模块。
-\begin{itemize}
-  \item 编写内核 LSM 模块；
-  \item 细粒度的访问控制；
-  \item 消除了复杂场景下群组爆炸问题；
-  \item 内核态代码编写难度大，代码量巨大，缺乏文档，无法使用工具库，Debug 非常困难。
-\end{itemize}
-\end{onehalfspacing}
-
-\datedsubsection{\textbf{H3C 校园网客户端}}{2012年9月 -- 2012年10月}
-\role{C}{个人项目}
-\begin{onehalfspacing}
-在中大访问网络需要通过客户端向学校网络中心拨号，但是学校提供的 Linux 拨号客户端非常难用。在大二无基础的情况，自学计算机网络基础知识和Linux原始套接字，根据H3C协议，自行实现Linux客户端，通过在链路层发送网络帧，实现协议中发起回话，验证身份，保持心跳的功能。
 \end{onehalfspacing}
 
 % Reference Test
@@ -79,9 +73,8 @@
 \section{\faCogs\ IT 技能}
 % increase linespacing [parsep=0.5ex]
 \begin{itemize}[parsep=0.5ex]
-  \item 编程语言：C/C++ > Python > Shell
+  \item 编程语言：C/C++ / Python / Shell
   \item 平台：Linux
-  \item Caffe：熟练使用、开发
 \end{itemize}
 
 \section{\faHeartO\ 获奖情况}
