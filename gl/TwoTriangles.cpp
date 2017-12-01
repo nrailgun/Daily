@@ -155,3 +155,5 @@ int main() {
 	glfwTerminate();
 	return EXIT_SUCCESS;
 }
+
+// 2 triangles with different color.
