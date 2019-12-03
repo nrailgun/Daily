@@ -20,6 +20,7 @@ package raft
 import (
 	"labrpc"
 	"sync"
+	"time"
 )
 
 // import "bytes"
@@ -108,11 +109,12 @@ type Raft struct {
 	// Your data here.
 	// Look at the paper's Figure 2 for a description of what
 	// state a Raft server must maintain.
-	state     state
-	killed    chan struct{}
-	applyCh   chan ApplyMsg
-	inLinkCh  chan inLink
-	outLinkCh chan outLink
+	state                 state
+	killed                chan struct{}
+	applyCh               chan ApplyMsg
+	inLinkCh              chan inLink
+	outLinkCh             chan outLink
+	appendEntriesJustSent []time.Time
 
 	currentTerm int
 	votedFor    int
@@ -464,6 +466,7 @@ func (rf *Raft) sendRequests() {
 
 		case link := <-rf.outLinkCh:
 			// TODO control concurrency
+			// TODO early termination before `Call`
 			// DPrintf("raft[%d] sendRequests outLink = %+v", rf.me, link)
 			for peer, iReq := range link.reqs {
 				switch iReq.(type) {
@@ -485,9 +488,6 @@ func (rf *Raft) sendRequests() {
 
 				case AppendEntriesReq:
 					go func(i1 int, req AppendEntriesReq) {
-						if len(req.Entries) > 0 {
-							DPrintf("raft[%d] to raft[%d] send %+v", rf.me, i1, req)
-						}
 						reply := AppendEntriesReply{}
 						ok := rf.sendAppendEntries(i1, req, &reply)
 						if !ok {
