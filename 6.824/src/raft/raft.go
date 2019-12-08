@@ -18,6 +18,8 @@ package raft
 //
 
 import (
+	"bytes"
+	"encoding/gob"
 	"labrpc"
 	"sync"
 	"time"
@@ -76,13 +78,7 @@ type outLink struct {
 	ignoreRepliesCh chan struct{}
 }
 
-func newOutLink(reqs map[int]interface{}) outLink {
-	return outLink{
-		reqs, make(chan interface{}), make(chan struct{}),
-	}
-}
-
-func newOutLinkWithReplyCh(reqs map[int]interface{}, replyCh chan interface{}) outLink {
+func newOutLink(reqs map[int]interface{}, replyCh chan interface{}) outLink {
 	return outLink{
 		reqs, replyCh, make(chan struct{}),
 	}
@@ -138,13 +134,13 @@ func (rf *Raft) GetState() (int, bool) {
 	link := newInLink(getStateReq{})
 	select {
 	case <-rf.killed:
-		panic("killed")
+		return 0, false
 	case rf.inLinkCh <- link:
 	}
 
 	select {
 	case <-rf.killed:
-		panic("killed")
+		return 0, false
 	case iReply := <-link.replyCh:
 		reply := iReply.(getStateReply)
 		return reply.term, reply.isLeader
@@ -165,6 +161,14 @@ func (rf *Raft) persist() {
 	// e.Encode(rf.yyy)
 	// data := w.Bytes()
 	// rf.persister.SaveRaftState(data)
+
+	w := new(bytes.Buffer)
+	e := gob.NewEncoder(w)
+	e.Encode(rf.currentTerm)
+	e.Encode(rf.votedFor)
+	e.Encode(rf.log)
+	data := w.Bytes()
+	rf.persister.SaveRaftState(data)
 }
 
 //
@@ -177,6 +181,12 @@ func (rf *Raft) readPersist(data []byte) {
 	// d := gob.NewDecoder(r)
 	// d.Decode(&rf.xxx)
 	// d.Decode(&rf.yyy)
+
+	r := bytes.NewBuffer(data)
+	d := gob.NewDecoder(r)
+	d.Decode(&rf.currentTerm)
+	d.Decode(&rf.votedFor)
+	d.Decode(&rf.log)
 }
 
 //
@@ -269,6 +279,7 @@ func (rf *Raft) handleRequestVoteReq(link inLink) (reply RequestVoteReply, suppr
 
 		if rf.upToDate(req.LastLogIndex, req.LastLogTerm) && (rf.votedFor == -1 || rf.votedFor == req.CandidateId) {
 			rf.votedFor = req.CandidateId
+			rf.persist()
 			reply.VoteGranted = true
 		} else {
 			reply.VoteGranted = false
@@ -286,6 +297,7 @@ func (rf *Raft) handleRequestVoteReq(link inLink) (reply RequestVoteReply, suppr
 			reply.VoteGranted = false
 		}
 		suppressed = true
+		rf.persist()
 	}
 	return
 }
@@ -317,13 +329,13 @@ func (rf *Raft) Start(command interface{}) (int, int, bool) {
 	link := newInLink(startReq{command})
 	select {
 	case <-rf.killed:
-		panic("killed")
+		return -1, 0, false
 	case rf.inLinkCh <- link:
 	}
 
 	select {
 	case <-rf.killed:
-		panic("killed")
+		return -1, 0, false
 	case iReply := <-link.replyCh:
 		reply := iReply.(startReply)
 		return reply.index, reply.term, reply.isLeader
@@ -340,10 +352,11 @@ type AppendEntriesReq struct {
 }
 
 type AppendEntriesReply struct {
-	Term    int
-	Success AppendEntriesError
-	me      int
-	req     AppendEntriesReq
+	Term          int
+	Success       AppendEntriesError
+	ConflictFirst int
+	me            int
+	req           AppendEntriesReq
 }
 
 func (rf *Raft) AppendEntries(req AppendEntriesReq, reply *AppendEntriesReply) {
@@ -397,6 +410,7 @@ func (rf *Raft) appendEntriesToLocal(prevLogIndex int, entries []LogEntry) int {
 			rf.log = append(rf.log, entries[i])
 		}
 	}
+	rf.persist()
 	return prevLogIndex + len(entries)
 }
 
@@ -416,11 +430,28 @@ func (rf *Raft) handleAppendEntriesReq(link inLink) (reply AppendEntriesReply, s
 		} else {
 			rf.currentTerm = req.Term
 			rf.votedFor = -1
+			rf.persist()
 			reply.Term = rf.currentTerm
 		}
 
 		if !rf.checkPrevLogEntry(req.PrevLogIndex, req.PrevLogTerm) {
 			reply.Success = eAppendEntriesLogInconsistent
+
+			var cf int
+			if req.PrevLogIndex < len(rf.log) {
+				cf = req.PrevLogIndex
+			} else {
+				cf = len(rf.log) - 1
+			}
+			if cf < 0 {
+				cf = 0
+			} else {
+				ct := rf.log[cf].Term
+				for cf > 0 && rf.log[cf-1].Term == ct {
+					cf -= 1
+				}
+			}
+			reply.ConflictFirst = cf
 		} else {
 			reply.Success = eAppendEntriesOk
 			lastNewEntry := rf.appendEntriesToLocal(req.PrevLogIndex, req.Entries)
@@ -452,7 +483,7 @@ func (rf *Raft) Kill() {
 	link := newInLink(killReq{})
 	select {
 	case <-rf.killed:
-		panic("killed")
+		return // wtf
 	case rf.inLinkCh <- link:
 	}
 	<-rf.killed
@@ -465,8 +496,6 @@ func (rf *Raft) sendRequests() {
 			return
 
 		case link := <-rf.outLinkCh:
-			// TODO control concurrency
-			// TODO early termination before `Call`
 			// DPrintf("raft[%d] sendRequests outLink = %+v", rf.me, link)
 			for peer, iReq := range link.reqs {
 				switch iReq.(type) {
@@ -515,6 +544,7 @@ func (rf *Raft) run() {
 	for {
 		select {
 		case <-rf.killed:
+			close(rf.applyCh)
 			return
 		default:
 		}

@@ -19,6 +19,9 @@ func (rf *Raft) sendHeartbeatToPeers(prevOutLink outLink) outLink {
 			continue
 		}
 		prevLogIndex := rf.nextIndex[i] - 1
+		if prevLogIndex < -1 {
+			panic(fmt.Sprintf("prevLogIndex[%d] < -1", i))
+		}
 		prevLogTerm := 0
 		if prevLogIndex >= 0 {
 			prevLogTerm = rf.log[prevLogIndex].Term
@@ -28,7 +31,7 @@ func (rf *Raft) sendHeartbeatToPeers(prevOutLink outLink) outLink {
 		}
 		reqs[i] = req
 	}
-	olink := newOutLinkWithReplyCh(reqs, prevOutLink.replyCh)
+	olink := newOutLink(reqs, prevOutLink.replyCh)
 	select {
 	case <-rf.killed:
 		panic("killed")
@@ -74,7 +77,7 @@ func (rf *Raft) sendAppendEntriesToPeers(prevOutLink outLink) outLink {
 			reqs[i] = req
 		}
 	}
-	olink := newOutLinkWithReplyCh(reqs, prevOutLink.replyCh)
+	olink := newOutLink(reqs, prevOutLink.replyCh)
 	select {
 	case <-rf.killed:
 		panic("killed")
@@ -94,9 +97,11 @@ func (rf *Raft) updateNextIndexAndMatchIndex(reply AppendEntriesReply) {
 		rf.appendEntriesJustSent[peer] = time.Time{}
 
 	} else if reply.Success == eAppendEntriesLogInconsistent {
-		// TODO more carefully
 		if rf.nextIndex[peer] > req.PrevLogIndex {
-			rf.nextIndex[peer] = req.PrevLogIndex
+			if reply.ConflictFirst < 0 {
+				panic(fmt.Sprintf("reply.ConflictFirst(=%d) < 0", reply.ConflictFirst))
+			}
+			rf.nextIndex[peer] = reply.ConflictFirst
 			rf.appendEntriesJustSent[peer] = time.Time{}
 		}
 
@@ -148,6 +153,7 @@ func (rf *Raft) handleAppendEntriesReply(reply AppendEntriesReply) (suppressed b
 		}
 		rf.currentTerm = reply.Term
 		rf.votedFor = -1
+		rf.persist()
 		return true
 	}
 }
@@ -165,8 +171,7 @@ func (rf *Raft) runAsLeader() {
 
 	rf.appendEntriesJustSent = make([]time.Time, n)
 
-	// TODO use only 1 replyCh, don't ignore any longer.
-	olink := newOutLink(make(map[int]interface{}))
+	olink := newOutLink(make(map[int]interface{}), make(chan interface{}))
 	olink = rf.sendHeartbeatToPeers(olink)
 	defer olink.ignoreReplies()
 
@@ -216,6 +221,7 @@ func (rf *Raft) runAsLeader() {
 				}
 				sreq := req.(startReq)
 				rf.log = append(rf.log, LogEntry{sreq.command, rf.currentTerm})
+				rf.persist()
 				olink = rf.sendAppendEntriesToPeers(olink)
 
 			case RequestVoteReq:
