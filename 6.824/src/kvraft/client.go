@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"labrpc"
 	"math/big"
+	"sync"
 	"time"
 )
 
@@ -12,9 +13,22 @@ const (
 	noLeaderRetries   = 10
 )
 
+var nextClerkId = 0
+var nextClerkIdMtx sync.Mutex
+
+func getNextClerkId() int {
+	nextClerkIdMtx.Lock()
+	defer nextClerkIdMtx.Unlock()
+	nextClerkId += 1
+	return nextClerkId
+}
+
 type Clerk struct {
 	servers []*labrpc.ClientEnd
 	// You will have to modify this struct.
+	me            int
+	recentLeader  int
+	nextCommandId int
 }
 
 func nrand() int64 {
@@ -28,7 +42,15 @@ func MakeClerk(servers []*labrpc.ClientEnd) *Clerk {
 	ck := new(Clerk)
 	ck.servers = servers
 	// You'll have to add code here.
+	ck.me = getNextClerkId()
+	ck.recentLeader = 0
+	ck.nextCommandId = 0
 	return ck
+}
+
+func (ck *Clerk) getNextCommandId() int {
+	ck.nextCommandId += 1
+	return ck.nextCommandId
 }
 
 //
@@ -47,7 +69,9 @@ func (ck *Clerk) Get(key string) string {
 	// You will have to modify this function.
 	n := len(ck.servers)
 	for {
-		for i := 0; i < n; i++ {
+		lastLeader := ck.recentLeader
+		for j := 0; j < n; j++ {
+			i := (lastLeader + j) % n
 			req := GetArgs{key}
 			reply := GetReply{}
 			ok := ck.servers[i].Call("RaftKV.Get", &req, &reply)
@@ -56,11 +80,16 @@ func (ck *Clerk) Get(key string) string {
 			}
 			if !reply.IsLeader {
 				continue
+			} else {
+				ck.recentLeader = i
 			}
-			if reply.Err != OK {
+			if reply.Err == OK {
+				return reply.Value
+			} else if reply.Err == ErrNoKey {
 				return ""
+			} else {
+				continue
 			}
-			return reply.Value
 		}
 		time.Sleep(noLeaderSleepTime)
 	}
@@ -79,19 +108,23 @@ func (ck *Clerk) Get(key string) string {
 func (ck *Clerk) PutAppend(key string, value string, op string) {
 	// You will have to modify this function.
 	n := len(ck.servers)
+	req := PutAppendArgs{key, value, op, ck.me, ck.getNextCommandId()}
 	for {
-		for i := 0; i < n; i++ {
-			req := PutAppendArgs{key, value, op}
-			//DPrintf("clerk req = %+v", req)
+		lastLeader := ck.recentLeader
+		for j := 0; j < n; j++ {
+			i := (lastLeader + j) % n
 			reply := PutAppendReply{}
 			ok := ck.servers[i].Call("RaftKV.PutAppend", &req, &reply)
+			//DPrintf("ck[%d] call kv[%d].PutAppend, ok=%v, reply=%+v", ck.me, i, ok, reply)
 			if !ok {
 				continue
 			}
 			if !reply.IsLeader {
 				continue
 			}
-			return
+			if reply.Err == OK {
+				return
+			}
 		}
 		time.Sleep(noLeaderSleepTime)
 	}
