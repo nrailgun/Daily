@@ -1,8 +1,8 @@
 impl Solution {
-    pub fn linear(a: &Vec<i32>, tg: i32) -> i32 {
+    pub fn linear(a: &[i32], tg: i32, lb: usize) -> i32 {
         for i in 0..a.len() {
             if a[i] == tg {
-                return i as i32;
+                return (lb + i) as i32;
             }
         }
         return -1;
@@ -17,8 +17,8 @@ impl Solution {
 
         let (mut lb, mut ub) = (0, n - 1);
         loop {
-            if ub - lb < 8 {
-                return Self::linear(&a, tg);
+            if ub - lb < 2 {
+                return Self::linear(&a[lb..ub + 1], tg, lb);
             }
 
             let mid = (lb + ub) / 2;
