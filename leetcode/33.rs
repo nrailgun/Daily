@@ -1,5 +1,5 @@
 impl Solution {
-    pub fn lsearch(a: &Vec<i32>, tg: i32) -> i32 {
+    pub fn linear(a: &Vec<i32>, tg: i32) -> i32 {
         for i in 0..a.len() {
             if a[i] == tg {
                 return i as i32;
@@ -16,9 +16,9 @@ impl Solution {
         }
 
         let (mut lb, mut ub) = (0, n - 1);
-        'l: while lb <= ub {
+        loop {
             if ub - lb < 8 {
-                return Self::lsearch(&a, tg);
+                return Self::linear(&a, tg);
             }
 
             let mid = (lb + ub) / 2;
@@ -45,6 +45,5 @@ impl Solution {
                 }
             }
         }
-        unreachable!();
     }
 }
