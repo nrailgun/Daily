@@ -1,22 +1,23 @@
-// Graph clone, have to use map.
-
 class Solution {
 public:
-  UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
-    if (!node)
-        return NULL;
-    unordered_map<int, UndirectedGraphNode *> l2n;
-    return cloneGraph(node, l2n);
-  }
+	Node* wtf(Node* node, unordered_map<Node*, Node*>& visited) {
+		if (node == nullptr) {
+			return nullptr;
+		}
+		auto it = visited.find(node);
+		if (it != visited.end()) {
+			return it->second;
+		}
+		Node *newNode = new Node(node->val);
+		visited[node] = newNode;
+		for (Node* n : node->neighbors) {
+			newNode->neighbors.push_back(wtf(n, visited));
+		}
+		return newNode;
+	}
 
-  UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node, unordered_map<int, UndirectedGraphNode *> &l2n) {
-    UndirectedGraphNode *&n = l2n[node->label];
-    if (n)
-      return n;
-    n = new UndirectedGraphNode(node->label);
-    for (UndirectedGraphNode *neighbor : node->neighbors) {
-      n->neighbors.push_back(cloneGraph(neighbor, l2n));
-    }
-    return n;
-  }
+	Node* cloneGraph(Node* node) {
+		unordered_map<Node*, Node*> visited;
+		return wtf(node, visited);
+	}
 };
