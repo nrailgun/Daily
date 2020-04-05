@@ -42,30 +42,33 @@ public:
  */
 class Solution {
 public:
-    RandomListNode *copyRandomList(RandomListNode *head) {
-        if (!head)
-            return NULL;
-        
-        RandomListNode *n1, *n2;
-        for (n1 = head; n1 != NULL; n1 = n1->next->next) {
-            n2 = new RandomListNode(n1->label);
-            n2->next = n1->next;
-            n1->next = n2;
-        }
-        
-        for (n1 = head; n1 != NULL; n1 = n1->next->next) {
-            n2 = n1->next;
-            if (n1->random) // 小心此处可能为 NULL
-                n2->random = n1->random->next;
-        }
-        
-        RandomListNode *newhead = head->next;
-        for (n1 = head; n1 != NULL; n1 = n1->next) { // n1 = n1->next->next 会在修改 n1->next 的过程中失效，小心。
-            n2 = n1->next;
-            n1->next = n2->next;
-            if (n2->next) // 注意最后一个节点
-                n2->next = n2->next->next;
-        }
-        return newhead;
-    }
+	Node* copyRandomList(Node* head) {
+		if (!head) {
+			return NULL;
+		}
+		
+		Node *n1 = NULL, *n2 = NULL;
+		for (n1 = head; n1 != NULL; n1 = n1->next->next) {
+			n2 = new Node(n1->val);
+			n2->next = n1->next;
+			n1->next = n2;
+		}
+
+		for (n1 = head; n1 != NULL; n1 = n1->next->next) {
+			n2 = n1->next;
+			if (n1->random) { // !
+				n2->random = n1->random->next;
+			}
+		}
+
+		Node *newHead = head->next;
+		for (n1 = head; n1 != NULL; n1 = n1->next) {
+			n2 = n1->next;
+			n1->next = n2->next;
+			if (n2->next) { // !
+				n2->next = n2->next->next;
+			}
+		}
+		return newHead;
+	}
 };
