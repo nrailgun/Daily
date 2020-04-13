@@ -93,6 +93,68 @@ type LogEntry struct {
 	Term    int
 }
 
+type snapshotLog struct {
+	Log               []LogEntry
+	LastIncludedIndex int
+	LastIncludedTerm  int
+}
+
+func (l *snapshotLog) len() int {
+	return l.LastIncludedIndex + 1 + len(l.Log)
+}
+
+func (l *snapshotLog) lastIndexAndTerm() (int, int) {
+	i := len(l.Log) - 1
+	if i == -1 {
+		return l.LastIncludedIndex, l.LastIncludedTerm
+	} else {
+		t := l.Log[i].Term
+		return l.len() - 1, t
+	}
+}
+
+func (l *snapshotLog) discarded(i int) bool {
+	return i <= l.LastIncludedIndex
+}
+
+func (l *snapshotLog) at(i int) LogEntry {
+	i -= l.LastIncludedIndex + 1
+	if i < 0 || i >= len(l.Log) {
+		panic("invalid index")
+	}
+	return l.Log[i]
+}
+
+func (l *snapshotLog) termAt(i int) int {
+	i -= l.LastIncludedIndex + 1
+	if i < -1 || i >= len(l.Log) {
+		panic("invalid index")
+	}
+	if i == -1 {
+		return l.LastIncludedTerm
+	} else {
+		return l.Log[i].Term
+	}
+}
+
+func (l *snapshotLog) placeAt(i int, e LogEntry) {
+	i -= l.LastIncludedIndex + 1
+	if i < l.len() {
+		l.Log = l.Log[:i]
+	}
+	l.Log = append(l.Log, e)
+}
+
+func (l *snapshotLog) append(e LogEntry) {
+	l.Log = append(l.Log, e)
+}
+
+func (l *snapshotLog) copyTo(entries []LogEntry, i int, j int) {
+	i -= l.LastIncludedIndex + 1
+	j -= l.LastIncludedIndex + 1
+	copy(entries, l.Log[i:j])
+}
+
 //
 // A Go object implementing a single Raft peer.
 //
@@ -114,7 +176,7 @@ type Raft struct {
 
 	currentTerm int
 	votedFor    int
-	log         []LogEntry
+	ssLog       snapshotLog // []LogEntry
 	commitIndex int
 	lastApplied int
 	nextIndex   []int
@@ -147,39 +209,41 @@ func (rf *Raft) GetState() (int, bool) {
 	}
 }
 
-type getLogEntryTermReq struct {
-	index int
+type snapshotReq struct {
+	lastIncludedIndex int
+	snapshot          []byte
 }
 
-type getLogEntryTermReply struct {
-	ok   bool
-	term int
+type snapshotReply struct {
+	ok bool
 }
 
-func (rf *Raft) GetLogEntryTerm(index int) (bool, int) {
-	link := newInLink(getLogEntryTermReq{index})
+func (rf *Raft) Snapshot(index int, snapshot []byte) bool {
+	link := newInLink(snapshotReq{index - 1, snapshot}) // -1 是为了适配 applyMsg 的接口
 	select {
 	case <-rf.killed:
-		return false, 0
+		return false
 	case rf.inLinkCh <- link:
 	}
 
 	select {
 	case <-rf.killed:
-		return false, 0
+		return false
 	case iReply := <-link.replyCh:
-		reply := iReply.(getLogEntryTermReply)
-		return reply.ok, reply.term
+		reply := iReply.(snapshotReply)
+		return reply.ok
 	}
 }
 
-func (rf *Raft) handleGetLogEntryTermReq(link inLink) getLogEntryTermReply {
-	req := link.req.(getLogEntryTermReq)
-	if req.index > len(rf.log) {
-		return getLogEntryTermReply{false, 0}
-	}
-	e := rf.log[req.index-1]
-	return getLogEntryTermReply{true, e.Term}
+func (rf *Raft) handleSnapshotReq(link inLink) snapshotReply {
+	req := link.req.(snapshotReq)
+	lastIncludedTerm := rf.ssLog.termAt(req.lastIncludedIndex)
+	rf.ssLog.Log = rf.ssLog.Log[req.lastIncludedIndex-rf.ssLog.LastIncludedIndex:]
+	rf.ssLog.LastIncludedIndex = req.lastIncludedIndex
+	rf.ssLog.LastIncludedTerm = lastIncludedTerm
+	rf.persist()
+	rf.persister.SaveSnapshot(req.snapshot)
+	return snapshotReply{true}
 }
 
 //
@@ -201,7 +265,9 @@ func (rf *Raft) persist() {
 	e := gob.NewEncoder(w)
 	e.Encode(rf.currentTerm)
 	e.Encode(rf.votedFor)
-	e.Encode(rf.log)
+	e.Encode(rf.ssLog.Log)
+	e.Encode(rf.ssLog.LastIncludedIndex)
+	e.Encode(rf.ssLog.LastIncludedTerm)
 	data := w.Bytes()
 	rf.persister.SaveRaftState(data)
 }
@@ -221,7 +287,9 @@ func (rf *Raft) readPersist(data []byte) {
 	d := gob.NewDecoder(r)
 	d.Decode(&rf.currentTerm)
 	d.Decode(&rf.votedFor)
-	d.Decode(&rf.log)
+	d.Decode(&rf.ssLog.Log)
+	d.Decode(&rf.ssLog.LastIncludedIndex)
+	d.Decode(&rf.ssLog.LastIncludedTerm)
 }
 
 //
@@ -287,13 +355,7 @@ func (rf *Raft) sendRequestVote(server int, req RequestVoteReq, reply *RequestVo
 }
 
 func (rf *Raft) upToDate(lastLogIndex int, lastLogTerm int) bool {
-	myLastLogIndex := len(rf.log) - 1
-	var myLastLogTerm int
-	if myLastLogIndex == -1 { // maybe more assertions
-		myLastLogTerm = 0
-	} else {
-		myLastLogTerm = rf.log[myLastLogIndex].Term
-	}
+	myLastLogIndex, myLastLogTerm := rf.ssLog.lastIndexAndTerm()
 	if myLastLogTerm != lastLogTerm {
 		return myLastLogTerm < lastLogTerm
 	}
@@ -423,26 +485,22 @@ func (rf *Raft) checkPrevLogEntry(prevLogIndex int, prevLogTerm int) bool {
 	if prevLogIndex == -1 {
 		return true
 	}
-	if prevLogIndex >= len(rf.log) {
+	if prevLogIndex >= rf.ssLog.len() {
 		return false
 	}
-	return rf.log[prevLogIndex].Term == prevLogTerm
+	return rf.ssLog.termAt(prevLogIndex) == prevLogTerm
 }
 
 func (rf *Raft) appendEntriesToLocal(prevLogIndex int, entries []LogEntry) int {
 	for i := 0; i < len(entries); i++ {
 		j := prevLogIndex + 1 + i
-		if j < len(rf.log) {
-			if rf.log[j].Term != entries[i].Term {
-				rf.log = rf.log[:j]
-				rf.log = append(rf.log, entries[i])
-			} else {
-				if rf.log[j].Command != entries[i].Command {
-					panic("same index and term but different command")
-				}
+		if j < rf.ssLog.len() {
+			// 如果 follower 响应丢失，leader 会重复发。
+			if !rf.ssLog.discarded(j) && rf.ssLog.termAt(j) != entries[i].Term {
+				rf.ssLog.placeAt(j, entries[i])
 			}
 		} else {
-			rf.log = append(rf.log, entries[i])
+			rf.ssLog.append(entries[i])
 		}
 	}
 	rf.persist()
@@ -469,22 +527,25 @@ func (rf *Raft) handleAppendEntriesReq(link inLink) (reply AppendEntriesReply, s
 			reply.Term = rf.currentTerm
 		}
 
-		if !rf.checkPrevLogEntry(req.PrevLogIndex, req.PrevLogTerm) {
+		// 如果同一个 AppendEntries 重复发（第一次的回复丢失了），刚好 follower 第一次之后 snapshot，
+		// 这里 `req.PrevLogIndex` 指向的 entries 可能已经不在 log 中。
+		if !rf.ssLog.discarded(req.PrevLogIndex) && !rf.checkPrevLogEntry(req.PrevLogIndex, req.PrevLogTerm) {
 			reply.Success = eAppendEntriesLogInconsistent
 
 			var cf int
-			if req.PrevLogIndex < len(rf.log) {
+			if req.PrevLogIndex < rf.ssLog.len() {
 				cf = req.PrevLogIndex
-			} else {
-				cf = len(rf.log) - 1
-			}
-			if cf < 0 {
-				cf = 0
-			} else {
-				ct := rf.log[cf].Term
-				for cf > 0 && rf.log[cf-1].Term == ct {
+				ct := rf.ssLog.termAt(cf)
+				for cf > 0 && !rf.ssLog.discarded(cf-1) && rf.ssLog.termAt(cf-1) == ct {
 					cf -= 1
 				}
+			} else {
+				// lab-1 时候写的实际上有 bug。不能推论此处有 conflict，只是刚好用 leader 的条目来覆盖
+				// 也不会造成什么问题。
+				// ```golang
+				// cf = rf.ssLog.len() - 1
+				// ```
+				cf = rf.ssLog.len()
 			}
 			reply.ConflictFirst = cf
 		} else {
@@ -500,6 +561,86 @@ func (rf *Raft) handleAppendEntriesReq(link inLink) (reply AppendEntriesReply, s
 				}
 			}
 			rf.applyIfPossible()
+		}
+	}
+	return
+}
+
+type installSnapshotReq struct {
+	Term              int
+	LeaderId          int
+	LastIncludedIndex int
+	LastIncludedTerm  int
+	Offset            int // always 0
+	Data              []byte
+	Done              bool // always true.
+}
+
+type installSnapshotReply struct {
+	Term int
+	me   int
+	req  installSnapshotReq
+}
+
+func (rf *Raft) InstallSnapshot(req installSnapshotReq, reply *installSnapshotReply) {
+	link := newInLink(req)
+	select {
+	case <-rf.killed:
+		return
+	case rf.inLinkCh <- link:
+	}
+
+	select {
+	case <-rf.killed:
+		return
+	case iReply := <-link.replyCh:
+		*reply = iReply.(installSnapshotReply)
+	}
+}
+
+func (rf *Raft) sendInstallSnapshot(server int, req installSnapshotReq, reply *installSnapshotReply) bool {
+	ok := rf.peers[server].Call("Raft.InstallSnapshot", req, reply)
+	return ok
+}
+
+func (rf *Raft) handleInstallSnapshotReq(link inLink) (reply installSnapshotReply, suppressed bool) {
+	req := link.req.(installSnapshotReq)
+	reply = installSnapshotReply{}
+	suppressed = false
+
+	if req.Term < rf.currentTerm {
+		reply.Term = rf.currentTerm
+	} else {
+		suppressed = true
+		if req.Term == rf.currentTerm {
+			reply.Term = rf.currentTerm
+		} else {
+			rf.currentTerm = req.Term
+			rf.votedFor = -1
+			reply.Term = rf.currentTerm
+		}
+
+		reqI := req.LastIncludedIndex - rf.ssLog.LastIncludedIndex - 1
+		rf.ssLog.LastIncludedIndex = req.LastIncludedIndex
+		rf.ssLog.LastIncludedTerm = req.LastIncludedTerm
+
+		// > If existing log entry has same index and term as snapshot’s last included entry, retain log
+		// > entries following it and reply.
+		resetSM := false
+		if reqI >= 0 && reqI < len(rf.ssLog.Log) && rf.ssLog.Log[reqI].Term == req.LastIncludedTerm {
+			rf.ssLog.Log = rf.ssLog.Log[reqI:]
+		} else {
+			resetSM = true
+			rf.ssLog.Log = make([]LogEntry, 0)
+			rf.commitIndex = req.LastIncludedIndex
+			rf.lastApplied = req.LastIncludedIndex
+		}
+		rf.persist()
+		rf.persister.SaveSnapshot(req.Data)
+
+		if resetSM {
+			applyMsg := ApplyMsg{-1, nil, true, req.Data}
+			rf.applyCh <- applyMsg
 		}
 	}
 	return
@@ -557,6 +698,7 @@ func (rf *Raft) sendRequests() {
 						reply := AppendEntriesReply{}
 						ok := rf.sendAppendEntries(i1, req, &reply)
 						if !ok {
+							// 实测此处 return 也可正确运行，不知道为何要写这种莫名其妙的条件。
 							reply.Term = 0
 							reply.Success = eAppendEntriesErr
 						}
@@ -568,6 +710,22 @@ func (rf *Raft) sendRequests() {
 						case link.replyCh <- reply:
 						}
 					}(peer, iReq.(AppendEntriesReq))
+
+				case installSnapshotReq:
+					go func(i1 int, req installSnapshotReq) {
+						reply := installSnapshotReply{}
+						ok := rf.sendInstallSnapshot(i1, req, &reply)
+						if !ok {
+							return
+						}
+						reply.me = i1
+						reply.req = req
+						select {
+						case <-rf.killed:
+						case <-link.ignoreRepliesCh:
+						case link.replyCh <- reply:
+						}
+					}(peer, iReq.(installSnapshotReq))
 
 				default:
 					panic("unknown req to send")
@@ -626,7 +784,12 @@ func Make(peers []*labrpc.ClientEnd, me int,
 
 	rf.currentTerm = 0
 	rf.votedFor = -1
-	rf.log = make([]LogEntry, 0)
+	//rf.log = make([]LogEntry, 0)
+	rf.ssLog = snapshotLog{
+		Log:               make([]LogEntry, 0),
+		LastIncludedIndex: -1,
+		LastIncludedTerm:  0,
+	}
 	rf.commitIndex = -1
 	rf.lastApplied = -1
 

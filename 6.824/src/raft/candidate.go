@@ -8,13 +8,7 @@ import (
 
 func (rf *Raft) sendRequestVoteToPeers() outLink {
 	n := len(rf.peers)
-	lastLogIndex := len(rf.log) - 1
-	var lastLogTerm int
-	if lastLogIndex == -1 {
-		lastLogTerm = 0
-	} else {
-		lastLogTerm = rf.log[lastLogIndex].Term
-	}
+	lastLogIndex, lastLogTerm := rf.ssLog.lastIndexAndTerm()
 	reqs := make(map[int]interface{})
 	for i := 0; i < n; i++ {
 		if i == rf.me {
@@ -107,8 +101,8 @@ func (rf *Raft) runAsCandidate() {
 				case ilink.replyCh <- startReply{-1, rf.currentTerm, false}:
 				}
 
-			case getLogEntryTermReq:
-				reply := rf.handleGetLogEntryTermReq(ilink)
+			case snapshotReq:
+				reply := rf.handleSnapshotReq(ilink)
 				select {
 				case <-rf.killed:
 					return
@@ -129,6 +123,18 @@ func (rf *Raft) runAsCandidate() {
 
 			case AppendEntriesReq:
 				reply, suppressed := rf.handleAppendEntriesReq(ilink)
+				select {
+				case <-rf.killed:
+					return
+				case ilink.replyCh <- reply:
+				}
+				if suppressed {
+					rf.state = eFollower
+					return
+				}
+
+			case installSnapshotReq:
+				reply, suppressed := rf.handleInstallSnapshotReq(ilink)
 				select {
 				case <-rf.killed:
 					return

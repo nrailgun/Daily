@@ -1,6 +1,7 @@
 package raftkv
 
 import (
+	"bytes"
 	"encoding/gob"
 	"fmt"
 	"labrpc"
@@ -55,6 +56,7 @@ type RaftKV struct {
 	maxRaftState int // snapshot if log grows this big
 
 	// Your definitions here.
+	persister   *raft.Persister
 	cond        *sync.Cond
 	lastApplied int
 	kvs         map[string]string
@@ -119,8 +121,19 @@ func (kv *RaftKV) commitLogEntry(op Op) (index int, term int, isLeader bool) {
 	case <-onLoseLeadership:
 		return -1, curTerm, false
 	case <-onCommitDone:
-		ok, newTerm := kv.rf.GetLogEntryTerm(index)
-		if !ok || newTerm != curTerm {
+		// 最初是检查 term 是否匹配，但是 snapshot 之后检查不到了。
+		// ```golang
+		// ok, newTerm := kv.rf.GetLogEntryTerm(index)
+		// if !ok || newTerm != curTerm {
+		//     return -1, curTerm, false
+		// } else {
+		//     return index, curTerm, true
+		// }
+		// ```
+		newTerm, isLeader := kv.rf.GetState()
+		if !isLeader || curTerm != newTerm {
+			// 可能在经过两次选举之后重新夺回 leadership，但是依旧回传 `isLeader=false`。重复利用
+			// 客户端的失败处理逻辑。
 			return -1, curTerm, false
 		} else {
 			return index, curTerm, true
@@ -179,32 +192,63 @@ func (kv *RaftKV) Kill() {
 
 func (kv *RaftKV) run() {
 	for applyMsg := range kv.applyCh {
-		op := applyMsg.Command.(Op)
-		//DPrintf("kv[%d] apply %+v", kv.me, applyMsg)
-		if histCmdId, ok := kv.cmdHistory[op.ClerkId]; !ok || histCmdId < op.CmdId {
-			kv.cmdHistory[op.ClerkId] = op.CmdId
+		if applyMsg.UseSnapshot {
+			r := bytes.NewBuffer(applyMsg.Snapshot)
+			d := gob.NewDecoder(r)
+			kv.Lock()
+			d.Decode(&kv.kvs)
+			d.Decode(&kv.cmdHistory)
+			d.Decode(&kv.lastApplied)
+			kv.Unlock()
 
-			if op.Op == OpGet {
-			} else if op.Op == OpPut {
-				kv.Lock()
-				kv.kvs[op.Key] = op.Value
-				kv.Unlock()
-			} else if op.Op == OpAppend {
-				kv.Lock()
-				kv.kvs[op.Key] += op.Value
-				kv.Unlock()
-			} else {
-				panic(fmt.Sprintf("unknown op = %s", op.Op))
+		} else {
+			op := applyMsg.Command.(Op)
+			//DPrintf("kv[%d] apply %+v", kv.me, applyMsg)
+			kv.Lock()
+			histCmdId, ok := kv.cmdHistory[op.ClerkId]
+			kv.Unlock()
+
+			if !ok || histCmdId < op.CmdId {
+				kv.cmdHistory[op.ClerkId] = op.CmdId
+
+				if op.Op == OpGet {
+				} else if op.Op == OpPut {
+					kv.Lock()
+					kv.kvs[op.Key] = op.Value
+					kv.Unlock()
+				} else if op.Op == OpAppend {
+					kv.Lock()
+					kv.kvs[op.Key] += op.Value
+					kv.Unlock()
+				} else {
+					panic(fmt.Sprintf("unknown op = %s", op.Op))
+				}
+			}
+
+			kv.Lock()
+			if applyMsg.Index <= kv.lastApplied {
+				panic("applyMsg.Index <= kv.lastApplied")
+			}
+			kv.lastApplied = applyMsg.Index
+			kv.cond.Broadcast()
+			kv.Unlock()
+
+			if kv.maxRaftState > 0 {
+				//DPrintf("kv[%d] check snapshot, raftstatesize = %d", kv.me, kv.persister.RaftStateSize())
+				if kv.persister.RaftStateSize() >= kv.maxRaftState {
+					//DPrintf("kv[%d] snapshot", kv.me)
+					w := new(bytes.Buffer)
+					e := gob.NewEncoder(w)
+					kv.Lock()
+					e.Encode(kv.kvs)
+					e.Encode(kv.cmdHistory)
+					e.Encode(kv.lastApplied)
+					kv.Unlock()
+					snapshot := w.Bytes()
+					kv.rf.Snapshot(applyMsg.Index, snapshot)
+				}
 			}
 		}
-
-		kv.Lock()
-		if applyMsg.Index <= kv.lastApplied {
-			panic("applyMsg.Index <= kv.lastApplied")
-		}
-		kv.lastApplied = applyMsg.Index
-		kv.cond.Broadcast()
-		kv.Unlock()
 	}
 }
 
@@ -233,6 +277,7 @@ func StartKVServer(servers []*labrpc.ClientEnd, me int, persister *raft.Persiste
 	// Your initialization code here.
 	kv.cond = sync.NewCond(&kv.mtx)
 	kv.applyCh = make(chan raft.ApplyMsg)
+	kv.persister = persister
 	kv.rf = raft.Make(servers, me, persister, kv.applyCh)
 	kv.lastApplied = 0
 	kv.kvs = make(map[string]string)

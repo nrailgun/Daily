@@ -42,8 +42,8 @@ func (rf *Raft) _runAsFollower() {
 				case ilink.replyCh <- startReply{-1, rf.currentTerm, false}:
 				}
 
-			case getLogEntryTermReq:
-				reply := rf.handleGetLogEntryTermReq(ilink)
+			case snapshotReq:
+				reply := rf.handleSnapshotReq(ilink)
 				select {
 				case <-rf.killed:
 					return
@@ -67,6 +67,18 @@ func (rf *Raft) _runAsFollower() {
 				}
 				//DPrintf("raft[%d] suppressed by AppendEntriesReq", rf.me)
 				return
+
+			case installSnapshotReq:
+				reply, suppressed := rf.handleInstallSnapshotReq(ilink)
+				select {
+				case <-rf.killed:
+					return
+				case ilink.replyCh <- reply:
+				}
+				if suppressed {
+					rf.state = eFollower
+					return
+				}
 
 			default:
 				panic(fmt.Sprintf("unknown req = %+v", req))
