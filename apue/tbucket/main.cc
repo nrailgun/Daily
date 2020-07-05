@@ -40,61 +40,47 @@
 #include <unistd.h>
 
 using namespace std;
-
-class TBucket;
-void filler(TBucket *tb);
+using namespace chrono;
 
 class TBucket {
 public:
-	int qps_;
-	chrono::milliseconds intr_;
-	thread th_;
-	atomic<bool> die_;
 	int avail_;
-	mutex mtx_;
+	int qps_;
+	milliseconds interval_;
+	time_point<steady_clock> last_time_;
 
-	TBucket(int qps) : qps_(qps), die_(false), avail_(qps) {
-		intr_ = chrono::milliseconds(1000) / qps;
-		th_ = thread(filler, this);
+	TBucket(int qps) : qps_(qps), avail_(qps) {
+		interval_ = milliseconds(1000) / qps;
+		last_time_ = steady_clock::now();
 	}
 
 	~TBucket() {
-		die_.store(true);
-		th_.join();
 	}
 
-	bool consume() {
-		lock_guard<mutex> lg(mtx_);
-		if (avail_ <= 0) {
-			return false;
-		}
-		else {
-			avail_--;
+	bool consume(int cnt) {
+		time_point<steady_clock> now = steady_clock::now();
+		milliseconds time_diff = duration_cast<milliseconds>(now - last_time_);
+		milliseconds::rep n_intv = time_diff / interval_;
+		avail_ = min(qps_, avail_ + static_cast<int>(n_intv));
+
+		if (avail_ >= cnt) {
+			last_time_ = now;
+			avail_ -= cnt;
 			return true;
+		} else {
+			return false;
 		}
 	}
 };
 
-void filler(TBucket *tb) {
-	while (!tb->die_.load()) {
-		{
-			lock_guard<mutex> lg(tb->mtx_);
-			if (tb->avail_ < tb->qps_) {
-				tb->avail_++;
-			}
-		}
-		this_thread::sleep_for(tb->intr_);
-	}
-}
-
 int main(int argc, char *argv[]) {
 	TBucket tb(5);
 	for (int i = 0; i < 10; i++) {
-		cout << tb.consume() << endl;
+		cout << tb.consume(1) << endl;
 	}
-	this_thread::sleep_for(chrono::seconds(1));
+	this_thread::sleep_for(chrono::milliseconds(200));
 	for (int i = 0; i < 10; i++) {
-		cout << tb.consume() << endl;
+		cout << tb.consume(1) << endl;
 	}
 
 	return EXIT_SUCCESS;
