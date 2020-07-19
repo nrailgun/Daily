@@ -1,11 +1,11 @@
 class Solution {
 public:
-    vector<int> findOrder(int n, vector<pair<int, int>>& pres) {
+    vector<int> findOrder(int n, vector<vector<int>>& pres) {
         vector<vector<int>> deps(n);
         vector<int> inds(n, 0);
         for (auto pre : pres) {
-            deps[pre.first].push_back(pre.second);
-            inds[pre.second]++;
+            deps[pre[0]].push_back(pre[1]);
+            inds[pre[1]]++;
         }
         
         vector<int> zins;
