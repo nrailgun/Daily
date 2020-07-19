@@ -1,12 +1,12 @@
-// Not the best solution, but using map is OK.
+// O(N log(N)) 其实已经是最优解了。
 
-class point_t {
+class Point {
 public:
 	int x, y;
 	bool end;
-	point_t(int x = 0, int y = 0, bool end = false) : x(x), y(y), end(end) {}
+	Point(int x = 0, int y = 0, bool end = false) : x(x), y(y), end(end) {}
 
-	bool operator<(const point_t&rhs) const {
+	bool operator<(const Point&rhs) const {
 		if (x != rhs.x)
 			return x < rhs.x;
 		if (y != rhs.y)
@@ -17,20 +17,18 @@ public:
 
 class Solution {
 public:
-	vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
+	vector<vector<int>> getSkyline(vector<vector<int>>& buildings) {
 		int n = buildings.size();
-		// Can't use multiset, `erase` will erase all with same value
-		// multiset<int> hs;
 		map<int, int> hs;
 		hs[0]++;
-		vector<point_t> points(2 * n);
+		vector<Point> points(2 * n);
 
 		for (int i = 0; i < n; i++) {
 			int l = buildings[i][0];
 			int r = buildings[i][1];
 			int h = buildings[i][2];
 
-			point_t ps(l, h, false), pe(r, h, true);
+			Point ps(l, h, false), pe(r, h, true);
 			points[2 * i] = ps;
 			points[2 * i + 1] = pe;
 		}
@@ -38,7 +36,7 @@ public:
 
 		vector<pair<int, int>> rv;
 		for (int i = 0; i < 2 * n; i++) {
-			const point_t &p = points[i];
+			const Point &p = points[i];
 			if (p.end) {
 				int th = hs.rbegin()->first;
 				if (--hs[p.y] == 0)
@@ -55,7 +53,7 @@ public:
 			}
 		}
 
-		vector<pair<int, int>> rv2;
+		vector<vector<int>> rv2;
 		for (int i = 0; i < rv.size();) {
 			int minh = INT_MAX;
 			int j = i;
@@ -63,7 +61,7 @@ public:
 				minh = min(minh, rv[j].second);
 				j++;
 			}
-			rv2.push_back(make_pair(rv[i].first, minh));
+			rv2.push_back(vector<int>{rv[i].first, minh});
 			i = j;
 		}
 		return rv2;
