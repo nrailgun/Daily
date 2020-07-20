@@ -16,7 +16,7 @@ public:
 				toks.push_back(s.substr(si, sj - si));
 				si = sj;
 			}
-			else if (s[si] == '+' || s[si] == '-') {
+			else if (s[si] == '+' || s[si] == '-' || s[si] == '*' || s[si] == '/') {
 				toks.push_back(s.substr(si, 1));
 				si++;
 			}
@@ -52,8 +52,14 @@ public:
 		if (op == "+") {
 			v3 = v1 + v2;
 		}
-		else {
+		else if (op == "-") {
 			v3 = v1 - v2;
+		}
+		else if (op == "*") {
+			v3 = v1 * v2;
+		}
+		else {
+			v3 = v1 / v2;
 		}
 		vals.push(v3);
 	}
@@ -75,7 +81,7 @@ public:
 					ops.pop();
 				}
 			}
-			else if (tok == "+" || tok == "-") {
+			else if (tok == "+" || tok == "-" || tok == "*" || tok == "/") {
 				while (!ops.empty() && ops.top() != "(") {
 					int p1 = tok2prio(tok);
 					string op2 = ops.top();
@@ -83,6 +89,9 @@ public:
 					if (p1 <= p2) {
 						ops.pop();
 						op(vals, op2);
+					}
+					else {
+						break;
 					}
 				}
 				ops.push(tok);
