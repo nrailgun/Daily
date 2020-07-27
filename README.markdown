@@ -1,6 +1,4 @@
 Daily
 ========
 
-* Tech Diaries
-* Homeworks
-* Solved OJ codes
+好好学习，天天向上。
